@@ -10,5 +10,13 @@ export const api = {
         // eslint-disable-next-line no-console
         console.log('your api is sending: ', data);
         return instance.post("http://localhost:5000/checkUser", data);
+    },
+
+    registerUser(data) {
+        // eslint-disable-next-line no-console
+        console.log('your api is sending: ', data);
+        return instance.post("http://localhost:5000/registerUser", data);
     }
+
+
 }

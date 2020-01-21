@@ -3,6 +3,7 @@ import {api} from "../../api/login";
 export const state = {
     user: null,
     admin: null,
+    new_user:null,
 };
 
 export const getters = {
@@ -24,6 +25,9 @@ export const mutations = {
     },
     SET_ADMIN(state, payload){
         state.admin = payload;
+    },
+    REGISTER_USER(payload){
+        state.new_user = payload;
     }
 };
 
@@ -57,7 +61,24 @@ export const actions = {
             // eslint-disable-next-line no-console
             console.log("NO DATA!")
         }
-    }
+    },
+
+    async registerUser({ commit }, data){
+        // eslint-disable-next-line no-console
+        console.log('your name is: ', data);
+        const response = await api.registerUser(data);
+        if(response){
+            const payload = response;
+            // eslint-disable-next-line no-console
+            console.log(payload);
+            commit("REGISTER_USER", payload);
+            return payload
+        }
+        else {
+            // eslint-disable-next-line no-console
+            console.log("NO DATA!")
+        }
+    },
 };
 
 
