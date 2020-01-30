@@ -5,6 +5,7 @@ from flask import Flask, request
 from flask_cors import CORS
 from utils.Login import AdminUtil
 from models import db
+import bcrypt
 
 admin_obj = AdminUtil()
 
@@ -22,13 +23,15 @@ YourAPIKey = '2CA872CD'
 
 @app.route('/checkUser', methods=['GET', 'POST'])
 def login():
-    data = request.get_json()
-    try:
-        user_details = admin_obj.check_user(user_details=data)
-    except TypeError:
-        print("error")
-        return ""
-    return user_details
+    user_data = request.get_json()
+    database_details = admin_obj.check_user(user_details=user_data)
+    password = user_data['password'].encode("utf-8")
+    hashed = database_details['password'].encode("utf-8")
+    password_check = admin_obj.check_password(password, hashed)
+    if password_check:
+        return user_data
+    else:
+        return False
 
 
 @app.route('/registerUser', methods=['GET', 'POST'])
@@ -44,11 +47,23 @@ def register():
     response_json = response.json()
     print(response_json['emailVerification']['syntaxVerification']['isSyntaxValid'])
     if if_user is False and response_json['emailVerification']['syntaxVerification']['isSyntaxValid']:
+        hashed_password = encrypt_password(data)
+        print(hashed_password)
+        data['password'] = hashed_password
         user_details = admin_obj.register_user(user_details=data)
         if user_details:
             return data
     else:
         return {}
+
+
+def encrypt_password(data):
+    password = data['password'].encode("utf-8")
+    hashed = bcrypt.hashpw(password, bcrypt.gensalt())
+    print(hashed)
+    hashed = hashed.decode("utf-8")
+    print(hashed)
+    return hashed
 
 
 if __name__ == '__main__':

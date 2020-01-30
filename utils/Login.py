@@ -1,3 +1,4 @@
+import bcrypt
 from flask import Blueprint
 from mysql.connector import DatabaseError
 
@@ -13,10 +14,18 @@ class AdminUtil:
     def check_user(self, user_details):
         print('This is the user data: ', user_details)
         sql = """ select * from Users
-                  where username = '%s' && password= '%s'
-                            """ % (user_details['username'], user_details['password'])
+                  where username = '%s'
+                            """ % (user_details['username'])
         result = db.session.execute(sql)
         return self.row2dict(result)
+
+    def check_password(self, password, hashed):
+        if bcrypt.checkpw(password, hashed):
+            print("Password match!")
+            return True
+        else:
+            print("Password didn't match")
+            return False
 
     def if_user(self, user_details):
         print('This is the user data: ', user_details)
