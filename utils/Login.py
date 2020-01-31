@@ -43,7 +43,7 @@ class AdminUtil:
         try:
             print(user_details)
             print("The users details are:", user_details)
-            sql = """ START TRANSACTION;
+            sql = """ START TRANSACTION;    
                       INSERT INTO Users(username, email, password, first_name, last_name, permissions)VALUES ('%s', '%s', '%s', '%s', '%s', 'user');
                       COMMIT;
   """ % (
