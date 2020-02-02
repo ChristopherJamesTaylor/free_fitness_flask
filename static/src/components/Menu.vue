@@ -1,6 +1,5 @@
 <template>
     <div>
-
         <header class="site-header" role="banner" align="center">
             <h1>
                 <a class="site-header_logo-link" href="\">
@@ -29,12 +28,24 @@
             <v-avatar color="black">
                    <a href="/#/profile"> <v-icon black size="80">mdi-account-circle</v-icon> </a>
             </v-avatar>
+            <li>
+                <H1>
+                Welcome <br/> {{users.data.user_details.first_name}} {{users.data.user_details.last_name}}
+                </H1>
+            </li>
         </ul>
     </div>
 </template>
 <script>
     export default {
         name: 'Menu',
+        computed: {
+          users(){
+            // eslint-disable-next-line no-console
+            console.log(this.$store.getters["login/listUsers"]);
+            return this.$store.getters["login/listUsers"]
+          }
+        },
         data() {
             return {
                 items: [
@@ -43,6 +54,11 @@
                     {title: 'Admin'},
                     {title: 'Setting'}
                 ]
+            }
+        },
+        methods: {
+            getUser(){
+               return this.$store.dispatch("login/listUsers");
             }
         }
     }

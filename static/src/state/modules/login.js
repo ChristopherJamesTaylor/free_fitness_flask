@@ -2,6 +2,11 @@ import {api} from "../../api/login";
 
 export const state = {
     user: null,
+    authData: {
+      firstName: null,
+      lastName: null,
+      fullName: null,
+    },
     admin: null,
     new_user:null,
 };

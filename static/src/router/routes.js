@@ -63,5 +63,11 @@ export const routes = [
         component: () =>
             import("@/components/Registration")
     },
+    {
+        path: "/profile",
+        name: "profile",
+        component: () =>
+            import("@/components/Profile")
+    },
 
 ]

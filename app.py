@@ -1,7 +1,7 @@
 import urllib.request
 
 import requests
-from flask import Flask, request
+from flask import Flask, request, session
 from flask_cors import CORS
 from utils.Login import AdminUtil
 from models import db
@@ -13,12 +13,24 @@ app = Flask(__name__,
             static_folder="./static",
             template_folder="./static/dist")
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
+app.secret_key = 'super secret key'
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqlconnector://root@localhost/FreeFitness"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 ApiUrl = "https://api.hippoapi.com/v3/more/json"
 queryFormatString = "{0}/{1}/{2}"
 YourAPIKey = '2CA872CD'
+
+
+@app.route('/getSession', methods=['GET', 'POST'])
+def get_session():
+    session_data = request.get_json()
+    user = admin_obj.check_user(session_data)
+    session['user_details'] = user
+    value = {}
+    for key in session.keys():
+        value[key] = session[key]
+    return value
 
 
 @app.route('/checkUser', methods=['GET', 'POST'])
@@ -29,7 +41,11 @@ def login():
     hashed = database_details['password'].encode("utf-8")
     password_check = admin_obj.check_password(password, hashed)
     if password_check:
-        return user_data
+        session['user_details'] = database_details
+        value = {}
+        for key in session.keys():
+            value[key] = session[key]
+        return value
     else:
         return False
 
