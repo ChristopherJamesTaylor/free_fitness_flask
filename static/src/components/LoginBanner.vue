@@ -2,7 +2,7 @@
     <div class="banner">
         <header class="site-header" role="banner">
             <h1>
-              <a class="site-header_logo-link" href="\">
+              <a class="site-header_logo-link">
                 Free Fitness
                 <img src="../assets/profile.png" width="80" height="80">
               </a>

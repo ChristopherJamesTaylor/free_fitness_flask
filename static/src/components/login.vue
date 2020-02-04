@@ -82,7 +82,13 @@
                     if (response){
                     // eslint-disable-next-line no-console
                     console.log("success");
+                    // eslint-disable-next-line no-console
+                    console.log(response);
+
+                    sessionStorage.setItem('user', response.data.first_name);
+                    // eslint-disable-next-line no-console
                     document.location.replace('/#/home');
+
                 } else {
                     // eslint-disable-next-line no-console
                     console.log("error");

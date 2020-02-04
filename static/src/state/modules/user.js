@@ -1,19 +1,13 @@
 import {api} from "../../api/user";
 
 export const state = {
-    authData: {
-      firstName: null,
-      lastName: null,
-      fullName: null,
-    },
+    authData: null,
 };
 
 export const getters = {
-  listUsers(state) {
-      // eslint-disable-next-line no-console
-      console.log(state.authData.fullName);
-      return state.authData.fullName;
-  }
+    listSession(){
+        return state.authData
+    }
 };
 
 export const mutations = {
@@ -24,9 +18,11 @@ export const mutations = {
 
 export const actions = {
     async getSession({ commit }){
+        // eslint-disable-next-line no-console
+        console.log('about to hit api');
         const response = await api.getSession();
         if(response){
-            const payload = response.data.row;
+            const payload = response;
             // eslint-disable-next-line no-console
             console.log(payload);
             commit("SET_SESSION", payload);

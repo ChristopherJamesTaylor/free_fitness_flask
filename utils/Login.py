@@ -1,5 +1,5 @@
 import bcrypt
-from flask import Blueprint
+from flask import Blueprint, session
 from mysql.connector import DatabaseError
 
 from models import db
@@ -12,7 +12,6 @@ class AdminUtil:
         pass
 
     def check_user(self, user_details):
-        print('This is the user data: ', user_details)
         sql = """ select * from Users
                   where username = '%s'
                             """ % (user_details['username'])

@@ -2,7 +2,7 @@
     <div>
         <header class="site-header" role="banner" align="center">
             <h1>
-                <a class="site-header_logo-link" href="\">
+                <a class="site-header_logo-link" >
                     Free Fitness
                     <img src="../assets/profile.png" width="80" height="80">
                 </a>
@@ -29,9 +29,12 @@
                    <a href="/#/profile"> <v-icon black size="80">mdi-account-circle</v-icon> </a>
             </v-avatar>
             <li>
-                <H1>
-                Welcome <br/> {{users.data.user_details.first_name}} {{users.data.user_details.last_name}}
-                </H1>
+                <v-toolbar-title>
+                Welcome <br/> {{users}}
+                </v-toolbar-title>
+            </li>
+            <li>
+                <a>Logout</a>
             </li>
         </ul>
     </div>
@@ -41,9 +44,9 @@
         name: 'Menu',
         computed: {
           users(){
-            // eslint-disable-next-line no-console
-            console.log(this.$store.getters["login/listUsers"]);
-            return this.$store.getters["login/listUsers"]
+              // eslint-disable-next-line no-console
+              console.log(sessionStorage.getItem('user'));
+              return sessionStorage.getItem('user')
           }
         },
         data() {
