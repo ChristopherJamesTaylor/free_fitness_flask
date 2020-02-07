@@ -1,36 +1,28 @@
 import {api} from "../../api/user";
 
 export const state = {
-    authData: null,
+    user: null,
 };
 
 export const getters = {
-    listSession(){
-        return state.authData
+    listUser(){
+        return state.user
     }
 };
 
 export const mutations = {
-    SET_SESSION(state, payload){
-        state.authData = payload;
+    SET_USER(state, payload){
+        state.user = payload;
     },
 };
 
 export const actions = {
-    async getSession({ commit }){
-        // eslint-disable-next-line no-console
-        console.log('about to hit api');
-        const response = await api.getSession();
+    async getUser({ commit }, data){
+        const response = await api.getUser(data);
         if(response){
-            const payload = response;
-            // eslint-disable-next-line no-console
-            console.log(payload);
-            commit("SET_SESSION", payload);
+            const payload = response.data;
+            commit("SET_USER", payload);
             return payload
-        }
-        else {
-            // eslint-disable-next-line no-console
-            console.log("NO DATA!")
         }
     },
 };

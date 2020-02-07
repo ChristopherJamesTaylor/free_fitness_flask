@@ -26,7 +26,7 @@
                 <a class="site-nav" href="/#/gyms">Nearest Gym</a>
             </li>
             <v-avatar color="black">
-                   <a href="/#/profile"> <v-icon black size="80">mdi-account-circle</v-icon> </a>
+                   <a href="/#/profile" @click="getUserDetails"> <v-icon black size="80">mdi-account-circle</v-icon> </a>
             </v-avatar>
             <li>
                 <v-toolbar-title>
@@ -44,8 +44,6 @@
         name: 'Menu',
         computed: {
           users(){
-              // eslint-disable-next-line no-console
-              console.log(sessionStorage.getItem('user'));
               return sessionStorage.getItem('user')
           }
         },
@@ -62,6 +60,27 @@
         methods: {
             getUser(){
                return this.$store.dispatch("login/listUsers");
+            },
+            getUserDetails(){
+               let data = {
+                   'username': sessionStorage.getItem('user'),
+               };
+               // eslint-disable-next-line no-console
+               console.log("The data is:", data);
+               this.$store.dispatch("user/getUser", data).then((response) => {
+                    if (response){
+                    // eslint-disable-next-line no-console
+                    console.log("success");
+                    // eslint-disable-next-line no-console
+                    console.log(response);
+                    return response.data
+                } else {
+                    // eslint-disable-next-line no-console
+                    console.log("error");
+                    this.snackbar = true;
+                    return 'hi'
+                    }
+                })
             }
         }
     }

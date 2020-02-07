@@ -4,9 +4,10 @@ from flask_cors import CORS
 from utils.Login import AdminUtil
 from models import db
 import bcrypt
-from requests import Session
+from utils.User import UserUtils
 
 admin_obj = AdminUtil()
+user_object = UserUtils()
 
 app = Flask(__name__,
             static_folder="./static",
@@ -21,16 +22,11 @@ queryFormatString = "{0}/{1}/{2}"
 YourAPIKey = '2CA872CD'
 
 
-@app.route('/getSession', methods=['GET', 'POST'])
-def get_session():
-    if session.get('user_name') == '':
-        user = session["user_name"]
-        print(user)
-        return user
-    else:
-        session['user_name'] = 'taylorc'
-        return session.get('user_name')
-
+@app.route('/getUser', methods=['GET', 'POST'])
+def get_user():
+    user_details = request.get_json()
+    print(user_details)
+    return user_object.get_user(user_details)
 
 @app.route('/checkUser', methods=['GET', 'POST'])
 def login():
