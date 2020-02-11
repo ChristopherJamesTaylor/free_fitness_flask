@@ -73,8 +73,7 @@ def register():
         user_details = admin_obj.register_user(user_details=data)
         if user_details:
             return data
-    else:
-        return {}
+        
 
 
 def encrypt_password(data):

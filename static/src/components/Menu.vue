@@ -2,7 +2,7 @@
     <div>
         <header class="site-header" role="banner" align="center">
             <h1>
-                <a class="site-header_logo-link" >
+                <a class="site-header_logo-link" href="/#/home">
                     Free Fitness
                     <img src="../assets/profile.png" width="80" height="80">
                 </a>
@@ -87,16 +87,6 @@
 </script>
 
 <style scoped>
-    .profile{
-        position: absolute;
-        right:1px;
-        padding-right: 300px;
-        top: 1px;
-        padding-top: 110px;
-    }
-    .avatar{
-        right:1px;
-    }
     .h1 a {
         color: inherit;
         text-decoration: none;
@@ -136,11 +126,6 @@
     .site-nav {
         padding: 3px 10px;
     }
-
-    .container {
-        padding: 0;
-    }
-
 
 </style>
 

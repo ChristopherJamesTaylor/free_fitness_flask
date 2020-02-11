@@ -46,14 +46,12 @@ class AdminUtil:
                       INSERT INTO Users(username, email, password, first_name, last_name, permissions)VALUES ('%s', '%s', '%s', '%s', '%s', 'user');
                       COMMIT;
   """ % (
-            user_details['username'], user_details['email'], user_details['password'],
-            user_details['firstName'], user_details['lastName'])
+                user_details['username'], user_details['email'], user_details['password'],
+                user_details['firstName'], user_details['lastName'])
             db.session.execute(sql)
         except DatabaseError:
             return False
         return True
-
-
 
     def row2dict(self, result):
         d, a = {}, []
