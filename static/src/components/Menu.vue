@@ -11,7 +11,7 @@
         <br>
         <ul align="center">
             <li>
-                <a class="site-nav" href="/#/fitnessplan">Your Fitness Plan</a>
+                <a class="site-nav" href="/#/fitnessplan" @click="getFitnessPlan">Your Fitness Plan</a>
             </li>
             <li>
                 <a class="site-nav" href="/#/nutrition">Nutrition</a>
@@ -79,6 +79,19 @@
                     console.log("error");
                     this.snackbar = true;
                     return 'hi'
+                    }
+                })
+            },
+            getFitnessPlan(){
+               let data = {
+                   'personID': sessionStorage.getItem('id'),
+               };
+               this.$store.dispatch("user/getFitnessPlan", data).then((response) => {
+                    if (response['exists']){
+                         document.location.replace('/#/fitnessplan');
+                } else {
+                        // eslint-disable-next-line no-console
+                        document.location.replace('/#/currentfitnessplan');
                     }
                 })
             }

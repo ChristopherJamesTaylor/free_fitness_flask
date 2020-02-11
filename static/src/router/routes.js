@@ -69,5 +69,11 @@ export const routes = [
         component: () =>
             import("@/components/Profile")
     },
+    {
+        path: "/currentfitnessplan",
+        name: "currentfitnessplan",
+        component: () =>
+            import("@/components/CurrentFitnessPlan")
+    },
 
 ]

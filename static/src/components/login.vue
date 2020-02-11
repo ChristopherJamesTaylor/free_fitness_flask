@@ -86,6 +86,7 @@
                     console.log(response);
 
                     sessionStorage.setItem('user', response.data.username);
+                    sessionStorage.setItem('personID', response.data.id);
                     // eslint-disable-next-line no-console
                     document.location.replace('/#/home');
 

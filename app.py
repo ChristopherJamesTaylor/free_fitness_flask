@@ -25,8 +25,18 @@ YourAPIKey = '2CA872CD'
 @app.route('/getUser', methods=['GET', 'POST'])
 def get_user():
     user_details = request.get_json()
-    print(user_details)
     return user_object.get_user(user_details)
+
+
+@app.route('/getFitnessPlan', methods=['GET', 'POST'])
+def get_fitness_plan():
+    user_details = request.get_json()
+    existing_plan = user_object.get_fitness_plan(user_details)
+    if existing_plan:
+        return {'exists': True, 'plan': existing_plan}
+    else:
+        return {'exists': False}
+
 
 @app.route('/checkUser', methods=['GET', 'POST'])
 def login():
@@ -73,7 +83,6 @@ def register():
         user_details = admin_obj.register_user(user_details=data)
         if user_details:
             return data
-        
 
 
 def encrypt_password(data):

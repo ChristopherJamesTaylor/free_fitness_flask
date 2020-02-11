@@ -18,6 +18,7 @@
                             :key="step.number"
                     />
                 </template>
+                <v-btn>Save</v-btn>
             </v-stepper-header>
 
             <v-stepper-items>
@@ -26,129 +27,58 @@
                         :key="`${step.number}-content`"
                         :step="step.number"
                 >
-                    <v-card v-if="step.number == 1" class="mb-12" color="grey lighten-1" height="200px">
+                    <v-card v-if="step.number == 1" class="mb-12" color="grey lighten-1">
+                        <v-form
+                                ref="form"
+                        >
+                            <v-row justify="space-around">
+                                <v-col>
+                                    <h3>Training level</h3>
+                                    <v-radio-group v-model="training" :mandatory="false">
+                                        <v-radio label="Beginner" value="Beginner"/>
+                                        <v-radio label="Intermediate" value="Intermediate"/>
+                                        <v-radio label="Advanced" value="Advanced"/>
+                                        <v-radio label="Savage" value="Savage"/>
+                                    </v-radio-group>
+                                </v-col>
+                                <v-col><h3>Type of workouts</h3>
+                                    <v-radio-group v-model="type" :mandatory="false">
+                                        <v-radio label="Gym" value="Gym"/>
+                                        <v-radio label="Outdoors" value="Outdoors"/>
+                                        <v-radio label="Home" value="Home"/>
+                                        <v-radio label="Mixed" value="Mixed"/>
+                                        <v-radio label="I hate exercise" value="I hate exercise"/>
+                                    </v-radio-group>
+                                </v-col>
+                                <v-col>
+                                    <h3>Days of the week to workout</h3>
+                                    <v-checkbox v-model="daysOfTheWeek" label="Monday" value="Monday"/>
+                                    <v-checkbox v-model="daysOfTheWeek" label="Tuesday" value="Tuesday"/>
+                                    <v-checkbox v-model="daysOfTheWeek" label="Wednesday" value="Wednesday"/>
+                                    <v-checkbox v-model="daysOfTheWeek" label="Thursday" value="Thursday"/>
+                                    <v-checkbox v-model="daysOfTheWeek" label="Friday" value="Friday"/>
+                                    <v-checkbox v-model="daysOfTheWeek" label="Saturday" value="Saturday"/>
+                                    <v-checkbox v-model="daysOfTheWeek" label="Sunday" value="Sunday"/>
+                                </v-col>
+                            </v-row>
+                        </v-form>
+                    </v-card>
+                    <v-card v-else class="mb-12" color="grey lighten-1">
                         <v-form
                                 ref="form"
                                 lazy-validation
                         >
-                            <v-text-field
-                                    v-model="name"
-                                    :counter="10"
-                                    :rules="nameRules"
-                                    label="Name"
-                                    required
-                            />
-
-                            <v-text-field
-                                    v-model="email"
-                                    :rules="emailRules"
-                                    label="E-mail"
-                                    required
-                            />
-
-                            <v-select
-                                    v-model="select"
-                                    :items="items"
-                                    :rules="[v => !!v || 'Item is required']"
-                                    label="Item"
-                                    required
-                            />
-
-                            <v-checkbox
-                                    v-model="checkbox"
-                                    :rules="[v => !!v || 'You must agree to continue!']"
-                                    label="Do you agree?"
-                                    required
-                            />
-
-                            <v-btn
-                                    :disabled="!valid"
-                                    color="success"
-                                    class="mr-4"
-                            >
-                                Validate
-                            </v-btn>
-
-                            <v-btn
-                                    color="error"
-                                    class="mr-4"
-                            >
-                                Reset Form
-                            </v-btn>
-
-                            <v-btn
-                                    color="warning"
-                            >
-                                Reset Validation
-                            </v-btn>
+                            <v-col>
+                                <h3>Goals</h3>
+                                <v-radio-group v-model="goal" :mandatory="false">
+                                    <v-radio label="Lose Weight" value="Lose Weight"/>
+                                    <v-radio label="Gain Muscle" value="Gain Muscle"/>
+                                    <v-radio label="Stay Healthy" value="Stay Healthy"/>
+                                    <v-radio label="Get shredded" value="Get shredded"/>
+                                </v-radio-group>
+                            </v-col>
                         </v-form>
                     </v-card>
-                    <v-card v-else class="mb-12" color="grey lighten-1" height="200px">
-                        <v-form
-                                ref="form"
-                                lazy-validation
-                        >
-                            <v-text-field
-                                    v-model="name"
-                                    :counter="10"
-                                    :rules="nameRules"
-                                    label="Name"
-                                    required
-                            />
-
-                            <v-text-field
-                                    v-model="email"
-                                    :rules="emailRules"
-                                    label="E-mail"
-                                    required
-                            />
-
-                            <v-select
-                                    v-model="select"
-                                    :items="items"
-                                    :rules="[v => !!v || 'Item is required']"
-                                    label="Item"
-                                    required
-                            />
-
-                            <v-checkbox
-                                    v-model="checkbox"
-                                    :rules="[v => !!v || 'You must agree to continue!']"
-                                    label="Do you agree?"
-                                    required
-                            />
-
-                            <v-btn
-                                    :disabled="!valid"
-                                    color="success"
-                                    class="mr-4"
-                            >
-                                Validate
-                            </v-btn>
-
-                            <v-btn
-                                    color="error"
-                                    class="mr-4"
-                            >
-                                Reset Form
-                            </v-btn>
-
-                            <v-btn
-                                    color="warning"
-                            >
-                                Reset Validation
-                            </v-btn>
-                        </v-form>
-                    </v-card>
-
-<!--                    <v-btn-->
-<!--                            color="primary"-->
-<!--                            @click="nextStep(n)"-->
-<!--                    >-->
-<!--                        Continue-->
-<!--                    </v-btn>-->
-
-<!--                    <v-btn text>Cancel</v-btn>-->
                 </v-stepper-content>
             </v-stepper-items>
         </v-stepper>
@@ -166,13 +96,21 @@
             steps: [
                 {
                     number: 1,
-                    title:'One',
+                    title: 'Basic Information',
                 },
                 {
                     number: 2,
-                    title:'Two'
+                    title: 'Body and Mind'
                 }
             ],
+            days: null,
+            type: null,
+            intensityLevel: null,
+            goal: null,
+            split: null,
+            daysOfTheWeek: [],
+            ability: null,
+            training: null
         }),
         watch: {
             steps(val) {
