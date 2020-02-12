@@ -1,6 +1,8 @@
 import requests
 from flask import *
 from flask_cors import CORS
+
+from utils.Fitness import FitnessUtils
 from utils.Login import AdminUtil
 from models import db
 import bcrypt
@@ -8,7 +10,7 @@ from utils.User import UserUtils
 
 admin_obj = AdminUtil()
 user_object = UserUtils()
-
+fitness_object = FitnessUtils()
 app = Flask(__name__,
             static_folder="./static",
             template_folder="./static/dist")
@@ -26,6 +28,13 @@ YourAPIKey = '2CA872CD'
 def get_user():
     user_details = request.get_json()
     return user_object.get_user(user_details)
+
+
+@app.route('/getExercises', methods=['GET', 'POST'])
+def get_exercises():
+    user_details = request.get_json()
+    exercises = fitness_object.get_exercises(user_details)
+    return exercises
 
 
 @app.route('/getFitnessPlan', methods=['GET', 'POST'])

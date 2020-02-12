@@ -26,11 +26,13 @@
                 <a class="site-nav" href="/#/gyms">Nearest Gym</a>
             </li>
             <v-avatar color="black">
-                   <a href="/#/profile" @click="getUserDetails"> <v-icon black size="80">mdi-account-circle</v-icon> </a>
+                <a href="/#/profile" @click="getUserDetails">
+                    <v-icon black size="80">mdi-account-circle</v-icon>
+                </a>
             </v-avatar>
             <li>
                 <v-toolbar-title>
-                Welcome <br/> {{users}}
+                    Welcome <br/> {{users}}
                 </v-toolbar-title>
             </li>
             <li>
@@ -43,9 +45,9 @@
     export default {
         name: 'Menu',
         computed: {
-          users(){
-              return sessionStorage.getItem('user')
-          }
+            users() {
+                return sessionStorage.getItem('user')
+            }
         },
         data() {
             return {
@@ -58,43 +60,42 @@
             }
         },
         methods: {
-            getUser(){
-               return this.$store.dispatch("login/listUsers");
+            getUser() {
+                return this.$store.dispatch("login/listUsers");
             },
-            getUserDetails(){
-               let data = {
-                   'username': sessionStorage.getItem('user'),
-               };
-               // eslint-disable-next-line no-console
-               console.log("The data is:", data);
-               this.$store.dispatch("user/getUser", data).then((response) => {
-                    if (response){
-                    // eslint-disable-next-line no-console
-                    console.log("success");
-                    // eslint-disable-next-line no-console
-                    console.log(response);
-                    return response.data
-                } else {
-                    // eslint-disable-next-line no-console
-                    console.log("error");
-                    this.snackbar = true;
-                    return 'hi'
-                    }
-                })
-            },
-            getFitnessPlan(){
-               let data = {
-                   'personID': sessionStorage.getItem('id'),
-               };
-               this.$store.dispatch("user/getFitnessPlan", data).then((response) => {
-                    if (response['exists']){
-                         document.location.replace('/#/fitnessplan');
-                } else {
+            getUserDetails() {
+                let data = {
+                    'username': sessionStorage.getItem('user'),
+                };
+                // eslint-disable-next-line no-console
+                console.log("The data is:", data);
+                this.$store.dispatch("user/getUser", data).then((response) => {
+                    if (response) {
                         // eslint-disable-next-line no-console
-                        document.location.replace('/#/currentfitnessplan');
+                        console.log("success");
+                        // eslint-disable-next-line no-console
+                        console.log(response);
+                        return response.data
+                    } else {
+                        // eslint-disable-next-line no-console
+                        console.log("error");
+                        this.snackbar = true;
+                        return 'hi'
                     }
                 })
-            }
+            },
+            getFitnessPlan() {
+                let data = {
+                    'personID': sessionStorage.getItem('id'),
+                };
+                this.$store.dispatch("user/getFitnessPlan", data).then((response) => {
+                    if (response['exists']) {
+                        document.location.replace('/#/currentfitnessplan');
+                    } else {
+                        document.location.replace('/#/fitnessplan');
+                    }
+                })
+            },
         }
     }
 </script>
