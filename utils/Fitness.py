@@ -11,9 +11,19 @@ class FitnessUtils:
         pass
 
     def get_exercises(self, user_details):
-        sql = """ select * from Exercises
-                  where ability = '%s', 
-                  type = '%s', 
+        sql = """ SELECT *
+                    FROM Exercises
+                    WHERE ability = '%s' AND type = '%s'
                             """ % (user_details['training'], user_details['type'])
         result = db.session.execute(sql)
-        return adminObject.row2dict(result)
+        return self.row2dict(result)
+
+    def row2dict(self, result):
+        d, a = {}, []
+        for rowproxy in result:
+            # rowproxy.items() returns an array like [(key0, value0), (key1, value1)]
+            for column, value in rowproxy.items():
+                # build up the dictionary
+                d = {**d, **{column: value}}
+            a.append(d)
+        return a

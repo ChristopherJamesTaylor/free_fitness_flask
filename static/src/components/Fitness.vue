@@ -38,17 +38,17 @@
                                 <v-col>
                                     <h3>Training level</h3>
                                     <v-radio-group v-model="training" :mandatory="false">
-                                        <v-radio label="Beginner" value="Beginner"/>
-                                        <v-radio label="Intermediate" value="Intermediate"/>
-                                        <v-radio label="Advanced" value="Advanced"/>
-                                        <v-radio label="Savage" value="Savage"/>
+                                        <v-radio label="Beginner" value="beginner"/>
+                                        <v-radio label="Intermediate" value="intermediate"/>
+                                        <v-radio label="Advanced" value="advanced"/>
+                                        <v-radio label="Savage" value="savage"/>
                                     </v-radio-group>
                                 </v-col>
                                 <v-col><h3>Type of workouts</h3>
                                     <v-radio-group v-model="type" :mandatory="false">
-                                        <v-radio label="Gym" value="Gym"/>
-                                        <v-radio label="Home" value="Home"/>
-                                        <v-radio label="Mixed" value="Mixed"/>
+                                        <v-radio label="Gym" value="gym"/>
+                                        <v-radio label="Home" value="home"/>
+                                        <v-radio label="Mixed" value="mixed"/>
                                         <v-radio label="I hate exercise" value="I hate exercise"/>
                                     </v-radio-group>
                                 </v-col>
@@ -96,32 +96,16 @@
                                     :items="exercises"
                                     class="elevation-1"
                             >
-                                <template v-slot:item.action="{ item }">
-                                    <div style="white-space: nowrap;">
-                                        <v-tooltip bottom>
-                                            <template v-slot:activator="{ on }">
-                                                <v-icon
-                                                        @click="editUser(item)"
-                                                        medium
-                                                        class="mr-2"
-                                                        v-on="on">mdi-pencil
-                                                </v-icon>
-                                            </template>
-                                            <span>Edit User Details</span>
-                                        </v-tooltip>
-                                        <v-tooltip bottom>
-                                            <template v-slot:activator="{ on }">
-                                                <v-icon
-                                                        @click="deleteUser(item)"
-                                                        medium
-                                                        class="mr-2"
-                                                        v-on="on">mdi-delete
-                                                </v-icon>
-                                            </template>
-                                            <span>Delete User Details</span>
-                                        </v-tooltip>
-                                    </div>
-                                </template>
+<!--                                <template v-slot:item.name="{ item }">-->
+<!--&lt;!&ndash;                                    <div style="white-space: nowrap">&ndash;&gt;-->
+<!--&lt;!&ndash;                                        <v-text-field>&ndash;&gt;-->
+<!--&lt;!&ndash;                                            :item-text="item.name"&ndash;&gt;-->
+<!--&lt;!&ndash;                                            v-model="item.name&ndash;&gt;-->
+<!--&lt;!&ndash;                                            type='text'&ndash;&gt;-->
+<!--&lt;!&ndash;                                            &ndash;&gt;-->
+<!--&lt;!&ndash;                                        </v-text-field>&ndash;&gt;-->
+<!--&lt;!&ndash;                                    </div>&ndash;&gt;-->
+<!--                                </template>-->
                             </v-data-table>
                         </v-form>
                     </v-card>
@@ -158,14 +142,11 @@
             training: null,
             exercises: [],
             headers: [
-                {text: "Monday", value: ""},
-                {text: "Tuesday", value: ""},
-                {text: "Wednesday", value: ""},
-                {text: "Thursday", value: ""},
-                {text: "Friday", value: ""},
-                {text: "Saturday", value: ""},
-                {text: "Sunday", value: ""},
-                {text: "Action", value: "action", class: "hidden-xs-only", sortable: false},
+                {text: "Exercise", value: "name"},
+                 {text: "Body Part", value: "body_part"},
+                {text: "Sets", value: "sets"},
+                {text: "Repetitions", value: "reps"},
+                {text: "Day", value: "day"},
             ],
             plan: [],
             snackbar: false,
@@ -189,7 +170,7 @@
             },
             generate() {
                 let basicInformation = {
-                    'trainingLevel': this.trainingLevel,
+                    'training': this.training,
                     'type': this.type,
                     'days': this.daysOfTheWeek,
                     'goals': this.goals,
@@ -201,7 +182,7 @@
                             console.log("success");
                             // eslint-disable-next-line no-console
                             console.log(response);
-                            this.exercises = response.data;
+                            this.exercises = response;
                         } else {
                             // eslint-disable-next-line no-console
                             console.log("error");
