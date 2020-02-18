@@ -1,8 +1,7 @@
 import bcrypt
-from flask import Blueprint, session
-from mysql.connector import DatabaseError
+from flask import Blueprint
 
-from models import db
+from app.models import db
 
 adminUtils = Blueprint('adminUtils', __name__)
 
@@ -49,7 +48,7 @@ class AdminUtil:
                 user_details['username'], user_details['email'], user_details['password'],
                 user_details['firstName'], user_details['lastName'])
             db.session.execute(sql)
-        except DatabaseError:
+        except:
             return False
         return True
 

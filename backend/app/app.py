@@ -2,11 +2,11 @@ import requests
 from flask import *
 from flask_cors import CORS
 
-from utils.Fitness import FitnessUtils
-from utils.Login import AdminUtil
-from models import db
+from app.utils.Fitness import FitnessUtils
+from app.utils.Login import AdminUtil
+from app.models import db
+from app.utils.User import UserUtils
 import bcrypt
-from utils.User import UserUtils
 
 admin_obj = AdminUtil()
 user_object = UserUtils()

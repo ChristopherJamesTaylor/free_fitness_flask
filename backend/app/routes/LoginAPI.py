@@ -1,6 +1,6 @@
 from flask import request, Flask
 from flask import Blueprint
-from utils.Login import AdminUtil
+from app.utils.Login import AdminUtil
 
 app = Flask(__name__)
 app.config.from_object(__name__)
