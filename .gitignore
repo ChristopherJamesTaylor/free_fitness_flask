@@ -3,6 +3,9 @@ node_modules
 dist
 venv
 
+# Database data
+.data/
+
 # local env files
 .env.local
 .env.*.local

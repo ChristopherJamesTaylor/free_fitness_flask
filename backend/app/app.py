@@ -17,7 +17,7 @@ app = Flask(__name__,
 
 cors = CORS(app, resources={r"*": {"origins": "*"}})
 app.secret_key = 'super secret key'
-app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqlconnector://root@localhost/FreeFitness"
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqlconnector://freefitnessflask:chris@db/FreeFitness"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db.init_app(app)
 ApiUrl = "https://api.hippoapi.com/v3/more/json"

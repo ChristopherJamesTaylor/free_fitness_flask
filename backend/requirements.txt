@@ -4,4 +4,4 @@ bcrypt
 requests
 flask_cors
 flask_sqlalchemy
-mysql
+mysql-connector-python
