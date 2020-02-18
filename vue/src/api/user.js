@@ -1,10 +1,11 @@
 import { instance } from "@/api";
+import { api_url } from "./constants";
 
 export const api = {
     getUser(data) {
-        return instance.post("http://localhost:5000/getUser", data);
+        return instance.post(`${api_url}/getUser`, data);
     },
     getFitnessPlan(data) {
-        return instance.post("http://localhost:5000/getFitnessPlan", data);
+        return instance.post(`${api_url}/getFitnessPlan`, data);
     },
 };
