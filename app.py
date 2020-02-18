@@ -14,6 +14,7 @@ fitness_object = FitnessUtils()
 app = Flask(__name__,
             static_folder="./static",
             template_folder="./static/dist")
+
 cors = CORS(app, resources={r"*": {"origins": "*"}})
 app.secret_key = 'super secret key'
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqlconnector://root@localhost/FreeFitness"
