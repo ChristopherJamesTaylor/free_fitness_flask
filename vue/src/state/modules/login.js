@@ -8,13 +8,9 @@ export const state = {
 
 export const getters = {
   listAdmins(state) {
-      // eslint-disable-next-line no-console
-      console.log(state.admin);
       return state.admin;
   },
   listUsers(state) {
-      // eslint-disable-next-line no-console
-      console.log(state.user);
       return state.user;
   }
 };
@@ -47,13 +43,11 @@ export const actions = {
         }
     },
     async checkUser({ commit }, data){
-        // eslint-disable-next-line no-console
-        console.log('your name is: ', data);
         const response = await api.checkUser(data);
         if(response){
-            const payload = response;
             // eslint-disable-next-line no-console
-            console.log(payload);
+            console.log(response['username']);
+            const payload = response;
             commit("SET_USER", payload);
             return payload
         }
@@ -69,8 +63,6 @@ export const actions = {
         const response = await api.registerUser(data);
         if(response){
             const payload = response;
-            // eslint-disable-next-line no-console
-            console.log(payload);
             commit("REGISTER_USER", payload);
             return payload
         }

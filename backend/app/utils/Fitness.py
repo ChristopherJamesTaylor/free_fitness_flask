@@ -12,7 +12,7 @@ class FitnessUtils:
 
     def get_exercises(self, user_details):
         sql = """ SELECT *
-                    FROM Exercises
+                    FROM exercises
                     WHERE ability = '%s' AND type = '%s'
                             """ % (user_details['training'], user_details['type'])
         result = db.session.execute(sql)

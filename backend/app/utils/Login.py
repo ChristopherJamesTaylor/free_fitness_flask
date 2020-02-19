@@ -1,5 +1,5 @@
 import bcrypt
-from flask import Blueprint
+from flask import Blueprint, jsonify
 
 from app.models import db
 
@@ -11,18 +11,20 @@ class AdminUtil:
         pass
 
     def check_user(self, user_details):
-        sql = """ select * from Users
+        sql = """ select * from users
                   where username = '%s'
                             """ % (user_details['username'])
         result = db.session.execute(sql)
+        # print("This is the database response is . : ", self.row2dict(result), flush=True)
         return self.row2dict(result)
 
     def check_password(self, password, hashed):
+        print("Check password!", flush=True)
         if bcrypt.checkpw(password, hashed):
-            print("Password match!")
+            print("Password match!", flush=True)
             return True
         else:
-            print("Password didn't match")
+            print("Password didn't match", flush=True)
             return False
 
     def if_user(self, user_details):
@@ -59,4 +61,4 @@ class AdminUtil:
             for column, value in rowproxy.items():
                 # build up the dictionary
                 d = {**d, **{column: value}}
-            return d
+        return d

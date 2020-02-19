@@ -8,7 +8,7 @@ export const api = {
     },
     checkUser(data) {
         // eslint-disable-next-line no-console
-        console.log('your api is sending: ', data);
+        console.log("This environment is coming up as:",`${api_url}`);
         return instance.post(`${api_url}/checkUser`, data);
     },
 

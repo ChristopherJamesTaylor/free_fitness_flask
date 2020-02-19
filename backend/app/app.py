@@ -1,6 +1,6 @@
 import requests
 from flask import *
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 from app.utils.Fitness import FitnessUtils
 from app.utils.Login import AdminUtil
@@ -14,7 +14,8 @@ fitness_object = FitnessUtils()
 app = Flask(__name__,
             static_folder="./static",
             template_folder="./static/dist")
-cors = CORS(app)
+
+cors = CORS(app, resources={r"/*": {"origins": "*"}})
 app.secret_key = 'super secret key'
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqlconnector://freefitnessflask:chris@db/FreeFitness"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -64,25 +65,22 @@ def get_fitness_plan():
 
 @app.route('/checkUser', methods=['GET', 'POST'])
 def login():
-    if 'user_name' in session:
-        return 'Logged in as %s' % escape(session['username'])
-    else:
-        user_data = request.get_json()
-        database_details = admin_obj.check_user(user_details=user_data)
+    user_data = request.get_json()
 
-        session["user_name"] = database_details['username']
-        print(session.get('user_name'))
-        session.modified = True
+    database_details = admin_obj.check_user(user_details=user_data)
 
-        password = user_data['password'].encode("utf-8")
-        hashed = database_details['password'].encode("utf-8")
-        password_check = admin_obj.check_password(password, hashed)
+    print("Theses are the new details.", database_details, flush=True)
 
-        if password_check:
-            return database_details
-        else:
-            return False
+    password = user_data['password'].encode("utf-8")
+    hashed = database_details['password'].encode("utf-8")
+    password_check = admin_obj.check_password(password, hashed)
 
+    if password_check:
+        return database_details
+
+    return {
+        'status': '404'
+    }
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
