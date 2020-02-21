@@ -1,3 +1,5 @@
+from sqlite3 import DatabaseError, InterfaceError
+
 import bcrypt
 from flask import Blueprint, jsonify
 
@@ -11,11 +13,10 @@ class AdminUtil:
         pass
 
     def check_user(self, user_details):
-        sql = """ select * from users
+        sql = """ select * from members
                   where username = '%s'
                             """ % (user_details['username'])
         result = db.session.execute(sql)
-        # print("This is the database response is . : ", self.row2dict(result), flush=True)
         return self.row2dict(result)
 
     def check_password(self, password, hashed):
@@ -28,31 +29,27 @@ class AdminUtil:
             return False
 
     def if_user(self, user_details):
-        print('This is the user data: ', user_details)
-        sql = """ select * from Users 
+        sql = """ select * from members 
                   where username = '%s'
                             """ % (user_details['username'])
         result = db.session.execute(sql)
         checked_user = self.row2dict(result)
-        if checked_user is not None:
+        if checked_user != {}:
             return checked_user
         else:
             return False
 
     def register_user(self, user_details):
-        try:
-            print(user_details)
-            print("The users details are:", user_details)
-            sql = """ START TRANSACTION;    
-                      INSERT INTO Users(username, email, password, first_name, last_name, permissions)VALUES ('%s', '%s', '%s', '%s', '%s', 'user');
-                      COMMIT;
-  """ % (
-                user_details['username'], user_details['email'], user_details['password'],
-                user_details['firstName'], user_details['lastName'])
-            db.session.execute(sql)
-        except:
+        sql = """  
+                                INSERT INTO members(username, email, user_password, first_name, last_name, permissions) 
+                                VALUES ('%s', '%s', '%s', '%s', '%s', 'user');
+              """ % (user_details['username'], user_details['email'], user_details['password'], user_details['firstName'], user_details['lastName'])
+        result = db.session.execute(sql)
+        db.session.commit()
+        if result:
+            return True
+        else:
             return False
-        return True
 
     def row2dict(self, result):
         d, a = {}, []

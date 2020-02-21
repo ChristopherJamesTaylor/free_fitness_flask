@@ -3,6 +3,9 @@ node_modules
 dist
 venv
 
+# backend
+backend/app/__pycache__/
+
 # Database data
 .data/
 

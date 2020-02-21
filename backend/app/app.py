@@ -66,21 +66,17 @@ def get_fitness_plan():
 @app.route('/checkUser', methods=['GET', 'POST'])
 def login():
     user_data = request.get_json()
-
     database_details = admin_obj.check_user(user_details=user_data)
-
-    print("Theses are the new details.", database_details, flush=True)
-
+    print(database_details, flush=True)
     password = user_data['password'].encode("utf-8")
-    hashed = database_details['password'].encode("utf-8")
+    hashed = database_details['user_password'].encode("utf-8")
     password_check = admin_obj.check_password(password, hashed)
-
     if password_check:
         return database_details
-
     return {
         'status': '404'
     }
+
 
 @app.route('/logout', methods=['GET', 'POST'])
 def logout():
@@ -91,21 +87,17 @@ def logout():
 
 @app.route('/registerUser', methods=['GET', 'POST'])
 def register():
+    user_details = {'status': False}
     data = request.get_json()
     if_user = admin_obj.if_user(data)
-    email = data['email']
-    url = "https://api.hippoapi.com/v3/more/json/2CA872CD/" + email
-    payload = {}
-    headers = {}
-    response = requests.request("GET", url, headers=headers, data=payload)
-    response_json = response.json()
-    if if_user is False and response_json['emailVerification']['syntaxVerification']['isSyntaxValid']:
+    if if_user is False:
         hashed_password = encrypt_password(data)
         data['password'] = hashed_password
-        user_details = admin_obj.register_user(user_details=data)
-        if user_details:
-            return data
-
+        user_details['status'] = admin_obj.register_user(user_details=data)
+        if user_details['status']:
+            return user_details
+        else:
+            return user_details
 
 def encrypt_password(data):
     password = data['password'].encode("utf-8")
