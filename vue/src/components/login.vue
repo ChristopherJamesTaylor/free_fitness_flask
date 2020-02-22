@@ -82,13 +82,8 @@
                 };
                 this.$store.dispatch("login/checkUser", data).then((response) => {
                     if (response) {
-                        // eslint-disable-next-line no-console
-                        console.log("success");
-                        // eslint-disable-next-line no-console
-                        console.log(response.username);
-                        // this.sessionStorage.setItem('user', response.username);
-                        // this.sessionStorage.setItem('personID', response.id);
-                        // eslint-disable-next-line no-console
+                        sessionStorage.setItem('user', response.data.username);
+                        sessionStorage.setItem('personID', response.data.id);
                         document.location.replace('/#/home');
 
                     } else {

@@ -45,8 +45,6 @@ export const actions = {
     async checkUser({ commit }, data){
         const response = await api.checkUser(data);
         if(response){
-            // eslint-disable-next-line no-console
-            console.log(response['username']);
             const payload = response;
             commit("SET_USER", payload);
             return payload
