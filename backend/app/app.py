@@ -67,14 +67,24 @@ def get_fitness_plan():
 def login():
     user_data = request.get_json()
     database_details = admin_obj.check_user(user_details=user_data)
-    password = user_data['password'].encode("utf-8")
-    hashed = database_details['user_password'].encode("utf-8")
-    password_check = admin_obj.check_password(password, hashed)
-    if password_check:
-        return database_details
-    return {
-        'status': '404'
-    }
+    if database_details != {}:
+        password = user_data['password'].encode("utf-8")
+        hashed = database_details['user_password'].encode("utf-8")
+        password_check = admin_obj.check_password(password, hashed)
+        if password_check:
+            return {'row': database_details,
+                    'status': True
+                    }
+        else:
+            return {
+                'row': '',
+                'status': False
+            }
+    else:
+        return {
+            'row': '',
+            'status': False
+        }
 
 
 @app.route('/logout', methods=['GET', 'POST'])
@@ -97,6 +107,7 @@ def register():
             return user_details
         else:
             return user_details
+
 
 def encrypt_password(data):
     password = data['password'].encode("utf-8")

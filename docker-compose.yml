@@ -7,6 +7,8 @@ services:
     - FF_ENV=${FF_ENV}
     ports:
     - "5000:5000"
+    depends_on:
+      - db
     volumes:
     - ./backend/app:/code/app
   web:

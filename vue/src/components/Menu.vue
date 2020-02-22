@@ -26,7 +26,7 @@
                 <a class="site-nav" href="/#/gyms">Nearest Gym</a>
             </li>
             <v-avatar color="black">
-                <a href="/#/profile" @click="getUserDetails">
+                <a @click="getUserDetails">
                     <v-icon black size="80">mdi-account-circle</v-icon>
                 </a>
             </v-avatar>
@@ -67,15 +67,11 @@
                 let data = {
                     'username': sessionStorage.getItem('user'),
                 };
-                // eslint-disable-next-line no-console
-                console.log("The data is:", data);
                 this.$store.dispatch("user/getUser", data).then((response) => {
                     if (response) {
                         // eslint-disable-next-line no-console
                         console.log("success");
-                        // eslint-disable-next-line no-console
-                        console.log(response);
-                        return response.data
+                        document.location.replace('/#/profile');
                     } else {
                         // eslint-disable-next-line no-console
                         console.log("error");

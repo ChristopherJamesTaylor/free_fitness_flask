@@ -11,7 +11,7 @@ class UserUtils:
         pass
 
     def get_user(self, user_details):
-        sql = """ select * from Users
+        sql = """ select * from members
                   where username = '%s'
                             """ % user_details['username']
         result = db.session.execute(sql)
