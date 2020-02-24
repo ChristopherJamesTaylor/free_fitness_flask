@@ -138,7 +138,7 @@
         computed: {
             profile() {
                 let userDetails = [];
-                let profile = this.$store.getters["user/listUser"];
+                let profile = this.$store.dispatch("user/listUsers");
                 userDetails.push(profile);
                 return userDetails
             }
