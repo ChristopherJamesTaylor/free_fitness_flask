@@ -13,7 +13,7 @@ const getDomainEnv = (function(){
         case 'dev':
         case 'stg':
             return `//${env.FF_ENV}.freefitness.dev/api`;
-	    default:
+        default:
         case 'live':
         case 'production':
             return '//freefitness.dev/api';
