@@ -138,18 +138,8 @@
         computed: {
             profile() {
                 let userDetails = [];
-                // if (this.$store.getters["user/listUser"] != '') {
                 let profile = this.$store.getters["user/listUser"];
-                //     // eslint-disable-next-line no-console
-                //     console.log(profile);
                 userDetails.push(profile);
-                //     return user;
-                // }
-
-                // eslint-disable-next-line no-console
-                console.log(this.$store.getters["user/listUser"]);
-                // eslint-disable-next-line no-console
-                console.log(userDetails);
                 return userDetails
             }
         },

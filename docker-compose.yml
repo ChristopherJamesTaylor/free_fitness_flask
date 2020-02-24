@@ -3,22 +3,25 @@ services:
   app:
     build: backend
     environment:
-    - FLASK_APP=app.app
-    - FF_ENV=${FF_ENV}
+      - FLASK_APP=app.app
+      - FF_ENV=${FF_ENV}
     ports:
-    - "5000:5000"
+      - "5000:5000"
     depends_on:
       - db
     volumes:
-    - ./backend/app:/code/app
+      - ./backend/app:/code/app
+
   web:
     build: vue
+    depends_on:
+      - app
     ports:
-     - "80:80"
+      - "80:80"
     environment:
-     - NGINX_PORT=80
-#     - FF_ENV=local
-
+      - NGINX_PORT=80
+      - FF_ENV=${FF_ENV}
+      - NODE_ENV=${FF_ENV}
 
   db:
     image: mysql:5.7.29
