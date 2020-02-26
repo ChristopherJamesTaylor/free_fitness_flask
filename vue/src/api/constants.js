@@ -4,9 +4,6 @@ const getDomainEnv = (function(){
     if (!env.FF_ENV) {
         env.FF_ENV = env.NODE_ENV;
     }
-
-    // eslint-disable-next-line no-console
-    console.log("This is the environment ",env.FF_ENV);
     switch (env.FF_ENV) {
         case 'local':
             return 'http://localhost:5000';

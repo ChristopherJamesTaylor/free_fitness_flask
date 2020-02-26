@@ -7,6 +7,8 @@ export const state = {
 
 export const getters = {
     listUser(){
+        // eslint-disable-next-line no-console
+        console.log(state.user);
         return state.user;
     },
     listFitnessPlan(){
