@@ -25,6 +25,18 @@ queryFormatString = "{0}/{1}/{2}"
 YourAPIKey = '2CA872CD'
 
 
+@app.route('/getMealPlan', methods=['GET', 'POST'])
+def get_meal_plan():
+    data = request.get_json()
+    url = "https://api.spoonacular.com/mealplanner/generate?apiKey=3a07469279f3438bb054203338126b62"
+    payload = {}
+    querystring = {"timeFrame": "week", "targetCalories": data['calories'], "diet": data['diet'],
+                   "exclude": data['allergies']}
+    headers = {}
+    response = requests.request("GET", url, headers=headers, data=payload, params=querystring)
+    return response.json()
+
+
 @app.route('/getUser', methods=['GET', 'POST'])
 def get_user():
     user_details = request.get_json()

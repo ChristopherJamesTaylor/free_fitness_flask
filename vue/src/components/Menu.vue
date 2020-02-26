@@ -1,5 +1,6 @@
 <template>
-    <div>
+    <v-flex>
+        <div>
         <header class="site-header" role="banner" align="center">
             <h1>
                 <a class="site-header_logo-link" href="/#/home">
@@ -36,10 +37,11 @@
                 </v-toolbar-title>
             </li>
             <li>
-                <a>Logout</a>
+                <a @click="logout">Logout</a>
             </li>
         </ul>
     </div>
+    </v-flex>
 </template>
 <script>
     export default {
@@ -62,6 +64,10 @@
         methods: {
             getUser() {
                 return this.$store.dispatch("login/listUsers");
+            },
+            logout() {
+                sessionStorage.clear();
+                document.location.replace('/');
             },
             getUserDetails() {
                 let data = {
