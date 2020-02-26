@@ -15,7 +15,7 @@ const store = new Vuex.Store({
       setState: (key, state) => Cookies.set(key, state, { expires: 3, secure: true })
     })
   ],
-  strict: process.env.NODE_ENV !== "production"
+  // strict: process.env.NODE_ENV !== "production"
 });
 
 for (const moduleName of Object.keys(modules)) {

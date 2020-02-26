@@ -11,6 +11,8 @@ export function checkAccessMiddleware(to, from, next) {
             if(response){
                 // eslint-disable-next-line no-console
                 console.log('success');
+                // eslint-disable-next-line no-console
+                console.log(response);
                 next();
             }
         })
