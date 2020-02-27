@@ -6,7 +6,6 @@ venv
 # backend
 backend/app/__pycache__/
 # frontend
-vue/src/api/constants.js
 
 # Database data
 .data/
