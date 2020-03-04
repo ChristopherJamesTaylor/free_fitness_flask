@@ -5,15 +5,15 @@ const getDomainEnv = (function(){
         env.FF_ENV = env.NODE_ENV;
     }
     switch (env.FF_ENV) {
+        default:
         case 'local':
             return 'http://localhost:5000';
         case 'dev':
         case 'stg':
             return `//${env.FF_ENV}.freefitness.dev/api`;
-        default:
-        case 'live':
-        case 'production':
-            return '//freefitness.dev/api';
+        // case 'live':
+        // case 'production':
+        //     return '//freefitness.dev/api';
     }
 });
 

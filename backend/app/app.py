@@ -30,10 +30,19 @@ def get_meal_plan():
     data = request.get_json()
     url = "https://api.spoonacular.com/mealplanner/generate?apiKey=3a07469279f3438bb054203338126b62"
     payload = {}
-    querystring = {"timeFrame": "week", "targetCalories": data['calories'], "diet": data['diet'],
-                   "exclude": data['allergies']}
+    print('This is the data:', data)
+    if data['diet'] == "standard":
+        querystring = {"timeFrame": "week", "targetCalories": data['calories'], "exclude": data['allergies']}
+    elif data['diet'] == 'standard' and data['allergies'] == 'none':
+        querystring = {"timeFrame": "week", "targetCalories": data['calories']}
+    elif data['allergies'] == 'none':
+        querystring = {"timeFrame": "week", "targetCalories": data['calories'], "diet": data['diet']}
+    else:
+        querystring = {"timeFrame": "week", "targetCalories": data['calories'], "diet": data['diet'],
+                       "exclude": data['allergies']}
     headers = {}
     response = requests.request("GET", url, headers=headers, data=payload, params=querystring)
+    print(response)
     return response.json()
 
 

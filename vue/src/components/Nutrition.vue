@@ -1,5 +1,5 @@
 <template>
-<v-card>
+    <v-card>
         <Menu></Menu>
         <v-card-title class="headline grey lighten-2">
         </v-card-title>
@@ -31,46 +31,67 @@
                         :step="step.number"
                 >
                     <v-card v-if="step.number == 1" class="mb-12" color="grey lighten-1">
-                        <v-form
-                                ref="form"
-                        >
-                            <v-row justify="space-around">
-                                <v-col>
-                                    <h3>Calories</h3>
-                                    <v-text-field/>
-                                </v-col>
-                                <v-col><h3>Dietary requirements </h3>
-                                    <v-radio-group v-model="type" :mandatory="false">
-                                        <v-radio label="Vegan" value="vegan"/>
-                                        <v-radio label="Vegetarian" value="vegetarian"/>
-                                        <v-radio label="Keto" value="keto"/>
-                                        <v-radio label="Paleo" value="paleo"/>
-                                        <v-radio label="Standard" value="standard"/>
-                                    </v-radio-group>
-                                </v-col>
-                                <v-flex>
-                                    <v-autocomplete
-                                         label="Intolerance"
-                                         v-model="intolerances"
-                                         :items="allergies"
-                                    >
-                                    </v-autocomplete>
-                                </v-flex>
-                            </v-row>
+                        <v-form>
+                            <v-container>
+                                <v-layout>
+                                    <v-flex>
+                                        <v-row>
+                                            <v-col>
+                                                <v-flex xs12>
+                                                    <h3>Daily Calorie intake</h3>
+                                                    <v-text-field v-model="calories"/>
+                                                </v-flex>
+                                            </v-col>
+                                            <v-col>
+                                                <v-flex xs12>
+                                                    <h3>Dietary requirements </h3>
+                                                    <v-radio-group v-model="diet" :mandatory="false">
+                                                        <v-radio label="Vegan" value="vegan"/>
+                                                        <v-radio label="Vegetarian" value="vegetarian"/>
+                                                        <v-radio label="Keto" value="keto"/>
+                                                        <v-radio label="Paleo" value="paleo"/>
+                                                        <v-radio label="Standard" value="standard"/>
+                                                    </v-radio-group>
+                                                </v-flex>
+                                            </v-col>
+                                            <v-col>
+                                                <h3>Allergies</h3>
+                                                <v-radio-group v-model="allergies" :mandatory="false">
+                                                    <v-radio label="None" value="none"/>
+                                                    <v-radio label="Dairy" value="dairy"/>
+                                                    <v-radio label="Egg" value="egg"/>
+                                                    <v-radio label="Gluten" value="gluten"/>
+                                                    <v-radio label="Grain" value="grain"/>
+                                                    <v-radio label="Peanut" value="peanut"/>
+                                                    <v-radio label="Seafood" value="seafood"/>
+                                                    <v-radio label="Sesame" value="sesame"/>
+                                                    <v-radio label="ShellFish" value="shellfish"/>
+                                                    <v-radio label="Soy" value="soy"/>
+                                                    <v-radio label="Sulfite" value="sulfite"/>
+                                                    <v-radio label="Tree nut" value="tree nut"/>
+                                                    <v-radio label="Wheat" value="wheat"/>
+                                                </v-radio-group>
+                                            </v-col>
+                                        </v-row>
+                                        <v-snackbar
+                                                v-model="snackbar"
+                                        >
+                                            {{ text }}
+                                            <v-btn
+                                                    color="#D50000"
+                                                    text
+                                                    @click="snackbar = false"
+                                            >
+                                                Close
+                                            </v-btn>
+                                        </v-snackbar>
+                                    </v-flex>
+                                </v-layout>
+                            </v-container>
                         </v-form>
-                        <v-snackbar
-                                v-model="snackbar"
-                        >
-                            {{ text }}
-                            <v-btn
-                                    color="#D50000"
-                                    text
-                                    @click="snackbar = false"
-                            >
-                                Close
-                            </v-btn>
-                        </v-snackbar>
                     </v-card>
+
+
                     <v-card v-else class="mb-12" color="grey lighten-1">
                         <v-form
                                 ref="form"
@@ -78,7 +99,7 @@
                         >
                             <v-data-table
                                     :headers="headers"
-                                    :items="exercises"
+                                    :items="plan"
                                     class="elevation-1"
                             >
                             </v-data-table>
@@ -91,7 +112,7 @@
 </template>
 
 <script>
-  import Menu from './Menu'
+    import Menu from './Menu'
 
     export default {
         name: 'Nutrition',
@@ -108,23 +129,25 @@
                     title: 'Food Plan'
                 }
             ],
-            days: null,
-            type: null,
-            goal: null,
-            split: null,
-            daysOfTheWeek: [],
-            ability: null,
-            training: null,
-            exercises: [],
-            intolerances: null,
-            allergies: ['Dairy','Egg','Gluten', 'Grain', 'Peanut', 'Seafood', 'Sesame', 'Shellfish', 'Soy', 'Sulfite', 'Tree Nut', 'Wheat'],
+            diet: null,
+            allergies: null,
+            calories: null,
             headers: [
-                {text: "Exercise", value: "name"},
-                 {text: "Body Part", value: "body_part"},
-                {text: "Sets", value: "sets"},
-                {text: "Repetitions", value: "reps"},
-                {text: "Day", value: "day"},
+                {text: "Meal names", value: "meal_names"},
+                {text: "Protein", value: "protein"},
+                {text: "Carbohydrates", value: "carbohydrates"},
+                {text: "Fat", value: "fat"},
+                {text: "Days", value: "days"},
+                {text: "Cooking time", value: "readyInMinutes"},
             ],
+            meals: {
+                "meal_names": [],
+                "protein": null,
+                "carbohydrates": null,
+                "fat": null,
+                "day": null,
+                "cookInMinutes": []
+            },
             plan: [],
             snackbar: false,
             text: 'Please fill out basic information',
@@ -146,20 +169,33 @@
                 }
             },
             generate() {
-                let data = {};
+                let data = {
+                    "calories": this.calories,
+                    "diet": this.diet,
+                    "allergies": this.allergies
+                };
                 this.$store.dispatch("nutrition/getMealPlan", data).then((response) => {
-                        if (response) {
+                    if (response) {
+                        // eslint-disable-next-line no-console
+                        console.log("success");
+                        for(var i=0; i<=response.length; i++) {
                             // eslint-disable-next-line no-console
-                            console.log("success");
-                            // eslint-disable-next-line no-console
-                            console.log(response);
-                        } else {
-                            // eslint-disable-next-line no-console
-                            console.log("error");
+                            console.log("The key is",response[i].key);
+                            this.meals["days"] = response[i].key;
+                            this.meals['protein'] = response[i]['nutrients']['protein'];
+                            this.meals['carbohydrates'] = response[i]['nutrients']['carbohydrates'];
+                            this.meals['fat'] = response[i]['nutrients']['fat'];
+                            this.meals['meal_names'].push(response[i]['meals']['cleanTitle']);
+                            this.meals['cookInMinutes'].push(response[i]['meals']['readyInMinutes']);
+                            this.plan.push(this.meals)
                         }
-                    })
+                    } else {
+                        // eslint-disable-next-line no-console
+                        console.log("error");
+                    }
+                })
             },
-            clear(){
+            clear() {
                 this.training = null;
                 this.type = null;
                 this.daysOfTheWeek = [];
