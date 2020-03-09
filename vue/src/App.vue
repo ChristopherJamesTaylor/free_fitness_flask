@@ -1,5 +1,8 @@
 <template>
-      <router-view></router-view>
+      <v-content>
+            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css">
+            <router-view></router-view>
+      </v-content>
 </template>
 
 <script>

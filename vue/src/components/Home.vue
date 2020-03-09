@@ -21,4 +21,13 @@ export default {
 </script>
 
 <style scoped>
+    .text {
+        color: black;
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: bold;
+        text-transform: uppercase;
+        display: block;
+        font: 16px "lato";
+    }
 </style>

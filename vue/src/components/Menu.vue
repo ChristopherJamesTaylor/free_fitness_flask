@@ -18,10 +18,7 @@
                 <a class="site-nav" href="/#/nutrition">Nutrition</a>
             </li>
             <li>
-                <a class="site-nav" href="/#/macros">Macros</a>
-            </li>
-            <li>
-                <a class="site-nav" href="/#/tdee">TDEE</a>
+                <a class="site-nav" href="/#/macros">Macros and TDEE</a>
             </li>
             <li>
                 <a class="site-nav" href="/#/gyms">Nearest Gym</a>
