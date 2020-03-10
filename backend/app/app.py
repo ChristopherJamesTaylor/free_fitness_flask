@@ -42,8 +42,19 @@ def get_meal_plan():
                        "exclude": data['allergies']}
     headers = {}
     response = requests.request("GET", url, headers=headers, data=payload, params=querystring)
-    print(response)
-    return response.json()
+    plan = response.json()
+    meals = {
+        'breakfast': '',
+        'lunch': '',
+        'dinner': '',
+        "protein": '',
+        "carbohydrates": '',
+        "fat": '',
+        "day": '',
+        "cookInMinutes": []
+    }
+    meal_plan = make_meal_plan(plan, meals)
+    return jsonify(meal_plan)
 
 
 @app.route('/getUser', methods=['GET', 'POST'])
@@ -135,6 +146,33 @@ def encrypt_password(data):
     hashed = bcrypt.hashpw(password, bcrypt.gensalt())
     hashed = hashed.decode("utf-8")
     return hashed
+
+
+def make_meal_plan(response, meals):
+    plan = []
+    days = response['week'].keys()
+    for i in days:
+        meals['day'] = i
+        meals['breakfast'] = response['week'][i]['meals'][0]['title']
+        meals['lunch'] = response['week'][i]['meals'][1]['title']
+        meals['dinner'] = response['week'][i]['meals'][2]['title']
+        for j in response['week'][i]['meals']:
+            meals['cookInMinutes'].append(j['readyInMinutes'])
+        meals['protein'] = response['week'][i]['nutrients']['protein']
+        meals['carbohydrates'] = response['week'][i]['nutrients']['carbohydrates']
+        meals['fat'] = response['week'][i]['nutrients']['fat']
+        plan.append(meals)
+        meals = {
+            'breakfast': '',
+            'lunch': '',
+            'dinner': '',
+            "protein": '',
+            "carbohydrates": '',
+            "fat": '',
+            "day": '',
+            "cookInMinutes": []
+        }
+    return plan
 
 
 if __name__ == '__main__':

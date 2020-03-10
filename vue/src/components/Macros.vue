@@ -2,14 +2,12 @@
     <div>
         <Menu></Menu>
         <v-card>
-
-            <h1 align="center">Macronutrient and Total Daily Energy Expenditure calculator</h1>
             <v-row align="center">
                 <v-col>
                     <h3>Age</h3>
                     <v-text-field filled></v-text-field>
                 </v-col>
-                
+
                 <v-col>
                     <h3>Sex</h3>
                     <v-radio-group class="content" justify="justify">
@@ -52,7 +50,7 @@
                     </v-radio-group>
                 </v-col>
                 <v-col>
-                    <v-btn class="center" rounded>Calculate</v-btn>
+                    <v-btn class="center" rounded color="#64FFDA">Calculate</v-btn>
                 </v-col>
             </v-row>
         </v-card>

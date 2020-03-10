@@ -133,21 +133,15 @@
             allergies: null,
             calories: null,
             headers: [
-                {text: "Meal names", value: "meal_names"},
+                {text: "Breakfast", value: "breakfast"},
+                {text: "Lunch", value: "lunch"},
+                {text: "Dinner", value: "dinner"},
                 {text: "Protein", value: "protein"},
                 {text: "Carbohydrates", value: "carbohydrates"},
                 {text: "Fat", value: "fat"},
-                {text: "Days", value: "days"},
-                {text: "Cooking time", value: "readyInMinutes"},
+                {text: "Days", value: "day"},
+                {text: "Cooking time", value: "cookInMinutes"},
             ],
-            meals: {
-                "meal_names": [],
-                "protein": null,
-                "carbohydrates": null,
-                "fat": null,
-                "day": null,
-                "cookInMinutes": []
-            },
             plan: [],
             snackbar: false,
             text: 'Please fill out basic information',
@@ -176,19 +170,7 @@
                 };
                 this.$store.dispatch("nutrition/getMealPlan", data).then((response) => {
                     if (response) {
-                        // eslint-disable-next-line no-console
-                        console.log("success");
-                        for(var i=0; i<=response.length; i++) {
-                            // eslint-disable-next-line no-console
-                            console.log("The key is",response[i].key);
-                            this.meals["days"] = response[i].key;
-                            this.meals['protein'] = response[i]['nutrients']['protein'];
-                            this.meals['carbohydrates'] = response[i]['nutrients']['carbohydrates'];
-                            this.meals['fat'] = response[i]['nutrients']['fat'];
-                            this.meals['meal_names'].push(response[i]['meals']['cleanTitle']);
-                            this.meals['cookInMinutes'].push(response[i]['meals']['readyInMinutes']);
-                            this.plan.push(this.meals)
-                        }
+                        this.plan = response;
                     } else {
                         // eslint-disable-next-line no-console
                         console.log("error");
