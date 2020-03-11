@@ -96,16 +96,6 @@
                                     :items="exercises"
                                     class="elevation-1"
                             >
-<!--                                <template v-slot:item.name="{ item }">-->
-<!--&lt;!&ndash;                                    <div style="white-space: nowrap">&ndash;&gt;-->
-<!--&lt;!&ndash;                                        <v-text-field>&ndash;&gt;-->
-<!--&lt;!&ndash;                                            :item-text="item.name"&ndash;&gt;-->
-<!--&lt;!&ndash;                                            v-model="item.name&ndash;&gt;-->
-<!--&lt;!&ndash;                                            type='text'&ndash;&gt;-->
-<!--&lt;!&ndash;                                            &ndash;&gt;-->
-<!--&lt;!&ndash;                                        </v-text-field>&ndash;&gt;-->
-<!--&lt;!&ndash;                                    </div>&ndash;&gt;-->
-<!--                                </template>-->
                             </v-data-table>
                         </v-form>
                     </v-card>

@@ -175,5 +175,86 @@ def make_meal_plan(response, meals):
     return plan
 
 
+@app.route('/getMacros', methods=['GET', 'POST'])
+def get_macros():
+    data = request.get_json()
+    print(data)
+    tdee = 0
+    macros = {
+        'protein': 0,
+        'carbohydrates': 0,
+        'fat': 0,
+    }
+    bmr = 0
+    # calculate Basic Metabolic Rate first
+    print('test')
+    if data['weightUnit'] == 'kilograms' and data['heightUnit'] == 'metres':
+        if data['sex'] == 'male':
+            bmr = 66.5 + (10 * float(data['weight'])) + (6.25 * float(data['height'])) - (5 * float(data['age'])) + 5
+            print(bmr)
+            # bmr = 66.5 + (13.75 * float(data['weight'])) + (5.003 * float(data['height'])) - (6.755 * float(data[
+            # 'age'])) bmr = 66.5 + 13.75 * data['weight'] + ( 5.003 × data['height']) – ( 6.755 × data['age'])
+        else:
+            print('Woman')
+            bmr = 66.5 + (10 * float(data['weight'])) + (6.25 * float(data['height'])) - (5 * float(data['age'])) - 161
+            # BMR = 655.1 + (9.563 × weight in kg) + (1.850 × height in cm) – (4.676 × age in years)
+    elif data['weightUnit'] == 'pounds' and data['heightUnit'] == 'metres':
+        if data['sex'] == 'male':
+            bmr = 66 + (10 * float(data['weight']) * 0.45359237) + (6.25 * float(data['height'])) - (5 * float(data['age'])) + 5
+        #     BMR = 66 + ( 6.2 × weight in pounds ) + ( 12.7 × height in inches ) – ( 6.76 × age in years )
+        else:
+            print('Woman')
+            bmr = 655.1 + (10 * float(data['weight']) * 0.45359237) + (6.25 * float(data['height'])) - (5 * float(data['age']))\
+                - 161
+            # BMR = 655.1 + (4.35 × weight in pounds) + (4.7 × height in inches) - (4.7 × age in years)
+
+    # calculate TDEE
+    if data['activity'] == 'sedentary':
+        tdee = bmr * 1.2
+        print('The TDEE is:', tdee)
+    #     Office worker getting little or no exercise
+    elif data['activity'] == 'active':
+        tdee = bmr * 1.55
+    #     Construction worker or person running one hour daily
+    else:
+        tdee = bmr * 1.75
+    #     	Agricultural worker (non mechanized) or person swimming two hours daily
+    # calculate macros
+    if data['goal'] == 'fatLoss':
+        # 10% drop and increase in protein
+        print('fat loss')
+        drop = tdee * 0.1
+        tdee = tdee - drop
+        macros = {
+            'protein': (tdee * 0.3) / 4,
+            'carbohydrates': (tdee * 0.5) / 4,
+            'fat': (tdee * 0.2) / 9,
+        }
+
+    elif data['goal'] == 'muscleGain':
+        # 10% increase and increase in protein
+        print('bulk')
+        gain = tdee * 0.1
+        tdee = tdee + gain
+        macros = {
+            'protein': (tdee * 0.4) / 4,
+            'carbohydrates': (tdee * 0.4) / 4,
+            'fat': (tdee * 0.2) / 9,
+        }
+    else:
+        macros = {
+            'protein': (tdee * 0.3) / 4,
+            'carbohydrates': (tdee * 0.5) / 4,
+            'fat': (tdee * 0.2) / 9,
+        }
+    # The 95 % confidence range for men is ±213.0 kcal / day, and ±201.0 kcal / day for women.
+    response = {
+        "TDEE": tdee,
+        'Macros': macros
+    }
+    print(response)
+    return jsonify(response)
+
+
 if __name__ == '__main__':
     app.run()

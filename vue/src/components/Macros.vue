@@ -3,39 +3,50 @@
         <Menu></Menu>
         <v-card>
             <v-row align="center">
+                <v-snackbar
+                        v-model="snackbar"
+                >
+                    {{ text }}
+                    <v-btn
+                                    color="#D50000"
+                                    text
+                                    @click="snackbar = false"
+                            >
+                                Close
+                            </v-btn>
+                </v-snackbar>
                 <v-col>
                     <h3>Age</h3>
-                    <v-text-field filled></v-text-field>
+                    <v-text-field filled v-model="age"></v-text-field>
                 </v-col>
-
                 <v-col>
                     <h3>Sex</h3>
-                    <v-radio-group class="content" justify="justify">
-                        <v-radio label="Male" value="Male"/>
-                        <v-radio label="Female" value="Male"/>
+                    <v-radio-group class="content" justify="justify" v-model="sex">
+                        <v-radio label="Male" value="male"/>
+                        <v-radio label="Female" value="female"/>
                     </v-radio-group>
                 </v-col>
 
                 <v-col>
                     <h3>Height</h3>
-                    <v-radio-group align-content="center" v-model="height">
+                    <v-radio-group align-content="center" v-model="heightUnit">
                         <v-radio label="Feet" value="feet"/>
-                        <v-radio label="Metres" value="height"/>
+                        <v-radio label="Metres" value="metres"/>
                     </v-radio-group>
-                    <v-text-field filled :placeholder="height"></v-text-field>
+                    <v-text-field filled :placeholder="heightUnit" v-model="height"></v-text-field>
                 </v-col>
 
                 <v-col>
                     <h3>Weight</h3>
-                    <v-radio-group v-model="weight">
-                        <v-radio label="Pounds" value="Pounds"/>
-                        <v-radio label="Kilograms" value="Kilograms"/>
+                    <v-radio-group v-model="weightUnit">
+                        <v-radio label="Pounds" value="pounds"/>
+                        <v-radio label="Kilograms" value="kilograms"/>
                     </v-radio-group>
-                    <v-text-field filled :placeholder="weight"></v-text-field>
+                    <v-text-field filled :placeholder="weightUnit" v-model="weight"></v-text-field>
                 </v-col>
                 <v-col>
                     <h3>Goal</h3>
-                    <v-radio-group class="center">
+                    <v-radio-group class="center" v-model="goal">
                         <v-radio label="Fat loss" value="fatLoss"/>
                         <v-radio label="Maintenance" value="maintain"/>
                         <v-radio label="Muscle gain" value="muscleGain"/>
@@ -43,14 +54,14 @@
                 </v-col>
                 <v-col>
                     <h3>Activity Level</h3>
-                    <v-radio-group align="center" justify="center">
+                    <v-radio-group align="center" justify="center" v-model="activity">
                         <v-radio label="sedentary" value="sedentary"/>
                         <v-radio label="Active" value="active"/>
                         <v-radio label="Vigorously active" value="vActive"/>
                     </v-radio-group>
                 </v-col>
                 <v-col>
-                    <v-btn class="center" rounded color="#64FFDA">Calculate</v-btn>
+                    <v-btn class="center" rounded color="#64FFDA" @click="macros">Calculate</v-btn>
                 </v-col>
             </v-row>
         </v-card>
@@ -67,6 +78,58 @@
             return {
                 weight: null,
                 height: null,
+                heightUnit: null,
+                weightUnit: null,
+                age: null,
+                sex: null,
+                goal: null,
+                activity: null,
+                snackbar: false,
+                text: 'Please fill out the form correctly',
+            }
+        },
+        methods: {
+            macros() {
+                if (this.weight  && this.height && this.heightUnit && this.weightUnit && this.age && this.sex && this.goal && this.activity) {
+                    let data = {
+                        'weight': this.weight,
+                        'height': this.height,
+                        'heightUnit': this.heightUnit,
+                        'weightUnit': this.weightUnit,
+                        'age': this.age,
+                        'sex': this.sex,
+                        'goal': this.goal,
+                        'activity': this.activity,
+                    };
+                    this.$store.dispatch("macros/getMacros", data).then((response) => {
+                        if (response) {
+                            // eslint-disable-next-line no-console
+                            console.log("Success");
+                            // eslint-disable-next-line no-console
+                            console.log(response);
+                            // return response
+                        } else {
+                            // eslint-disable-next-line no-console
+                            console.log("error");
+                        }
+                    })
+                } else {
+                    // eslint-disable-next-line no-console
+                    console.log("Not all the information has been filled out");
+                    let data = {
+                        'weight': this.weight,
+                        'height': this.height,
+                        'heightUnit': this.heightUnit,
+                        'weightUnit': this.weightUnit,
+                        'age': this.age,
+                        'sex': this.sex,
+                        'goal': this.goal,
+                        'activity': this.activity,
+                    };
+                    // eslint-disable-next-line no-console
+                    console.log(data);
+                    this.snackbar = true;
+                }
             }
         }
     }
