@@ -1,14 +1,14 @@
 <template>
     <div id="app">
         <v-app id="inspire">
-                <v-dialog v-model="macrosDialog" fullscreen hide-overlay transition="dialog-bottom-transition">
+                <v-dialog v-model="macrosDialog" fullscreen hide-overlay transition="dialog-bottom-transition" :macros="Macros">
                     <v-card>
                         <v-toolbar color="#64FFDA">
                             <v-btn icon dark @click="close">
                                 <v-icon>mdi-close</v-icon>
                             </v-btn>
                         </v-toolbar>
-                        <v-data-table :headers="headers" :items="getMacros"/>
+                        <v-data-table :headers="headers" :items="Macros"/>
                     </v-card>
                 </v-dialog>
         </v-app>
@@ -19,13 +19,12 @@
     export default {
         name: "MacrosDialog",
         computed: {
-            getMacros(){
-                return [this.$store.getters['macros/listMacros']['Macros']];
-            },
+            // getMacros(){
+            //     return [this.$store.getters['macros/listMacros']['Macros']];
+            // },
         },
         data() {
             return {
-                macros: [],
                 headers: [
                     {text: "Total Daily Energy Expenditure", value: "tdee"},
                     {text: "Protein (grams)", value: "protein"},
@@ -37,6 +36,10 @@
         props: {
             macrosDialog: {
                 type: Boolean,
+                required: true,
+            },
+            Macros: {
+                type: Array,
                 required: true,
             },
         },

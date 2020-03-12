@@ -61,11 +61,11 @@
                     </v-radio-group>
                 </v-col>
                 <v-col>
-                    <v-btn class="center" rounded color="#64FFDA" @click="macros">Calculate</v-btn>
+                    <v-btn class="center" rounded color="#64FFDA" @click="getMacros">Calculate</v-btn>
                 </v-col>
             </v-row>
         </v-card>
-        <MacrosDialog :macrosDialog.sync="macrosDialog"/>
+        <MacrosDialog :macrosDialog.sync="macrosDialog" :macros="macros"/>
     </div>
 </template>
 
@@ -89,6 +89,7 @@
                 activity: null,
                 snackbar: false,
                 tdee: [],
+                macros: [],
                 text: 'Please fill out the form correctly',
             }
         },
@@ -96,7 +97,7 @@
             test(){
                 this.macrosDialog = true;
             },
-            macros() {
+            getMacros() {
                 if (this.weight && this.height && this.heightUnit && this.weightUnit && this.age && this.sex && this.goal && this.activity) {
                     let data = {
                         'weight': this.weight,
@@ -112,11 +113,8 @@
                         if (response) {
                             // eslint-disable-next-line no-console
                             console.log("Success");
-                            // eslint-disable-next-line no-console
-                            console.log(response);
-                            this.tdee = response;
+                            this.macros.push(response['Macros']);
                             this.macrosDialog = true;
-                            // return response
                         } else {
                             // eslint-disable-next-line no-console
                             console.log("error");
