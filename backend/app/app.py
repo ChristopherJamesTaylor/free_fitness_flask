@@ -226,6 +226,7 @@ def get_macros():
         drop = tdee * 0.1
         tdee = tdee - drop
         macros = {
+            'tdee': tdee,
             'protein': (tdee * 0.3) / 4,
             'carbohydrates': (tdee * 0.5) / 4,
             'fat': (tdee * 0.2) / 9,
@@ -237,19 +238,20 @@ def get_macros():
         gain = tdee * 0.1
         tdee = tdee + gain
         macros = {
+            'tdee': tdee,
             'protein': (tdee * 0.4) / 4,
             'carbohydrates': (tdee * 0.4) / 4,
             'fat': (tdee * 0.2) / 9,
         }
     else:
         macros = {
+            'tdee': tdee,
             'protein': (tdee * 0.3) / 4,
             'carbohydrates': (tdee * 0.5) / 4,
             'fat': (tdee * 0.2) / 9,
         }
     # The 95 % confidence range for men is ±213.0 kcal / day, and ±201.0 kcal / day for women.
     response = {
-        "TDEE": tdee,
         'Macros': macros
     }
     print(response)

@@ -8,12 +8,12 @@
                 >
                     {{ text }}
                     <v-btn
-                                    color="#D50000"
-                                    text
-                                    @click="snackbar = false"
-                            >
-                                Close
-                            </v-btn>
+                            color="#D50000"
+                            text
+                            @click="snackbar = false"
+                    >
+                        Close
+                    </v-btn>
                 </v-snackbar>
                 <v-col>
                     <h3>Age</h3>
@@ -55,7 +55,7 @@
                 <v-col>
                     <h3>Activity Level</h3>
                     <v-radio-group align="center" justify="center" v-model="activity">
-                        <v-radio label="sedentary" value="sedentary"/>
+                        <v-radio label="Sedentary" value="sedentary"/>
                         <v-radio label="Active" value="active"/>
                         <v-radio label="Vigorously active" value="vActive"/>
                     </v-radio-group>
@@ -65,17 +65,20 @@
                 </v-col>
             </v-row>
         </v-card>
+        <MacrosDialog :macrosDialog.sync="macrosDialog"/>
     </div>
 </template>
 
 <script>
     import Menu from './Menu'
+    import MacrosDialog from './MacrosDialog'
 
     export default {
         name: 'Macros',
-        components: {Menu},
+        components: {MacrosDialog, Menu},
         data() {
             return {
+                macrosDialog: false,
                 weight: null,
                 height: null,
                 heightUnit: null,
@@ -85,12 +88,16 @@
                 goal: null,
                 activity: null,
                 snackbar: false,
+                tdee: [],
                 text: 'Please fill out the form correctly',
             }
         },
         methods: {
+            test(){
+                this.macrosDialog = true;
+            },
             macros() {
-                if (this.weight  && this.height && this.heightUnit && this.weightUnit && this.age && this.sex && this.goal && this.activity) {
+                if (this.weight && this.height && this.heightUnit && this.weightUnit && this.age && this.sex && this.goal && this.activity) {
                     let data = {
                         'weight': this.weight,
                         'height': this.height,
@@ -107,6 +114,8 @@
                             console.log("Success");
                             // eslint-disable-next-line no-console
                             console.log(response);
+                            this.tdee = response;
+                            this.macrosDialog = true;
                             // return response
                         } else {
                             // eslint-disable-next-line no-console
