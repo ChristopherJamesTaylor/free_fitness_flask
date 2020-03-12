@@ -20,8 +20,6 @@
         name: "MacrosDialog",
         computed: {
             getMacros(){
-                // eslint-disable-next-line no-console
-                console.log(this.$store.getters['macros/listMacros']['Macros']);
                 return [this.$store.getters['macros/listMacros']['Macros']];
             },
         },
