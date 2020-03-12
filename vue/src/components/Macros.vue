@@ -113,7 +113,9 @@
                         if (response) {
                             // eslint-disable-next-line no-console
                             console.log("Success");
-                            this.macros.push(response['Macros']);
+                            if(this.macros.length == 0) {
+                                this.macros.push(response['Macros']);
+                            }
                             this.macrosDialog = true;
                         } else {
                             // eslint-disable-next-line no-console
