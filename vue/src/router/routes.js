@@ -49,7 +49,7 @@ export const routes = [
     {   path: '/gyms',
         name: 'Gym',
         component: () =>
-            import("@/components/Gym")
+            import("@/components/GymFinder")
     },
 
     {   path: '/fitnessplan',

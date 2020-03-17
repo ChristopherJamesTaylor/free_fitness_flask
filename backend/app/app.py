@@ -25,12 +25,22 @@ queryFormatString = "{0}/{1}/{2}"
 YourAPIKey = '2CA872CD'
 
 
+@app.route('/getGyms', methods=['GET', 'POST'])
+def get_gyms():
+    data = request.get_json()
+    url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + str(data['lat']) + ',' + \
+          str(data['long']) + "&radius=5000&type=gym&key=AIzaSyB6bC_OukDUo3yP4mV6DF9mZ5qFvOmKH-0"
+    payload = {}
+    headers = {}
+    response = requests.request("GET", url, headers=headers, data=payload)
+    return response.json()
+
+
 @app.route('/getMealPlan', methods=['GET', 'POST'])
 def get_meal_plan():
     data = request.get_json()
     url = "https://api.spoonacular.com/mealplanner/generate?apiKey=3a07469279f3438bb054203338126b62"
     payload = {}
-    print('This is the data:', data)
     if data['diet'] == "standard":
         querystring = {"timeFrame": "week", "targetCalories": data['calories'], "exclude": data['allergies']}
     elif data['diet'] == 'standard' and data['allergies'] == 'none':
@@ -81,7 +91,13 @@ def get_exercises():
         elif e['body_part'] == 'fullbody':
             e['day'] = 'Saturday'
         e['rest_days'] = 7 - len(user_details['days'])
-    print(all_exercises)
+    return jsonify(all_exercises)
+
+
+@app.route('/getHomeWorkout', methods=['GET', 'POST'])
+def get_home_workout():
+    user_details = request.get_json()
+    all_exercises = fitness_object.get_exercises(user_details)
     return jsonify(all_exercises)
 
 
@@ -200,12 +216,14 @@ def get_macros():
             # BMR = 655.1 + (9.563 × weight in kg) + (1.850 × height in cm) – (4.676 × age in years)
     elif data['weightUnit'] == 'pounds' and data['heightUnit'] == 'metres':
         if data['sex'] == 'male':
-            bmr = 66 + (10 * float(data['weight']) * 0.45359237) + (6.25 * float(data['height'])) - (5 * float(data['age'])) + 5
+            bmr = 66 + (10 * float(data['weight']) * 0.45359237) + (6.25 * float(data['height'])) - (
+                        5 * float(data['age'])) + 5
         #     BMR = 66 + ( 6.2 × weight in pounds ) + ( 12.7 × height in inches ) – ( 6.76 × age in years )
         else:
             print('Woman')
-            bmr = 655.1 + (10 * float(data['weight']) * 0.45359237) + (6.25 * float(data['height'])) - (5 * float(data['age']))\
-                - 161
+            bmr = 655.1 + (10 * float(data['weight']) * 0.45359237) + (6.25 * float(data['height'])) - (
+                        5 * float(data['age'])) \
+                  - 161
             # BMR = 655.1 + (4.35 × weight in pounds) + (4.7 × height in inches) - (4.7 × age in years)
 
     # calculate TDEE
