@@ -1,5 +1,5 @@
 <template>
-    <v-flex>
+    <v-container fluid>
         <div>
             <header class="site-header" role="banner" align="center">
                 <h1>
@@ -9,7 +9,7 @@
                     </a>
                 </h1>
             </header>
-            <br>
+            <v-spacer></v-spacer>
             <ul align="center">
                 <li>
                     <a class="site-nav" href="/#/fitnessplan" @click="getFitnessPlan">Your Fitness Plan</a>
@@ -23,19 +23,11 @@
                 <li>
                     <a class="site-nav" href="/#/gyms">Nearest Gym</a>
                 </li>
-<!--                <v-avatar color="black">-->
-<!--                    <a @click="getUserDetails">-->
-<!--                        <v-icon black size="80">mdi-account-circle</v-icon>-->
-<!--                    </a>-->
-<!--                </v-avatar>-->
                 <li>
                     <v-toolbar-title>
                         Welcome <br/> {{users}}
                     </v-toolbar-title>
                 </li>
-<!--                <li>-->
-<!--                    <a @click="logout">Logout</a>-->
-<!--                </li>-->
                 <li>
                 <v-menu offset-y>
                     <template v-slot:activator="{ on }">
@@ -59,8 +51,7 @@
                 </li>
             </ul>
         </div>
-
-    </v-flex>
+    </v-container>
 </template>
 <script>
     export default {

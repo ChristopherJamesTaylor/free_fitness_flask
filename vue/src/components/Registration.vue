@@ -1,5 +1,5 @@
 <template>
-    <v-app class="app">
+    <v-container fluid>
         <div class="login-body">
             <LoginBanner/>
             <div class="login">
@@ -50,7 +50,7 @@
                     >
                         Register
                     </v-btn>
-                    <v-btn>back</v-btn>
+                    <v-btn @click="getHome">back</v-btn>
                 </v-form>
             </div>
         </div>
@@ -92,7 +92,7 @@
                 </v-btn>
             </v-snackbar>
         </div>
-    </v-app>
+    </v-container>
 </template>
 
 <script>
@@ -134,6 +134,9 @@
             select: null,
         }),
         methods: {
+            getHome(){
+                 document.location.replace('/');
+            },
             redirect() {
                 this.snackbar_success = false;
                 document.location.replace('/');

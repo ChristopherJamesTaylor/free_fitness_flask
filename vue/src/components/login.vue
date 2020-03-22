@@ -1,5 +1,5 @@
 <template>
-    <v-app class="app">
+    <v-container fluid>
         <div class="login-body">
             <LoginBanner/>
             <div class="login">
@@ -54,7 +54,7 @@
                 </v-btn>
             </v-snackbar>
         </div>
-    </v-app>
+    </v-container>
 </template>
 <script>
     import LoginBanner from "@/components/LoginBanner";

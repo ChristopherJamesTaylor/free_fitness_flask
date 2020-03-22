@@ -1,5 +1,5 @@
 <template>
-    <v-card>
+    <v-container fluid>
         <Menu></Menu>
         <v-stepper v-model="e1">
             <v-stepper-header>
@@ -102,15 +102,17 @@
                 </v-stepper-content>
             </v-stepper-items>
         </v-stepper>
-    </v-card>
+        <Footer></Footer>
+    </v-container>
 </template>
 
 <script>
     import Menu from './Menu'
+    import Footer from "./footer";
 
     export default {
         name: 'Fitness',
-        components: {Menu},
+        components: {Footer, Menu},
         data: () => ({
             e1: 1,
             steps: [

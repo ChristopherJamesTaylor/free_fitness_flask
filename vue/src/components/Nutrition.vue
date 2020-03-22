@@ -1,5 +1,5 @@
 <template>
-    <v-card>
+    <v-container fluid>
         <Menu></Menu>
         <v-stepper v-model="e1">
             <v-stepper-header>
@@ -28,7 +28,7 @@
                         :key="`${step.number}-content`"
                         :step="step.number"
                 >
-                    <v-card v-if="step.number == 1" >
+                    <v-card v-if="step.number == 1">
                         <v-form>
                             <v-container>
                                 <v-layout>
@@ -106,15 +106,17 @@
                 </v-stepper-content>
             </v-stepper-items>
         </v-stepper>
-    </v-card>
+        <Footer></Footer>
+    </v-container>
 </template>
 
 <script>
     import Menu from './Menu'
+    import Footer from "./footer";
 
     export default {
         name: 'Nutrition',
-        components: {Menu},
+        components: {Footer, Menu},
         data: () => ({
             e1: 1,
             steps: [
@@ -169,7 +171,7 @@
                 this.$store.dispatch("nutrition/getMealPlan", data).then((response) => {
                     if (response) {
                         this.plan = response;
-                        this.e1=2;
+                        this.e1 = 2;
                     } else {
                         // eslint-disable-next-line no-console
                         console.log("error");

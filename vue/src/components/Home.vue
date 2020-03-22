@@ -1,22 +1,23 @@
 <template xmlns:position="http://www.w3.org/1999/xhtml">
-  <div>
-      <Menu></Menu>
-      <div class="image">
-        <img :src="images" :alt="images" height="800" width="1500"/>
-      </div>
-  </div>
+    <v-container fluid>
+        <Menu></Menu>
+        <v-img :src="images" :alt="images" contain/>
+        <Footer></Footer>
+    </v-container>
 </template>
 
 <script>
     import Menu from './Menu'
-export default {
-      name: 'Home',
-      components: {Menu},
-      data () {
-        return {
-          images: require('../assets/DSC00439.jpg')
+    import Footer from "./footer";
+
+    export default {
+        name: 'Home',
+        components: {Footer, Menu},
+        data() {
+            return {
+                images: require('../assets/DSC00439.jpg')
+            }
         }
-      }
     }
 </script>
 

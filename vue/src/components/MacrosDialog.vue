@@ -1,6 +1,5 @@
 <template>
-    <div id="app">
-        <v-app id="inspire">
+    <v-container fluid>
                 <v-dialog v-model="macrosDialog" fullscreen hide-overlay transition="dialog-bottom-transition" :macros="Macros">
                     <v-card>
                         <v-toolbar color="#64FFDA">
@@ -11,8 +10,7 @@
                         <v-data-table :headers="headers" :items="Macros"/>
                     </v-card>
                 </v-dialog>
-        </v-app>
-    </div>
+    </v-container>
 </template>
 
 <script>

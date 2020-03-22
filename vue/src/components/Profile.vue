@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <v-container fluid>
         <Menu/>
                 <image-uploader v-model="avatar" align="center" color="black">
                     <div slot="activator">
@@ -11,22 +11,9 @@
                         </v-avatar>
                     </div>
                 </image-uploader>
-        <!--        <CustomFileUploader-->
-        <!--                    ref="custom"-->
-        <!--                    @change="uploadFiles"-->
-        <!--                    postURL="/airhub/imageUpload"-->
-        <!--                    v-on:event_notify="setFiles"-->
-        <!--                    successMessagePath="msg"-->
-        <!--                    errorMessagePath="msg"-->
-        <!--                    uploadButtonMessage="Save"-->
-        <!--                    cancelButtonMessage="Clear"-->
-        <!--                    :maxItems="5"-->
-        <!--                    v-model="selImage"-->
-        <!--              >-->
-        <!--              </CustomFileUploader>-->
         <v-container>
             <div align="right">
-            <v-btn class="save-profile" @click="saveDetails" color="#2196F3">Save Details</v-btn>
+            <v-btn class="save-profile" @click="saveDetails" color="#64FFDA">Save Details</v-btn>
         </div>
         <v-data-table
                 :headers="headers"
@@ -107,14 +94,16 @@
 
         </v-data-table>
         </v-container>
-    </div>
+        <Footer></Footer>
+    </v-container>
 </template>
 <script>
     import Menu from './Menu'
     import ImageUploader from "./imageUploader";
+    import Footer from "./footer";
     export default {
         name: 'Profile',
-        components: {ImageUploader, Menu},
+        components: {Footer, ImageUploader, Menu},
         props: {},
         data: () => ({
             username: null,
@@ -139,14 +128,7 @@
         }),
         computed: {
             profile() {
-                let userDetails = [];
-                // eslint-disable-next-line no-console
-                console.log(this.$store.getters['user/listUser']);
-                let profile = this.$store.getters['user/listUser'];
-                // eslint-disable-next-line no-console
-                console.log(profile);
-                userDetails.push(profile);
-                return userDetails
+                return [this.$store.getters['user/listUser']]
             }
         },
         methods: {

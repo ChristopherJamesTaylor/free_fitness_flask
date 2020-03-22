@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <v-container fluid>
         <Menu></Menu>
         <div align="center">
             <v-btn class="center" rounded color="#64FFDA" @click="getCoords"
@@ -18,16 +18,18 @@
             </div>
         </div>
         </v-container>
-    </div>
+        <Footer></Footer>
+    </v-container>
 </template>
 
 <script>
     import Menu from "./Menu";
     import L from "leaflet";
+    import Footer from "./footer";
 
     export default {
         name: "GymFinder",
-        components: {Menu},
+        components: {Footer, Menu},
         data() {
             return {
                 error: '',

@@ -1,5 +1,5 @@
 <template>
-    <div class="banner">
+    <v-container fluid class="banner">
         <header class="site-header" role="banner">
             <h1>
               <a class="site-header_logo-link">
@@ -8,7 +8,7 @@
               </a>
             </h1>
     </header>
-    </div>
+    </v-container>
 </template>
 
 <script>
@@ -47,7 +47,7 @@ li{
 .site-header_logo-link {
   display: inline-block;
   word-break: break-word;
-  font: 60px "Source Code Pro";
+  font: 50px "Source Code Pro";
   }
 .site-nav {
   padding: 3px 10px;

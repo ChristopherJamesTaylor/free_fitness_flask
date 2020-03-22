@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <v-container fluid>
         <Menu></Menu>
         <v-card>
             <v-row align="center">
@@ -65,17 +65,19 @@
                 </v-col>
             </v-row>
         </v-card>
+        <Footer></Footer>
         <MacrosDialog :macrosDialog.sync="macrosDialog" :macros="macros"/>
-    </div>
+    </v-container>
 </template>
 
 <script>
     import Menu from './Menu'
     import MacrosDialog from './MacrosDialog'
+    import Footer from "./footer";
 
     export default {
         name: 'Macros',
-        components: {MacrosDialog, Menu},
+        components: {Footer, MacrosDialog, Menu},
         data() {
             return {
                 macrosDialog: false,
@@ -94,7 +96,7 @@
             }
         },
         methods: {
-            test(){
+            test() {
                 this.macrosDialog = true;
             },
             getMacros() {
@@ -113,7 +115,7 @@
                         if (response) {
                             // eslint-disable-next-line no-console
                             console.log("Success");
-                            if(this.macros.length == 0) {
+                            if (this.macros.length == 0) {
                                 this.macros.push(response['Macros']);
                             }
                             this.macrosDialog = true;
