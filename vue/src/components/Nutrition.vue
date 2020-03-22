@@ -1,8 +1,6 @@
 <template>
     <v-card>
         <Menu></Menu>
-        <v-card-title class="headline grey lighten-2">
-        </v-card-title>
         <v-stepper v-model="e1">
             <v-stepper-header>
                 <template v-for="step in steps">
@@ -30,7 +28,7 @@
                         :key="`${step.number}-content`"
                         :step="step.number"
                 >
-                    <v-card v-if="step.number == 1" class="mb-12" color="grey lighten-1">
+                    <v-card v-if="step.number == 1" >
                         <v-form>
                             <v-container>
                                 <v-layout>
@@ -92,7 +90,7 @@
                     </v-card>
 
 
-                    <v-card v-else class="mb-12" color="grey lighten-1">
+                    <v-card v-else class="mb-12">
                         <v-form
                                 ref="form"
                                 lazy-validation
@@ -171,9 +169,11 @@
                 this.$store.dispatch("nutrition/getMealPlan", data).then((response) => {
                     if (response) {
                         this.plan = response;
+                        this.e1=2;
                     } else {
                         // eslint-disable-next-line no-console
                         console.log("error");
+                        alert("A plan couldn't be generate");
                     }
                 })
             },

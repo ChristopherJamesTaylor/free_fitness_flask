@@ -1,8 +1,8 @@
 <template>
-    <div>
-        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css">
-        <router-view></router-view>
-    </div>
+    <v-app>
+            <link rel="stylesheet" href="https://unpkg.com/leaflet@1.2.0/dist/leaflet.css">
+            <router-view></router-view>
+    </v-app>
 </template>
 
 <script>

@@ -1,8 +1,6 @@
 <template>
     <v-card>
         <Menu></Menu>
-        <v-card-title class="headline grey lighten-2">
-        </v-card-title>
         <v-stepper v-model="e1">
             <v-stepper-header>
                 <template v-for="step in steps">
@@ -30,8 +28,9 @@
                         :key="`${step.number}-content`"
                         :step="step.number"
                 >
-                    <v-card v-if="step.number == 1" class="mb-12" color="grey lighten-1">
-                        <v-form
+                    <v-card v-if="step.number == 1">
+                        <v-container>
+                            <v-form
                                 ref="form"
                         >
                             <v-row justify="space-around">
@@ -73,6 +72,7 @@
                                 </v-col>
                             </v-row>
                         </v-form>
+                        </v-container>
                         <v-snackbar
                                 v-model="snackbar"
                         >
@@ -168,11 +168,8 @@
                 if (this.training != null && this.type != null && this.daysOfTheWeek !== [] && this.goal != null) {
                     this.$store.dispatch("fitness/getExercises", basicInformation).then((response) => {
                         if (response) {
-                            // eslint-disable-next-line no-console
-                            console.log("success");
-                            // eslint-disable-next-line no-console
-                            console.log(response);
                             this.exercises = response;
+                            this.e1 = 2;
                         } else {
                             // eslint-disable-next-line no-console
                             console.log("error");

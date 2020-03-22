@@ -1,43 +1,65 @@
 <template>
     <v-flex>
         <div>
-        <header class="site-header" role="banner" align="center">
-            <h1>
-                <a class="site-header_logo-link" href="/#/home">
-                    Free Fitness
-                    <img src="../assets/profile.png" width="80" height="80">
-                </a>
-            </h1>
-        </header>
-        <br>
-        <ul align="center">
-            <li>
-                <a class="site-nav" href="/#/fitnessplan" @click="getFitnessPlan">Your Fitness Plan</a>
-            </li>
-            <li>
-                <a class="site-nav" href="/#/nutrition">Nutrition</a>
-            </li>
-            <li>
-                <a class="site-nav" href="/#/macros">Macros and TDEE</a>
-            </li>
-            <li>
-                <a class="site-nav" href="/#/gyms">Nearest Gym</a>
-            </li>
-            <v-avatar color="black">
-                <a @click="getUserDetails">
-                    <v-icon black size="80">mdi-account-circle</v-icon>
-                </a>
-            </v-avatar>
-            <li>
-                <v-toolbar-title>
-                    Welcome <br/> {{users}}
-                </v-toolbar-title>
-            </li>
-            <li>
-                <a @click="logout">Logout</a>
-            </li>
-        </ul>
-    </div>
+            <header class="site-header" role="banner" align="center">
+                <h1>
+                    <a class="site-header_logo-link" href="/#/home">
+                        Free Fitness
+                        <img src="../assets/profile.png" width="80" height="80">
+                    </a>
+                </h1>
+            </header>
+            <br>
+            <ul align="center">
+                <li>
+                    <a class="site-nav" href="/#/fitnessplan" @click="getFitnessPlan">Your Fitness Plan</a>
+                </li>
+                <li>
+                    <a class="site-nav" href="/#/nutrition">Nutrition</a>
+                </li>
+                <li>
+                    <a class="site-nav" href="/#/macros">Macros and TDEE</a>
+                </li>
+                <li>
+                    <a class="site-nav" href="/#/gyms">Nearest Gym</a>
+                </li>
+<!--                <v-avatar color="black">-->
+<!--                    <a @click="getUserDetails">-->
+<!--                        <v-icon black size="80">mdi-account-circle</v-icon>-->
+<!--                    </a>-->
+<!--                </v-avatar>-->
+                <li>
+                    <v-toolbar-title>
+                        Welcome <br/> {{users}}
+                    </v-toolbar-title>
+                </li>
+<!--                <li>-->
+<!--                    <a @click="logout">Logout</a>-->
+<!--                </li>-->
+                <li>
+                <v-menu offset-y>
+                    <template v-slot:activator="{ on }">
+                        <v-btn
+                                color="#64FFDA"
+                                v-on="on"
+                        >
+                           Profile and Logout
+                        </v-btn>
+                    </template>
+                    <v-list>
+                        <v-list-item
+                                v-for="(item, index) in items"
+                                :key="index"
+                                @click="routing(item)"
+                        >
+                            <v-list-item-title>{{ item.title }}</v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
+                </li>
+            </ul>
+        </div>
+
     </v-flex>
 </template>
 <script>
@@ -45,16 +67,17 @@
         name: 'Menu',
         computed: {
             users() {
+                if(sessionStorage.getItem('user') == null){
+                   document.location.replace('/');
+                }
                 return sessionStorage.getItem('user')
-            }
+            },
         },
         data() {
             return {
                 items: [
-                    {title: 'Home'},
-                    {title: 'Users'},
-                    {title: 'Admin'},
-                    {title: 'Setting'}
+                    {title: 'Profile'},
+                    {title: 'Logout'},
                 ]
             }
         },
@@ -65,6 +88,14 @@
             logout() {
                 sessionStorage.clear();
                 document.location.replace('/');
+            },
+            routing(item) {
+                if(item.title == 'Logout'){
+                    this.logout();
+                }
+                else if(item.title == 'Profile'){
+                    this.getUserDetails();
+                }
             },
             getUserDetails() {
                 let data = {

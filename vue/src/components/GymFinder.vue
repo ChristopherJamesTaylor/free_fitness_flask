@@ -7,20 +7,21 @@
             </v-btn>
         </div>
         <br/>
-        <div id="app" class="container">
-            <div class="row">
-                <div class="col-md-9">
+        <v-container :align-content-center="true">
+            <div id="app" class="container" >
+            <div class="row" >
+                <div class="col-md-12" >
                     <!-- The map goes here -->
                     <div id="map" class="map">
                     </div>
                 </div>
             </div>
         </div>
+        </v-container>
     </div>
 </template>
 
 <script>
-    // import L from 'leaflet';
     import Menu from "./Menu";
     import L from "leaflet";
 

@@ -24,7 +24,8 @@
         <!--                    v-model="selImage"-->
         <!--              >-->
         <!--              </CustomFileUploader>-->
-        <div align="right">
+        <v-container>
+            <div align="right">
             <v-btn class="save-profile" @click="saveDetails" color="#2196F3">Save Details</v-btn>
         </div>
         <v-data-table
@@ -105,6 +106,7 @@
             </template>
 
         </v-data-table>
+        </v-container>
     </div>
 </template>
 <script>
