@@ -1,24 +1,63 @@
 <template>
-    <div>
-        <DesktopMenu v-if="layoutDesktop"></DesktopMenu>
-        <MobileMenu v-if="layoutMobile"></MobileMenu>
-    </div>
+    <v-container fluid>
+        <v-toolbar>
+        <v-toolbar-title class="site-header_logo-link" role="banner">
+            <a href="/#/home">Free Fitness</a>
+        </v-toolbar-title>
+        <v-spacer></v-spacer>
+        <div>
+            <v-img :src="image" heigh="80" width="80" contain/>
+        </div>
+        <v-spacer></v-spacer>
+        <div>
+            <a class="site-nav" href="/#/fitnessplan" @click="getFitnessPlan">Your Fitness Plan</a>
+        </div>
+        <v-spacer></v-spacer>
+        <div>
+            <a class="site-nav" href="/#/nutrition">Nutrition</a>
+        </div>
+        <v-spacer></v-spacer>
+        <div>
+            <a class="site-nav" href="/#/macros">Macros and TDEE</a>
+        </div>
+        <v-spacer></v-spacer>
+        <div>
+            <a class="site-nav" href="/#/gyms">Nearest Gym</a>
+        </div>
+        <v-spacer></v-spacer>
+        <div>
+            Welcome <br/> {{users}}
+        </div>
+        <v-spacer></v-spacer>
+        <div>
+            <v-menu offset-y>
+                <template v-slot:activator="{ on }">
+                    <v-btn
+                            color="#64FFDA"
+                            v-on="on"
+                    >
+                        Profile and Logout
+                    </v-btn>
+                </template>
+                <v-list>
+                    <v-list-item
+                            v-for="(item, index) in items"
+                            :key="index"
+                            @click="routing(item)"
+                    >
+                        <v-list-item-title>{{ item.title }}</v-list-item-title>
+                    </v-list-item>
+                </v-list>
+            </v-menu>
+        </div>
+    </v-toolbar>
+    </v-container>
 </template>
+
 <script>
-    import DesktopMenu from "./desktopMenu";
-    import MobileMenu from "./mobileMenu";
     export default {
-        name: 'Menu',
-        components: {MobileMenu, DesktopMenu},
+        name: "desktopMenu",
         computed: {
-            layoutMobile(){
-                // eslint-disable-next-line no-console
-                console.log('mobile');
-                return this.$vuetify.breakpoint.mdAndDown;
-            },
-            layoutDesktop(){
-            return this.$vuetify.breakpoint.mdAndUp;
-            },
             users() {
                 if (sessionStorage.getItem('user') == null) {
                     document.location.replace('/');
@@ -125,6 +164,4 @@
     .site-nav {
         padding: 3px 10px;
     }
-
 </style>
-

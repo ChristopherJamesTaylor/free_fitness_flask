@@ -18,7 +18,6 @@
                             :key="step.number"
                     />
                 </template>
-                <v-btn color="#00897B" class="ma-2" @click.native="clear()">Clear</v-btn>
                 <v-btn id="edit" class="ma-2" color="#64FFDA" @click.native="generate()">Generate plan</v-btn>
             </v-stepper-header>
 
@@ -70,6 +69,7 @@
                                                     <v-radio label="Wheat" value="wheat"/>
                                                 </v-radio-group>
                                             </v-col>
+                                            <v-btn color="#00897B" class="ma-2" @click.native="clear()">Clear</v-btn>
                                         </v-row>
                                         <v-snackbar
                                                 v-model="snackbar"

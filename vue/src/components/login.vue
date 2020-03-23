@@ -6,8 +6,6 @@
                 <h1>Login</h1>
                 <v-text-field
                         v-model="name"
-                        :counter="25"
-                        :rules="nameRules"
                         label="Username or Email"
                         required
                 />

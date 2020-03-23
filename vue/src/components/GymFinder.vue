@@ -1,6 +1,7 @@
 <template>
     <v-container fluid>
         <Menu></Menu>
+        <br/>
         <div align="center">
             <v-btn class="center" rounded color="#64FFDA" @click="getCoords"
             >Find Gyms

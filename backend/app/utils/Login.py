@@ -14,8 +14,8 @@ class AdminUtil:
 
     def check_user(self, user_details):
         sql = """ select * from members
-                  where username = '%s'
-                            """ % (user_details['username'])
+                  where username = '%s' OR email = '%s'
+                            """ % (user_details['username'], user_details['username'])
         result = db.session.execute(sql)
         return self.row2dict(result)
 
