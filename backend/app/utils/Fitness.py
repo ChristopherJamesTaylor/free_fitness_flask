@@ -1,4 +1,5 @@
-from flask import Blueprint
+import flask
+from flask import Blueprint, jsonify
 from app.models import db
 from app.utils.Login import AdminUtil
 
@@ -15,6 +16,57 @@ class FitnessUtils:
                     FROM exercises
                     WHERE ability = '%s' AND type = '%s'
                             """ % (user_details['training'], user_details['type'])
+        result = db.session.execute(sql)
+        return self.row2dict(result)
+
+    def get_plan_id(self):
+        sql = """ SELECT LAST_INSERT_ID() from FitnessPlan
+            """
+        result = db.session.execute(sql)
+        return self.row2dict(result)
+
+    def save_fitness_plan(self, user_details):
+        print(user_details['personID'])
+        sql = """ 
+            INSERT INTO FitnessPlan ( personID, type, trainingLevel, goal )
+            VALUES ( %s, '%s', '%s', '%s' );
+                            """ % (user_details['personID'], user_details['type'],
+                                   user_details['training'], user_details['goals'])
+        result = db.session.execute(sql)
+        db.session.commit()
+        if result:
+            return True
+        else:
+            return False
+
+    def save_exercises_plan(self, exercises):
+        sql = """ 
+            insert into PlanExercises (planId, ability, sets, reps, type, exerciseName, bodypart, day)
+            values (%s, '%s', %s, '%s', '%s','%s', '%s','%s')
+                            """ % (exercises['planId'], exercises['ability'],
+                                   exercises['sets'], exercises['reps'],
+                                   exercises['type'], exercises['name'], exercises['body_part'],
+                                   exercises['day'])
+        result = db.session.execute(sql)
+        db.session.commit()
+        if result:
+            return True
+        else:
+            return False
+
+    def get_fitness_plan_id(self, user_details):
+        sql = """ SELECT id
+                    FROM FitnessPlan
+                    WHERE personID = %s
+                            """ % user_details
+        result = db.session.execute(sql)
+        return self.row2dict(result)
+
+    def get_fitness_plan(self, plan_id):
+        sql = """ SELECT *
+                    FROM PlanExercises
+                    WHERE  planId = %s
+                            """ % plan_id
         result = db.session.execute(sql)
         return self.row2dict(result)
 

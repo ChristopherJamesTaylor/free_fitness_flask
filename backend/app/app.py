@@ -115,7 +115,7 @@ def get_fitness_plan():
 def login():
     user_data = request.get_json()
     database_details = admin_obj.check_user(user_details=user_data)
-    print('the database is ',database_details)
+    print('the database is ', database_details)
     if database_details != {}:
         password = user_data['password'].encode("utf-8")
         hashed = database_details['user_password'].encode("utf-8")
@@ -218,12 +218,12 @@ def get_macros():
     elif data['weightUnit'] == 'pounds' and data['heightUnit'] == 'metres':
         if data['sex'] == 'male':
             bmr = 66 + (10 * float(data['weight']) * 0.45359237) + (6.25 * float(data['height'])) - (
-                        5 * float(data['age'])) + 5
+                    5 * float(data['age'])) + 5
         #     BMR = 66 + ( 6.2 × weight in pounds ) + ( 12.7 × height in inches ) – ( 6.76 × age in years )
         else:
             print('Woman')
             bmr = 655.1 + (10 * float(data['weight']) * 0.45359237) + (6.25 * float(data['height'])) - (
-                        5 * float(data['age'])) \
+                    5 * float(data['age'])) \
                   - 161
             # BMR = 655.1 + (4.35 × weight in pounds) + (4.7 × height in inches) - (4.7 × age in years)
 
@@ -273,9 +273,25 @@ def get_macros():
     response = {
         'Macros': macros
     }
-    print(response)
     return jsonify(response)
 
+
+@app.route('/savePlan', methods=['GET', 'POST'])
+def save_fitness_plan():
+    user_details = request.get_json()
+
+    plan_insert_bool = fitness_object.save_fitness_plan(user_details)
+    if plan_insert_bool:
+        plan_id = fitness_object.get_fitness_plan_id(user_details['personID'])
+        for exercises in user_details['exercises']:
+            exercises['planId'] = plan_id[0]['id']
+            saved_plan = fitness_object.save_exercises_plan(exercises)
+        if saved_plan:
+            plan_id = fitness_object.get_fitness_plan_id(user_details['personID'])
+            print(plan_id)
+            fitness_plan = fitness_object.get_fitness_plan(plan_id[0]['id'])
+            print(fitness_plan)
+            return jsonify(fitness_plan)
 
 if __name__ == '__main__':
     app.run()

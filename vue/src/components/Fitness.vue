@@ -30,48 +30,48 @@
                     <v-card v-if="step.number == 1">
                         <v-container>
                             <v-form
-                                ref="form"
-                        >
-                            <v-row justify="space-around">
-                                <v-col>
-                                    <h3>Training level</h3>
-                                    <v-radio-group v-model="training" :mandatory="false">
-                                        <v-radio label="Beginner" value="beginner"/>
-                                        <v-radio label="Intermediate" value="intermediate"/>
-                                        <v-radio label="Advanced" value="advanced"/>
-                                        <v-radio label="Savage" value="savage"/>
-                                    </v-radio-group>
-                                </v-col>
-                                <v-col><h3>Type of workouts</h3>
-                                    <v-radio-group v-model="type" :mandatory="false">
-                                        <v-radio label="Gym" value="gym"/>
-                                        <v-radio label="Home" value="home"/>
-                                        <v-radio label="Mixed" value="mixed"/>
-                                        <v-radio label="I hate exercise" value="I hate exercise"/>
-                                    </v-radio-group>
-                                </v-col>
-                                <v-col>
-                                    <h3>Days of the week to workout</h3>
-                                    <v-checkbox v-model="daysOfTheWeek" label="Monday" value="Monday"/>
-                                    <v-checkbox v-model="daysOfTheWeek" label="Tuesday" value="Tuesday"/>
-                                    <v-checkbox v-model="daysOfTheWeek" label="Wednesday" value="Wednesday"/>
-                                    <v-checkbox v-model="daysOfTheWeek" label="Thursday" value="Thursday"/>
-                                    <v-checkbox v-model="daysOfTheWeek" label="Friday" value="Friday"/>
-                                    <v-checkbox v-model="daysOfTheWeek" label="Saturday" value="Saturday"/>
-                                    <v-checkbox v-model="daysOfTheWeek" label="Sunday" value="Sunday"/>
-                                </v-col>
-                                <v-col>
-                                    <h3>Goals</h3>
-                                    <v-radio-group v-model="goal" :mandatory="false">
-                                        <v-radio label="Lose Weight" value="Lose Weight"/>
-                                        <v-radio label="Gain Muscle" value="Gain Muscle"/>
-                                        <v-radio label="Stay Healthy" value="Stay Healthy"/>
-                                        <v-radio label="Get shredded" value="Get shredded"/>
-                                    </v-radio-group>
-                                </v-col>
+                                    ref="form"
+                            >
+                                <v-row justify="space-around">
+                                    <v-col>
+                                        <h3>Training level</h3>
+                                        <v-radio-group v-model="training" :mandatory="false">
+                                            <v-radio label="Beginner" value="beginner"/>
+                                            <v-radio label="Intermediate" value="intermediate"/>
+                                            <v-radio label="Advanced" value="advanced"/>
+                                            <v-radio label="Savage" value="savage"/>
+                                        </v-radio-group>
+                                    </v-col>
+                                    <v-col><h3>Type of workouts</h3>
+                                        <v-radio-group v-model="type" :mandatory="false">
+                                            <v-radio label="Gym" value="gym"/>
+                                            <v-radio label="Home" value="home"/>
+                                            <v-radio label="Mixed" value="mixed"/>
+                                            <v-radio label="I hate exercise" value="I hate exercise"/>
+                                        </v-radio-group>
+                                    </v-col>
+                                    <v-col>
+                                        <h3>Days of the week to workout</h3>
+                                        <v-checkbox v-model="daysOfTheWeek" label="Monday" value="Monday"/>
+                                        <v-checkbox v-model="daysOfTheWeek" label="Tuesday" value="Tuesday"/>
+                                        <v-checkbox v-model="daysOfTheWeek" label="Wednesday" value="Wednesday"/>
+                                        <v-checkbox v-model="daysOfTheWeek" label="Thursday" value="Thursday"/>
+                                        <v-checkbox v-model="daysOfTheWeek" label="Friday" value="Friday"/>
+                                        <v-checkbox v-model="daysOfTheWeek" label="Saturday" value="Saturday"/>
+                                        <v-checkbox v-model="daysOfTheWeek" label="Sunday" value="Sunday"/>
+                                    </v-col>
+                                    <v-col>
+                                        <h3>Goals</h3>
+                                        <v-radio-group v-model="goal" :mandatory="false">
+                                            <v-radio label="Lose Weight" value="Lose Weight"/>
+                                            <v-radio label="Gain Muscle" value="Gain Muscle"/>
+                                            <v-radio label="Stay Healthy" value="Stay Healthy"/>
+                                            <v-radio label="Get shredded" value="Get shredded"/>
+                                        </v-radio-group>
+                                    </v-col>
                                     <v-btn color="#00897B" class="ma-2" @click.native="clear()">Clear</v-btn>
-                            </v-row>
-                        </v-form>
+                                </v-row>
+                            </v-form>
                         </v-container>
                         <v-snackbar
                                 v-model="snackbar"
@@ -86,18 +86,14 @@
                             </v-btn>
                         </v-snackbar>
                     </v-card>
-                    <v-card v-else class="mb-12" color="grey lighten-1">
-                        <v-form
-                                ref="form"
-                                lazy-validation
+                    <v-card v-else class="mb-12">
+                        <v-btn color="#64FFDA" @click='saveAndEdit'>Edit and Save Plan</v-btn>
+                        <v-data-table
+                                :headers="headers"
+                                :items="exercises"
+                                class="elevation-1"
                         >
-                            <v-data-table
-                                    :headers="headers"
-                                    :items="exercises"
-                                    class="elevation-1"
-                            >
-                            </v-data-table>
-                        </v-form>
+                        </v-data-table>
                     </v-card>
                 </v-stepper-content>
             </v-stepper-items>
@@ -135,7 +131,7 @@
             exercises: [],
             headers: [
                 {text: "Exercise", value: "name"},
-                 {text: "Body Part", value: "body_part"},
+                {text: "Body Part", value: "body_part"},
                 {text: "Sets", value: "sets"},
                 {text: "Repetitions", value: "reps"},
                 {text: "Day", value: "day"},
@@ -182,7 +178,31 @@
                 }
 
             },
-            clear(){
+            saveAndEdit() {
+                if (this.exercises != null) {
+                    let fullUserData = {
+                        'personID': sessionStorage.getItem('personID'),
+                        'training': this.training,
+                        'type': this.type,
+                        'days': this.daysOfTheWeek,
+                        'goals': this.goal,
+                        'exercises': this.exercises
+                    };
+                    this.$store.dispatch("fitness/savePlan", fullUserData).then((response) => {
+                        if (response) {
+                            // eslint-disable-next-line no-console
+                            console.log('success');
+                            document.location.replace('/#/currentfitnessplan')
+                        } else {
+                            // eslint-disable-next-line no-console
+                            console.log("error");
+                        }
+                    })
+                } else {
+                    this.snackbar = true
+                }
+            },
+            clear() {
                 this.training = null;
                 this.type = null;
                 this.daysOfTheWeek = [];
