@@ -1,73 +1,57 @@
 <template>
-    <v-container fluid>
+    <div>
         <Menu></Menu>
-        <v-card>
-            <v-row align="center">
-                <v-snackbar
-                        v-model="snackbar"
+        <v-container fluid align-content="center">
+            <v-form ref="macrosForm" lazy-validation>
+                <h3>Age</h3>
+                <v-text-field filled v-model="age" required :rules="[v => !!v || 'Item is required']"></v-text-field>
+
+                <h3>Sex</h3>
+                <v-radio-group class="content" justify="justify" v-model="sex" required :rules="[v => !!v || 'Item is required']">
+                    <v-radio label="Male" value="male"/>
+                    <v-radio label="Female" value="female"/>
+                </v-radio-group>
+
+                <h3>Weight and Height</h3>
+                <v-radio-group class="content" justify="justify" v-model="unit" required :rules="[v => !!v || 'Item is required']">
+                    <v-radio label="Imperial" value="imperial"/>
+                    <v-radio label="Metric" value="metric"/>
+                </v-radio-group>
+                <v-text-field filled placeholder="height" v-model="height" required :rules="[v => !!v || 'Item is required']"></v-text-field>
+                <v-text-field filled placeholder="weight" v-model="weight" required :rules="[v => !!v || 'Item is required']"></v-text-field>
+
+                <h3>Goal</h3>
+                <v-radio-group class="center" v-model="goal" required :rules="[v => !!v || 'Item is required']">
+                    <v-radio label="Fat loss" value="fatLoss"/>
+                    <v-radio label="Maintenance" value="maintain"/>
+                    <v-radio label="Muscle gain" value="muscleGain"/>
+                </v-radio-group>
+
+                <h3>Activity Level</h3>
+                <v-radio-group v-model="activity" required :rules="[v => !!v || 'Item is required']">
+                    <v-radio label="Sedentary" value="sedentary"/>
+                    <v-radio label="Active" value="active"/>
+                    <v-radio label="Vigorously active" value="vActive"/>
+                </v-radio-group>
+
+                <v-btn class="center" rounded color="#64FFDA" @click="getMacros">Calculate</v-btn>
+            </v-form>
+            <v-snackbar
+                    v-model="snackbar"
+            >
+                {{ text }}
+                <v-btn
+                        color="#D50000"
+                        text
+                        @click="snackbar = false"
                 >
-                    {{ text }}
-                    <v-btn
-                            color="#D50000"
-                            text
-                            @click="snackbar = false"
-                    >
-                        Close
-                    </v-btn>
-                </v-snackbar>
-                <v-col>
-                    <h3>Age</h3>
-                    <v-text-field filled v-model="age"></v-text-field>
-                </v-col>
-                <v-col>
-                    <h3>Sex</h3>
-                    <v-radio-group class="content" justify="justify" v-model="sex">
-                        <v-radio label="Male" value="male"/>
-                        <v-radio label="Female" value="female"/>
-                    </v-radio-group>
-                </v-col>
-
-                <v-col>
-                    <h3>Height</h3>
-                    <v-radio-group align-content="center" v-model="heightUnit">
-                        <v-radio label="Feet" value="feet"/>
-                        <v-radio label="Metres" value="metres"/>
-                    </v-radio-group>
-                    <v-text-field filled :placeholder="heightUnit" v-model="height"></v-text-field>
-                </v-col>
-
-                <v-col>
-                    <h3>Weight</h3>
-                    <v-radio-group v-model="weightUnit">
-                        <v-radio label="Pounds" value="pounds"/>
-                        <v-radio label="Kilograms" value="kilograms"/>
-                    </v-radio-group>
-                    <v-text-field filled :placeholder="weightUnit" v-model="weight"></v-text-field>
-                </v-col>
-                <v-col>
-                    <h3>Goal</h3>
-                    <v-radio-group class="center" v-model="goal">
-                        <v-radio label="Fat loss" value="fatLoss"/>
-                        <v-radio label="Maintenance" value="maintain"/>
-                        <v-radio label="Muscle gain" value="muscleGain"/>
-                    </v-radio-group>
-                </v-col>
-                <v-col>
-                    <h3>Activity Level</h3>
-                    <v-radio-group align="center" justify="center" v-model="activity">
-                        <v-radio label="Sedentary" value="sedentary"/>
-                        <v-radio label="Active" value="active"/>
-                        <v-radio label="Vigorously active" value="vActive"/>
-                    </v-radio-group>
-                </v-col>
-                <v-col>
-                    <v-btn class="center" rounded color="#64FFDA" @click="getMacros">Calculate</v-btn>
-                </v-col>
-            </v-row>
-        </v-card>
+                    Close
+                </v-btn>
+            </v-snackbar>
+            <MacrosDialog :macrosDialog.sync="macrosDialog" :macros="macros"/>
+        </v-container>
         <Footer></Footer>
-        <MacrosDialog :macrosDialog.sync="macrosDialog" :macros="macros"/>
-    </v-container>
+    </div>
 </template>
 
 <script>
@@ -83,8 +67,7 @@
                 macrosDialog: false,
                 weight: null,
                 height: null,
-                heightUnit: null,
-                weightUnit: null,
+                unit: null,
                 age: null,
                 sex: null,
                 goal: null,
@@ -92,6 +75,7 @@
                 snackbar: false,
                 tdee: [],
                 macros: [],
+
                 text: 'Please fill out the form correctly',
             }
         },
@@ -100,12 +84,11 @@
                 this.macrosDialog = true;
             },
             getMacros() {
-                if (this.weight && this.height && this.heightUnit && this.weightUnit && this.age && this.sex && this.goal && this.activity) {
+                if (this.$refs.macrosForm.validate()) {
                     let data = {
                         'weight': this.weight,
                         'height': this.height,
-                        'heightUnit': this.heightUnit,
-                        'weightUnit': this.weightUnit,
+                        'unit': this.unit,
                         'age': this.age,
                         'sex': this.sex,
                         'goal': this.goal,

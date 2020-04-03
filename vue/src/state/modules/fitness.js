@@ -2,7 +2,8 @@ import {api} from "../../api/fitness";
 
 export const state = {
     exercises: null,
-    plan: null
+    plan: null,
+    currentPlan:null
 };
 
 export const getters = {
@@ -11,6 +12,9 @@ export const getters = {
     },
     listPlan(){
         return state.plan;
+    },
+    listCurrentPlan(){
+        return state.currentPlan;
     }
 };
 
@@ -21,6 +25,9 @@ export const mutations = {
     SET_PLAN(state, payload){
         state.plan = payload;
     },
+    SET_CURRENT_PLAN(state, payload){
+        state.currentPlan = payload;
+    }
 };
 
 export const actions = {
@@ -39,6 +46,16 @@ export const actions = {
             console.log(response);
             const payload = response.data;
             commit("SET_PLAN", payload);
+            return payload;
+        }
+    },
+    async getFitnessPlan({ commit }, data){
+        const response = await api.getFitnessPlan(data);
+        if(response){
+            // eslint-disable-next-line no-console
+            console.log(response);
+            const payload = response.data;
+            commit("SET_CURRENT_PLAN", payload);
             return payload;
         }
     },

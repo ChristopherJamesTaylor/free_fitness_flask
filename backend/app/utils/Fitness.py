@@ -70,6 +70,13 @@ class FitnessUtils:
         result = db.session.execute(sql)
         return self.row2dict(result)
 
+    def get_existing_plan(self, user_details):
+        sql = """ select * from FitnessPlan
+                  where personID = %s
+                            """ % user_details['personID']
+        result = db.session.execute(sql)
+        return self.row2dict(result)
+
     def row2dict(self, result):
         d, a = {}, []
         for rowproxy in result:

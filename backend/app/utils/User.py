@@ -17,9 +17,3 @@ class UserUtils:
         result = db.session.execute(sql)
         return adminObject.row2dict(result)
 
-    def get_fitness_plan(self, user_details):
-        sql = """ select * from FitnessPlan
-                  where personID = '%s'
-                            """ % user_details['personID']
-        result = db.session.execute(sql)
-        return adminObject.row2dict(result)

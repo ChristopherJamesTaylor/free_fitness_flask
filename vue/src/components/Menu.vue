@@ -71,10 +71,12 @@
             },
             getFitnessPlan() {
                 let data = {
-                    'personID': sessionStorage.getItem('id'),
+                    'personID': sessionStorage.getItem('personID')
                 };
-                this.$store.dispatch("user/getFitnessPlan", data).then((response) => {
-                    if (response['exists']) {
+                this.$store.dispatch("fitness/getFitnessPlan", data).then((response) => {
+                    if (response) {
+                        // eslint-disable-next-line no-console
+                        console.log(response);
                         document.location.replace('/#/currentfitnessplan');
                     } else {
                         document.location.replace('/#/fitnessplan');

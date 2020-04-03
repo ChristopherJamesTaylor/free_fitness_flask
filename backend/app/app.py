@@ -104,11 +104,10 @@ def get_home_workout():
 @app.route('/getFitnessPlan', methods=['GET', 'POST'])
 def get_fitness_plan():
     user_details = request.get_json()
-    existing_plan = user_object.get_fitness_plan(user_details)
-    if existing_plan:
-        return {'exists': True, 'plan': existing_plan}
-    else:
-        return {'exists': False}
+    print(user_details)
+    plan_id = fitness_object.get_fitness_plan_id(user_details['personID'])
+    existing_plan = fitness_object.get_fitness_plan(plan_id[0]['id'])
+    return jsonify(existing_plan)
 
 
 @app.route('/checkUser', methods=['GET', 'POST'])
@@ -204,28 +203,23 @@ def get_macros():
     }
     bmr = 0
     # calculate Basic Metabolic Rate first
-    print('test')
-    if data['weightUnit'] == 'kilograms' and data['heightUnit'] == 'metres':
+
+    if data['unit'] == 'metric':
         if data['sex'] == 'male':
-            bmr = 66.5 + (10 * float(data['weight'])) + (6.25 * float(data['height'])) - (5 * float(data['age'])) + 5
+            bmr = 65 + (13.7 * float(data['weight'])) + (5 * float(data['height'])) - (6.8 * float(data['age']))
             print(bmr)
-            # bmr = 66.5 + (13.75 * float(data['weight'])) + (5.003 * float(data['height'])) - (6.755 * float(data[
-            # 'age'])) bmr = 66.5 + 13.75 * data['weight'] + ( 5.003 × data['height']) – ( 6.755 × data['age'])
         else:
             print('Woman')
-            bmr = 66.5 + (10 * float(data['weight'])) + (6.25 * float(data['height'])) - (5 * float(data['age'])) - 161
-            # BMR = 655.1 + (9.563 × weight in kg) + (1.850 × height in cm) – (4.676 × age in years)
-    elif data['weightUnit'] == 'pounds' and data['heightUnit'] == 'metres':
+            bmr = 655 + (13.7 * float(data['weight'])) + (1.8 * float(data['height'])) - (4.7 * float(data['age']))
+
+    elif data['unit'] == 'imperial':
         if data['sex'] == 'male':
-            bmr = 66 + (10 * float(data['weight']) * 0.45359237) + (6.25 * float(data['height'])) - (
-                    5 * float(data['age'])) + 5
-        #     BMR = 66 + ( 6.2 × weight in pounds ) + ( 12.7 × height in inches ) – ( 6.76 × age in years )
+            bmr = 66 + (6.23 * float(data['weight'])) + (12.7 * float(data['height'])) - (
+                    6.8 * float(data['age']))
         else:
             print('Woman')
-            bmr = 655.1 + (10 * float(data['weight']) * 0.45359237) + (6.25 * float(data['height'])) - (
-                    5 * float(data['age'])) \
-                  - 161
-            # BMR = 655.1 + (4.35 × weight in pounds) + (4.7 × height in inches) - (4.7 × age in years)
+            bmr = 655.1 + (4.35 * float(data['weight']) ) + (4.7 * float(data['height'])) - (
+                    4.7 * float(data['age']))
 
     # calculate TDEE
     if data['activity'] == 'sedentary':
@@ -292,6 +286,7 @@ def save_fitness_plan():
             fitness_plan = fitness_object.get_fitness_plan(plan_id[0]['id'])
             print(fitness_plan)
             return jsonify(fitness_plan)
+
 
 if __name__ == '__main__':
     app.run()
