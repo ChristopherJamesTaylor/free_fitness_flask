@@ -1,24 +1,11 @@
-# freefitness
+# FreeFitness
 
 ## Project setup
 ```
-npm install
+You must have docker installed before this will work.
+docker-compose down -v && docker-compose up -d --build
 ```
-
-### Compiles and hot-reloads for development
+## Access locally
 ```
-npm run serve
+type localhost into browser url bar and enter
 ```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
