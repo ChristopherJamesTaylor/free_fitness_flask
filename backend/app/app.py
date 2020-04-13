@@ -73,6 +73,15 @@ def get_user():
     return user_object.get_user(user_details)
 
 
+@app.route('/editProfile', methods=['GET', 'POST'])
+def edit_profile():
+    user_details = request.get_json()
+    person_id = request.get_json()
+    user_object.edit_profile(user_details['profile'][0],
+                             person_id['id'])
+    return jsonify(user_object.get_user(user_details['profile'][0]))
+
+
 @app.route('/getExercises', methods=['GET', 'POST'])
 def get_exercises():
     user_details = request.get_json()
@@ -218,7 +227,7 @@ def get_macros():
                     6.8 * float(data['age']))
         else:
             print('Woman')
-            bmr = 655.1 + (4.35 * float(data['weight']) ) + (4.7 * float(data['height'])) - (
+            bmr = 655.1 + (4.35 * float(data['weight'])) + (4.7 * float(data['height'])) - (
                     4.7 * float(data['age']))
 
     # calculate TDEE
@@ -273,7 +282,6 @@ def get_macros():
 @app.route('/savePlan', methods=['GET', 'POST'])
 def save_fitness_plan():
     user_details = request.get_json()
-
     plan_insert_bool = fitness_object.save_fitness_plan(user_details)
     if plan_insert_bool:
         plan_id = fitness_object.get_fitness_plan_id(user_details['personID'])
@@ -286,6 +294,16 @@ def save_fitness_plan():
             fitness_plan = fitness_object.get_fitness_plan(plan_id[0]['id'])
             print(fitness_plan)
             return jsonify(fitness_plan)
+
+
+@app.route('/editedPlan', methods=['GET', 'POST'])
+def save_edited_plan():
+    user_details = request.get_json()
+    plan_id = fitness_object.get_fitness_plan_id(user_details['personID'])
+    for exercise_id in user_details['plan']:
+        current_index = user_details['plan'].index(exercise_id)
+        fitness_object.save_edited_plan(user_details['plan'][current_index], plan_id[0]['id'])
+    return jsonify(fitness_object.get_fitness_plan(plan_id[0]['id']))
 
 
 if __name__ == '__main__':

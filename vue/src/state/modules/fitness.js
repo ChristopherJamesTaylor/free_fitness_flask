@@ -3,7 +3,8 @@ import {api} from "../../api/fitness";
 export const state = {
     exercises: null,
     plan: null,
-    currentPlan:null
+    currentPlan:null,
+    editedPlan:null,
 };
 
 export const getters = {
@@ -15,6 +16,9 @@ export const getters = {
     },
     listCurrentPlan(){
         return state.currentPlan;
+    },
+    listEditedPlan(){
+        return state.editedPlan;
     }
 };
 
@@ -27,6 +31,9 @@ export const mutations = {
     },
     SET_CURRENT_PLAN(state, payload){
         state.currentPlan = payload;
+    },
+    SET_EDITED_PLAN(state, payload){
+        state.editedPlan = payload;
     }
 };
 
@@ -56,6 +63,16 @@ export const actions = {
             console.log(response);
             const payload = response.data;
             commit("SET_CURRENT_PLAN", payload);
+            return payload;
+        }
+    },
+    async saveEditedPlan({ commit }, data){
+        const response = await api.saveEditedPlan(data);
+        if(response){
+            // eslint-disable-next-line no-console
+            console.log(response);
+            const payload = response.data;
+            commit("SET_EDITED_PLAN", payload);
             return payload;
         }
     },

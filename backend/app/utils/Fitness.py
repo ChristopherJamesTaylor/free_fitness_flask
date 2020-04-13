@@ -77,6 +77,23 @@ class FitnessUtils:
         result = db.session.execute(sql)
         return self.row2dict(result)
 
+    @staticmethod
+    def save_edited_plan(user_details, plan_id):
+        sql = """ 
+            UPDATE PlanExercises
+            SET ability= '%s', sets = %s, reps = %s, exerciseName = '%s', bodyPart = '%s', day = '%s' 
+            WHERE planId = %s and id = %s
+                            """ % (user_details['ability'], user_details['sets'],
+                                   user_details['reps'], user_details['exerciseName'],
+                                   user_details['bodyPart'], user_details['day'], plan_id, user_details['id'])
+        result = db.session.execute(sql)
+        db.session.commit()
+        if result:
+            return True
+        else:
+            return False
+
+
     def row2dict(self, result):
         d, a = {}, []
         for rowproxy in result:

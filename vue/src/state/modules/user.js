@@ -3,6 +3,7 @@ import {api} from "../../api/user";
 export const state = {
     user: null,
     fitnessPlan: null,
+    editProfile: null,
 };
 
 export const getters = {
@@ -11,8 +12,11 @@ export const getters = {
         console.log(state.user);
         return state.user;
     },
-    listFitnessPlan(){
+    listFitnessPlan(state){
         return state.user;
+    },
+    listEditedProfile(state){
+        return  state.editProfile;
     }
 };
 
@@ -22,6 +26,9 @@ export const mutations = {
     },
     SET_FITNESS_PLAN(state,payload){
         state.fitnessPlan = payload;
+    },
+    SET_EDITED_PROFILE(state, payload){
+        state.editProfile = payload;
     }
 };
 
@@ -39,6 +46,14 @@ export const actions = {
         if(response){
             const payload = response.data;
             commit("SET_FITNESS_PLAN", payload);
+            return payload;
+        }
+    },
+    async editProfile({ commit }, data){
+        const response = await api.editProfile(data);
+        if(response){
+            const payload = response.data;
+            commit("SET_EDITED_PROFILE", payload);
             return payload;
         }
     },

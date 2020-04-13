@@ -8,4 +8,7 @@ export const api = {
     getFitnessPlan(data) {
         return instance.post(`${api_url}/getFitnessPlan`, data);
     },
+    editProfile(data) {
+        return instance.post(`${api_url}/editProfile`, data);
+    },
 };

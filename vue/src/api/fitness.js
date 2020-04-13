@@ -10,5 +10,8 @@ export const api = {
     },
     getFitnessPlan(data){
         return instance.post(`${api_url}/getFitnessPlan`, data);
+    },
+    saveEditedPlan(data){
+        return instance.post(`${api_url}/editedPlan`, data);
     }
 };

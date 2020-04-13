@@ -1,111 +1,107 @@
 <template>
     <v-container fluid>
         <Menu/>
-                <image-uploader v-model="avatar" align="center" color="black">
-                    <div slot="activator">
-                        <v-avatar size="150px" v-ripple v-if="!avatar" class="grey lighten-3 mb-3">
-                            <span>Click to add a profile picture!</span>
-                        </v-avatar>
-                        <v-avatar size="150px" v-ripple v-else class="mb-3">
-                            <img :src="avatar.imageURL" alt="avatar">
-                        </v-avatar>
-                    </div>
-                </image-uploader>
-        <v-container>
-            <div align="right">
-            <v-btn class="save-profile" @click="saveDetails" color="#64FFDA">Save Details</v-btn>
-        </div>
-        <v-data-table
-                :headers="headers"
-                :items="profile"
-        >
-            <template v-slot:item.id="{ item }">
-                <v-text-field
-                    v-model="user_id"
-                    :items="item"
-                    :item-text="item.id"
-                    :placeholder="item.id"
-                    place
-                    outlined
-                    disabled
-                    type="text"
-            ></v-text-field>
-            </template>
-            <template v-slot:item.username="{ item }">
-                <v-text-field
-                    v-model="username"
-                    :items="item"
-                    :item-text="item.username"
-                    :placeholder="item.username"
-                    place
-                    outlined
-                    clearable
-                    type="text"
-            ></v-text-field>
-            </template>
-            <template v-slot:item.first_name="{ item }">
-                <v-text-field
-                    v-model="first_name"
-                    :items="item"
-                    :item-text="item.first_name"
-                    :placeholder="item.first_name"
-                    place
-                    outlined
-                    clearable
-                    type="text"
-            ></v-text-field>
-            </template>
-            <template v-slot:item.last_name="{ item }">
-                <v-text-field
-                    v-model="last_name"
-                    :items="item"
-                    :item-text="item.last_name"
-                    :placeholder="item.last_name"
-                    place
-                    outlined
-                    clearable
-                    type="text"
-            ></v-text-field>
-            </template>
-            <template v-slot:item.email="{ item }">
-                <v-text-field
-                    v-model="email"
-                    :items="item"
-                    :item-text="item.email"
-                    :placeholder="item.email"
-                    place
-                    outlined
-                    clearable
-                    type="text"
-            ></v-text-field>
-            </template>
-            <template v-slot:item.permissions="{ item }">
-                <v-text-field
-                    v-model="permissions"
-                    :items="item"
-                    :item-text="item.permissions"
-                    :placeholder="item.permissions"
-                    place
-                    outlined
-                    disabled
-                    type="text"
-            ></v-text-field>
-            </template>
+        <v-card>
+            <v-toolbar>
+                <v-toolbar-title>Profile Details</v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-btn class="save-profile" @click="editDetails" color="#64FFDA">Save Details</v-btn>
+            </v-toolbar>
+            <v-data-table
+                    :headers="headers"
+                    :items="profile"
+            >
+                <template v-slot:item.id="{ item }">
+                    <v-text-field
+                            v-model="item.id"
+                            :items="item"
+                            :item-text="item.id"
+                            outlined
+                            disabled
+                            type="text"
+                    ></v-text-field>
+                </template>
+                <template v-slot:item.username="{ item }">
+                    <v-text-field
+                            v-model="item.username"
+                            :items="item"
+                            :item-text="item.username"
+                            :rules="nameRules"
+                            outlined
+                            clearable
+                            type="text"
+                    ></v-text-field>
+                </template>
+                <template v-slot:item.first_name="{ item }">
+                    <v-text-field
+                            v-model="item.first_name"
+                            :items="item"
+                            :item-text="item.first_name"
 
-        </v-data-table>
-        </v-container>
+                            outlined
+                            clearable
+                            type="text"
+                    ></v-text-field>
+                </template>
+                <template v-slot:item.last_name="{ item }">
+                    <v-text-field
+                            v-model="item.last_name"
+                            :items="item"
+                            :item-text="item.last_name"
+                            outlined
+                            clearable
+                            type="text"
+                    ></v-text-field>
+                </template>
+                <template v-slot:item.email="{ item }">
+                    <v-text-field
+                            v-model="item.email"
+                            :items="item"
+                            :item-text="item.email"
+                            :rules="emailRules"
+                            outlined
+                            clearable
+                            type="text"
+                    ></v-text-field>
+                </template>
+                <template v-slot:item.permissions="{ item }">
+                    <v-text-field
+                            v-model="item.permissions"
+                            :items="item"
+                            :item-text="item.permissions"
+                            outlined
+                            disabled
+                            type="text"
+                    ></v-text-field>
+                </template>
+            </v-data-table>
+            <v-snackbar
+                    v-model="snackbar"
+            >
+                {{ text }}
+                <v-btn
+                        color="pink"
+                        text
+                        @click="snackbar = false"
+                >
+                    Close
+                </v-btn>
+            </v-snackbar>
+        </v-card>
         <Footer></Footer>
     </v-container>
 </template>
 <script>
     import Menu from './Menu'
-    import ImageUploader from "./imageUploader";
     import Footer from "./footer";
+
     export default {
         name: 'Profile',
-        components: {Footer, ImageUploader, Menu},
+        components: {Footer, Menu},
         props: {},
         data: () => ({
+            snackbar:null,
+            text:'You have updated your profile!',
             username: null,
             user_id: null,
             dialog: false,
@@ -116,7 +112,15 @@
             email: null,
             first_name: null,
             last_name: null,
-            permissions:null,
+            permissions: null,
+            nameRules: [
+                v => !!v || 'Name is required',
+                v => (v && v.length <= 25) || 'Name must be less than 25 characters'
+            ],
+            emailRules: [
+                v => !!v || 'E-mail is required',
+                v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+            ],
             headers: [
                 {text: "Id", value: 'id'},
                 {text: "Username", value: "username"},
@@ -132,9 +136,19 @@
             }
         },
         methods: {
-            editUser() {
-                // eslint-disable-next-line no-console
-                console.log("success");
+            editDetails() {
+                let data = {
+                    'profile': this.profile,
+                    'id': sessionStorage.getItem('personID')
+                };
+                this.$store.dispatch('user/editProfile', data).then((response) => {
+                    if (response) {
+                        this.snackbar = true;
+                    } else {
+                        // eslint-disable-next-line no-console
+                        console.log("error");
+                    }
+                });
             },
             deleteUser() {
                 // eslint-disable-next-line no-console
@@ -147,28 +161,6 @@
             uploadImage() {
                 this.saving = true;
                 setTimeout(() => this.savedAvatar(), 1000)
-            },
-            uploadFiles(e) {
-                var items = [];
-                var formData = new FormData();
-                let files = e.target.files;
-                for (let x in files) {
-                    if (!isNaN(x)) {
-                        items = e.target.files[x];
-                        formData.append('files[]', items);
-                    }
-                }
-                // eslint-disable-next-line no-console
-                console.log('About to hit the route');
-                this.$store.dispatch('user/imageUpload', formData).then((response) => {
-                    if (response) {
-                        // eslint-disable-next-line no-console
-                        console.log(response);
-                    } else {
-                        // eslint-disable-next-line no-console
-                        console.log('Error');
-                    }
-                });
             },
             savedAvatar() {
                 this.saving = false;
