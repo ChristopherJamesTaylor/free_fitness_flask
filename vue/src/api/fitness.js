@@ -5,6 +5,9 @@ export const api = {
     getExercises(data) {
         return instance.post(`${api_url}/getExercises`, data);
     },
+    allFitnessPlans() {
+        return instance.get(`${api_url}/allFitnessPlans`);
+    },
     savePlan(data) {
         return instance.post(`${api_url}/savePlan`, data);
     },

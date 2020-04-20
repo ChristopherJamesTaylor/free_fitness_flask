@@ -1,30 +1,32 @@
 <template>
-    <v-toolbar>
-        <v-toolbar-title><a href="/#/home">Free Fitness</a></v-toolbar-title>
-         <v-img :src="image" heigh="80" width="80" contain/>
-        <v-spacer/>
-        <div>
-            <v-menu offset-y>
-                <template v-slot:activator="{ on }">
-                    <v-btn
-                            color="#64FFDA"
-                            v-on="on"
-                    >
-                        Your Fitness
-                    </v-btn>
-                </template>
-                <v-list>
-                    <v-list-item
-                            v-for="(item, index) in items"
-                            :key="index"
-                            @click="routing(item)"
-                    >
-                        <v-list-item-title>{{ item.title }}</v-list-item-title>
-                    </v-list-item>
-                </v-list>
-            </v-menu>
-        </div>
-    </v-toolbar>
+    <v-container>
+        <v-toolbar>
+            <v-toolbar-title><a href="/#/home">Free Fitness</a></v-toolbar-title>
+            <v-img :src="image" heigh="80" width="80" contain/>
+            <v-spacer/>
+            <div>
+                <v-menu offset-y>
+                    <template v-slot:activator="{ on }">
+                        <v-btn
+                                color="#64FFDA"
+                                v-on="on"
+                        >
+                            Your Fitness
+                        </v-btn>
+                    </template>
+                    <v-list>
+                        <v-list-item
+                                v-for="(item, index) in items"
+                                :key="index"
+                                @click="routing(item)"
+                        >
+                            <v-list-item-title>{{ item.title }}</v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
+            </div>
+        </v-toolbar>
+    </v-container>
 </template>
 
 <script>
@@ -87,6 +89,7 @@
                         // eslint-disable-next-line no-console
                         console.log(response);
                         document.location.replace('/#/profile');
+                        return response
                     } else {
                         // eslint-disable-next-line no-console
                         console.log("error");

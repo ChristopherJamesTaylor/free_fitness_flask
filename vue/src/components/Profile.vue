@@ -98,7 +98,8 @@
     export default {
         name: 'Profile',
         components: {Footer, Menu},
-        props: {},
+        props: {
+        },
         data: () => ({
             snackbar:null,
             text:'You have updated your profile!',
@@ -131,6 +132,7 @@
             ]
         }),
         computed: {
+            cache: false,
             profile() {
                 return [this.$store.getters['user/listUser']]
             }

@@ -4,7 +4,7 @@
         <v-container fluid align-content="center">
             <v-form ref="macrosForm" lazy-validation>
                 <h3>Age</h3>
-                <v-text-field filled v-model="age" required :rules="[v => !!v || 'Item is required']"></v-text-field>
+                <v-text-field outlined v-model="age" required :rules="[v => !!v || 'Item is required']"></v-text-field>
 
                 <h3>Sex</h3>
                 <v-radio-group class="content" justify="justify" v-model="sex" required :rules="[v => !!v || 'Item is required']">
@@ -13,12 +13,12 @@
                 </v-radio-group>
 
                 <h3>Weight and Height</h3>
-                <v-radio-group class="content" justify="justify" v-model="unit" required :rules="[v => !!v || 'Item is required']">
+                <v-radio-group @click="setType" class="content" justify="justify" v-model="unit" required :rules="[v => !!v || 'Item is required']">
                     <v-radio label="Imperial" value="imperial"/>
                     <v-radio label="Metric" value="metric"/>
                 </v-radio-group>
-                <v-text-field filled placeholder="height" v-model="height" required :rules="[v => !!v || 'Item is required']"></v-text-field>
-                <v-text-field filled placeholder="weight" v-model="weight" required :rules="[v => !!v || 'Item is required']"></v-text-field>
+                <v-text-field outlined :placeholder="unitTypeHeight" v-model="height" required :rules="[v => !!v || 'Item is required']"></v-text-field>
+                <v-text-field outlined :placeholder="unitTypeWeight" v-model="weight" required :rules="[v => !!v || 'Item is required']"></v-text-field>
 
                 <h3>Goal</h3>
                 <v-radio-group class="center" v-model="goal" required :rules="[v => !!v || 'Item is required']">
@@ -65,6 +65,8 @@
         data() {
             return {
                 macrosDialog: false,
+                unitTypeWeight: '',
+                unitTypeHeight: '',
                 weight: null,
                 height: null,
                 unit: null,
@@ -82,6 +84,17 @@
         methods: {
             test() {
                 this.macrosDialog = true;
+            },
+            setType(){
+                // eslint-disable-next-line no-console
+                console.log("units")
+                if(this.unit == 'imperial'){
+                    this.unitTypeHeight = 'Feet and inches';
+                    this.unitTypeWeight = 'Stone and Pounds';
+                } else {
+                    this.unitTypeHeight = 'cm';
+                    this.unitTypeWeight = 'kg';
+                }
             },
             getMacros() {
                 if (this.$refs.macrosForm.validate()) {

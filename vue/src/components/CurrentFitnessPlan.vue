@@ -106,9 +106,8 @@
             }
         },
         computed: {
+            cache: false,
             plan() {
-                // eslint-disable-next-line no-console
-                console.log(this.$store.getters['fitness/listCurrentPlan']);
                 return this.$store.getters['fitness/listCurrentPlan'];
             }
         },

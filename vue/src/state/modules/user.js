@@ -41,6 +41,14 @@ export const actions = {
             return payload;
         }
     },
+    async allProfiles({ commit }, data){
+        const response = await api.allProfiles(data);
+        if(response){
+            const payload = response.data;
+            commit("SET_ALL_PROFILES", payload);
+            return payload;
+        }
+    },
     async getFitnessPlan({ commit }, data){
         const response = await api.getFitnessPlan(data);
         if(response){

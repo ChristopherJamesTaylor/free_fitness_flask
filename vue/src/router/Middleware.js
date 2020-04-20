@@ -1,22 +1,15 @@
 import store from "@/state/store"
 
 export function checkAccessMiddleware(to, from, next) {
-    // eslint-disable-next-line no-console
-    console.log("middleware");
-    // eslint-disable-next-line no-console
-    console.log(sessionStorage.getItem('user'));
+    store.dispatch("fitness/allFitnessPlans");
+    store.dispatch("user/allProfiles");
     if(sessionStorage.getItem('user') !== null){
         let data = {'username': sessionStorage.getItem('user'),};
-        store.dispatch('user/getUser', data).then((response) => {
-            if(response){
-                // eslint-disable-next-line no-console
-                console.log('success');
-                // eslint-disable-next-line no-console
-                console.log(response);
-                next();
-            }
-        })
-    } else{
+        let id = {'personID': sessionStorage.getItem('personID'),};
+        store.dispatch('user/getUser', data)
+        store.dispatch('fitness/getFitnessPlan', id)
+        next();
+    }else {
         next();
     }
 }

@@ -11,4 +11,7 @@ export const api = {
     editProfile(data) {
         return instance.post(`${api_url}/editProfile`, data);
     },
+    allProfiles() {
+        return instance.get(`${api_url}/allProfiles`);
+    }
 };

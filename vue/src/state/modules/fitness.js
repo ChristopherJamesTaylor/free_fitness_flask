@@ -5,6 +5,7 @@ export const state = {
     plan: null,
     currentPlan:null,
     editedPlan:null,
+    allFitnessPlans:null,
 };
 
 export const getters = {
@@ -19,10 +20,16 @@ export const getters = {
     },
     listEditedPlan(){
         return state.editedPlan;
+    },
+    listAllFitnessPlans(){
+        return state.allFitnessPlans;
     }
 };
 
 export const mutations = {
+    SET_ALL_FITNESS_PLANS(state, payload) {
+        state.allFitnessPlans = payload;
+    },
     SET_EXERCISES(state, payload){
         state.exercises = payload;
     },
@@ -60,7 +67,7 @@ export const actions = {
         const response = await api.getFitnessPlan(data);
         if(response){
             // eslint-disable-next-line no-console
-            console.log(response);
+            console.log(response.data);
             const payload = response.data;
             commit("SET_CURRENT_PLAN", payload);
             return payload;
@@ -73,6 +80,14 @@ export const actions = {
             console.log(response);
             const payload = response.data;
             commit("SET_EDITED_PLAN", payload);
+            return payload;
+        }
+    },
+    async allFitnessPlans({ commit }){
+        const response = await api.allFitnessPlans();
+        if(response){
+            const payload = response.data;
+            commit("SET_ALL_FITNESS_PLANS", payload);
             return payload;
         }
     },

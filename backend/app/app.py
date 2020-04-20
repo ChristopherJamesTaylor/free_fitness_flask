@@ -29,7 +29,7 @@ YourAPIKey = '2CA872CD'
 def get_gyms():
     data = request.get_json()
     url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=" + str(data['lat']) + ',' + \
-          str(data['long']) + "&radius=5000&type=gym&key=AIzaSyB6bC_OukDUo3yP4mV6DF9mZ5qFvOmKH-0"
+          str(data['long']) + "&radius=20000&type=gym&key=AIzaSyB6bC_OukDUo3yP4mV6DF9mZ5qFvOmKH-0"
     payload = {}
     headers = {}
     response = requests.request("GET", url, headers=headers, data=payload)
@@ -73,6 +73,16 @@ def get_user():
     return user_object.get_user(user_details)
 
 
+@app.route('/allProfiles', methods=['GET', 'POST'])
+def all_profiles():
+    return jsonify(user_object.all_profiles())
+
+
+@app.route('/allFitnessPlans', methods=['GET', 'POST'])
+def all_fitness_plans():
+    return jsonify(fitness_object.all_fitness_plans())
+
+
 @app.route('/editProfile', methods=['GET', 'POST'])
 def edit_profile():
     user_details = request.get_json()
@@ -113,7 +123,6 @@ def get_home_workout():
 @app.route('/getFitnessPlan', methods=['GET', 'POST'])
 def get_fitness_plan():
     user_details = request.get_json()
-    print(user_details)
     plan_id = fitness_object.get_fitness_plan_id(user_details['personID'])
     existing_plan = fitness_object.get_fitness_plan(plan_id[0]['id'])
     return jsonify(existing_plan)

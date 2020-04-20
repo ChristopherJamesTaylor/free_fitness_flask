@@ -47,7 +47,6 @@
                                             <v-radio label="Gym" value="gym"/>
                                             <v-radio label="Home" value="home"/>
                                             <v-radio label="Mixed" value="mixed"/>
-                                            <v-radio label="I hate exercise" value="I hate exercise"/>
                                         </v-radio-group>
                                     </v-col>
                                     <v-col>

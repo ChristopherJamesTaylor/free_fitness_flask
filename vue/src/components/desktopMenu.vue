@@ -98,8 +98,8 @@
                         // eslint-disable-next-line no-console
                         console.log("success");
                         // eslint-disable-next-line no-console
-                        console.log(response);
                         document.location.replace('/#/profile');
+                        return response
                     } else {
                         // eslint-disable-next-line no-console
                         console.log("error");

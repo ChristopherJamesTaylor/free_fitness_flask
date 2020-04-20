@@ -19,6 +19,13 @@ class FitnessUtils:
         result = db.session.execute(sql)
         return self.row2dict(result)
 
+    def all_fitness_plans(self):
+        sql = """ SELECT *
+                  FROM FitnessPlan
+                            """
+        result = db.session.execute(sql)
+        return self.row2dict(result)
+
     def get_plan_id(self):
         sql = """ SELECT LAST_INSERT_ID() from FitnessPlan
             """

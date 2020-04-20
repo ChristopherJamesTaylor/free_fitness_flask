@@ -19,6 +19,13 @@ class UserUtils:
         return adminObject.row2dict(result)
 
     @staticmethod
+    def all_profiles():
+        sql = """ select * from members
+                                """
+        result = db.session.execute(sql)
+        return adminObject.row2dict(result)
+
+    @staticmethod
     def edit_profile(user_details, person_id):
         sql = """ UPDATE members
                   SET username = '%s', email = '%s', first_name = '%s', last_name='%s'  
