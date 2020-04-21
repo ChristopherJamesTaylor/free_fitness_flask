@@ -70,7 +70,7 @@ def get_meal_plan():
 @app.route('/getUser', methods=['GET', 'POST'])
 def get_user():
     user_details = request.get_json()
-    return user_object.get_user(user_details)
+    return jsonify(user_object.get_user(user_details))
 
 
 @app.route('/allProfiles', methods=['GET', 'POST'])

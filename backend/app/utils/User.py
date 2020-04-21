@@ -10,13 +10,12 @@ class UserUtils:
     def __init__(self):
         pass
 
-    @staticmethod
-    def get_user(user_details):
+    def get_user(self, user_details):
         sql = """ select * from members
                   where username = '%s'
                             """ % user_details['username']
         result = db.session.execute(sql)
-        return adminObject.row2dict(result)
+        return self.row2dict(result)
 
     @staticmethod
     def all_profiles():
@@ -35,3 +34,12 @@ class UserUtils:
         db.session.execute(sql)
         db.session.commit()
 
+    def row2dict(self, result):
+        d, a = {}, []
+        for rowproxy in result:
+            # rowproxy.items() returns an array like [(key0, value0), (key1, value1)]
+            for column, value in rowproxy.items():
+                # build up the dictionary
+                d = {**d, **{column: value}}
+            a.append(d)
+        return a

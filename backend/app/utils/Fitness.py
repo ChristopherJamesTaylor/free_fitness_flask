@@ -110,3 +110,4 @@ class FitnessUtils:
                 d = {**d, **{column: value}}
             a.append(d)
         return a
+

@@ -12,8 +12,6 @@
         components: {MobileMenu, DesktopMenu},
         computed: {
             layoutMobile(){
-                // eslint-disable-next-line no-console
-                console.log('mobile');
                 return this.$vuetify.breakpoint.mdAndDown;
             },
             layoutDesktop(){

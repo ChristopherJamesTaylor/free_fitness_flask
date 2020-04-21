@@ -134,7 +134,7 @@
         computed: {
             cache: false,
             profile() {
-                return [this.$store.getters['user/listUser']]
+                return this.$store.getters['user/listUser']
             }
         },
         methods: {

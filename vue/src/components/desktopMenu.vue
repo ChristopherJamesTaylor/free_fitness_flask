@@ -95,16 +95,9 @@
                 };
                 this.$store.dispatch("user/getUser", data).then((response) => {
                     if (response) {
-                        // eslint-disable-next-line no-console
-                        console.log("success");
-                        // eslint-disable-next-line no-console
                         document.location.replace('/#/profile');
-                        return response
                     } else {
-                        // eslint-disable-next-line no-console
-                        console.log("error");
                         this.snackbar = true;
-                        return 'hi'
                     }
                 })
             },
@@ -114,8 +107,6 @@
                 };
                 this.$store.dispatch("fitness/getFitnessPlan", data).then((response) => {
                     if (response) {
-                        // eslint-disable-next-line no-console
-                        console.log(response);
                         document.location.replace('/#/currentfitnessplan');
                     } else {
                         document.location.replace('/#/fitnessplan');

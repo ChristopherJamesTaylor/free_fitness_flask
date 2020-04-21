@@ -1,8 +1,13 @@
 <template>
     <v-container>
         <v-toolbar>
-            <v-toolbar-title><a href="/#/home">Free Fitness</a></v-toolbar-title>
-            <v-img :src="image" heigh="80" width="80" contain/>
+            <v-toolbar-title>
+                <a href="/#/home">
+                    Free Fitness
+                </a>
+            </v-toolbar-title>
+            <v-spacer/>
+            <v-img :src="image" heigh="80" width="60" contain/>
             <v-spacer/>
             <div>
                 <v-menu offset-y>
@@ -35,7 +40,7 @@
         data() {
             return {
                 items: [
-                    {title: 'Fitness Plan'},
+                    {title: 'FitnessPlan'},
                     {title: 'Nutrition Plan'},
                     {title: 'Macros and TDEE'},
                     {title: 'Gym Finder'},
@@ -59,12 +64,14 @@
                     this.logout();
                 } else if (item.title == 'Profile') {
                     this.getUserDetails();
-                } else if (item.title == 'Fitness Plan') {
+                } else if (item.title == 'FitnessPlan') {
                     let data = {
-                        'personID': sessionStorage.getItem('id'),
+                        'personID': sessionStorage.getItem('personID'),
                     };
-                    this.$store.dispatch("user/getFitnessPlan", data).then((response) => {
-                        if (response['exists']) {
+                    this.$store.dispatch("fitness/getFitnessPlan", data).then((response) => {
+                        if (response) {
+                            // eslint-disable-next-line no-console
+                            console.log(response)
                             document.location.replace('/#/currentfitnessplan');
                         } else {
                             document.location.replace('/#/fitnessplan');
@@ -117,18 +124,6 @@
 </script>
 
 <style scoped>
-    .h1 a {
-        color: inherit;
-        text-decoration: none;
-        font-weight: inherit;
-    }
-
-    .site-header {
-        height: 65px;
-        overflow: visible;
-        top: 0;
-    }
-
     a {
         color: black;
         cursor: pointer;
@@ -136,9 +131,8 @@
         font-weight: bold;
         text-transform: uppercase;
         display: block;
-        font: 16px "lato";
+        font: 12px "lato";
     }
-
     li {
         display: inline-block;
         margin-bottom: 0;
@@ -147,13 +141,4 @@
 
     }
 
-    .site-header_logo-link {
-        display: inline-block;
-        word-break: break-word;
-        font: 60px "Source Code Pro";
-    }
-
-    .site-nav {
-        padding: 3px 10px;
-    }
 </style>
