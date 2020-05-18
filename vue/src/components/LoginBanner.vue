@@ -1,19 +1,24 @@
 <template>
-    <v-container fluid class="banner">
-        <header class="site-header" role="banner">
-            <h1>
-              <a class="site-header_logo-link">
-                Free Fitness
-                <img src="../assets/profile.png" width="80" height="80">
-              </a>
-            </h1>
-    </header>
-    </v-container>
+    <div>
+        <desktop-login-banner v-if="layoutDesktop"></desktop-login-banner>
+        <mobile-login-banner v-if="layoutMobile"></mobile-login-banner>
+    </div>
 </template>
 
 <script>
+    import desktopLoginBanner from "./desktopLoginBanner";
+    import mobileLoginBanner from "./mobileLoginBanner";
     export default {
-        name: "LoginBanner"
+        name: "LoginBanner",
+        components: {desktopLoginBanner, mobileLoginBanner},
+        computed: {
+            layoutMobile(){
+                return this.$vuetify.breakpoint.mdAndDown;
+            },
+            layoutDesktop(){
+            return this.$vuetify.breakpoint.mdAndUp;
+            },
+        },
     }
 </script>
 
