@@ -48,6 +48,8 @@ export const actions = {
     async getExercises({ commit }, data){
         const response = await api.getExercises(data);
         if(response){
+            // eslint-disable-next-line no-console
+            console.log(response);
             const payload = response.data;
             commit("SET_EXERCISES", payload);
             return payload;
@@ -56,8 +58,6 @@ export const actions = {
     async savePlan({ commit }, data){
         const response = await api.savePlan(data);
         if(response){
-            // eslint-disable-next-line no-console
-            console.log(response);
             const payload = response.data;
             commit("SET_PLAN", payload);
             return payload;
@@ -66,8 +66,6 @@ export const actions = {
     async getFitnessPlan({ commit }, data){
         const response = await api.getFitnessPlan(data);
         if(response){
-            // eslint-disable-next-line no-console
-            console.log(response.data);
             const payload = response.data;
             commit("SET_CURRENT_PLAN", payload);
             return payload;
@@ -76,8 +74,6 @@ export const actions = {
     async saveEditedPlan({ commit }, data){
         const response = await api.saveEditedPlan(data);
         if(response){
-            // eslint-disable-next-line no-console
-            console.log(response);
             const payload = response.data;
             commit("SET_EDITED_PLAN", payload);
             return payload;

@@ -84,10 +84,25 @@
                                 Close
                             </v-btn>
                         </v-snackbar>
+                        <v-snackbar
+                                v-model="snackbar2"
+                        >
+                            {{ text2 }}
+                            <v-btn
+                                    color="#D50000"
+                                    text
+                                    @click="snackbar2 = false"
+                            >
+                                Close
+                            </v-btn>
+                        </v-snackbar>
                     </v-card>
                     <v-card v-else class="mb-12">
                         <v-btn color="#64FFDA" @click='saveAndEdit'>Edit and Save Plan</v-btn>
+                        <v-spacer/>
+                        <v-text-field label="Search" v-model="search"></v-text-field>
                         <v-data-table
+                                :search="search"
                                 :headers="headers"
                                 :items="exercises"
                                 class="elevation-1"
@@ -109,6 +124,7 @@
         name: 'Fitness',
         components: {Footer, Menu},
         data: () => ({
+            search: '',
             e1: 1,
             steps: [
                 {
@@ -131,13 +147,15 @@
             headers: [
                 {text: "Exercise", value: "name"},
                 {text: "Body Part", value: "body_part"},
-                {text: "Sets", value: "sets"},
-                {text: "Repetitions", value: "reps"},
+                {text: "Sets (Number of Sets of Reps)", value: "sets"},
+                {text: "Repetitions (Number of times the exercise is performed)", value: "reps"},
                 {text: "Day", value: "day"},
             ],
             plan: [],
             snackbar: false,
+            snackbar2:false,
             text: 'Please fill out basic information',
+            text2: 'Please select 3 or more days to exercise'
         }),
         watch: {
             steps(val) {
@@ -162,7 +180,10 @@
                     'days': this.daysOfTheWeek,
                     'goals': this.goals,
                 };
-                if (this.training != null && this.type != null && this.daysOfTheWeek !== [] && this.goal != null) {
+                if(this.daysOfTheWeek.length < 3){
+                    this.snackbar2 = true;
+                } else {
+                    if (this.training != null && this.type != null && this.daysOfTheWeek !== [] && this.goal != null) {
                     this.$store.dispatch("fitness/getExercises", basicInformation).then((response) => {
                         if (response) {
                             this.exercises = response;
@@ -174,8 +195,8 @@
                     })
                 } else {
                     this.snackbar = true
+                    }
                 }
-
             },
             saveAndEdit() {
                 if (this.exercises != null) {

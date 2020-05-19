@@ -11,6 +11,7 @@
                 />
 
                 <v-text-field
+                        v-on:keydown.enter="login"
                         v-model="password"
                         type="password"
                         label="Password"

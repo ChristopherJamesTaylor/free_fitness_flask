@@ -95,21 +95,71 @@ def edit_profile():
 @app.route('/getExercises', methods=['GET', 'POST'])
 def get_exercises():
     user_details = request.get_json()
+
     all_exercises = fitness_object.get_exercises(user_details)
-    for e in all_exercises:
-        if e['body_part'] == 'chest':
-            e['day'] = 'Monday and Friday'
-        elif e['body_part'] == 'legs':
-            e['day'] = 'Tuesday'
-        elif e['body_part'] == 'shoulders':
-            e['day'] = 'Wednesday'
-        elif e['body_part'] == 'arms':
-            e['day'] = 'Thursday'
-        elif e['body_part'] == 'back':
-            e['day'] = 'Monday and Friday'
-        elif e['body_part'] == 'fullbody':
-            e['day'] = 'Saturday'
-        e['rest_days'] = 7 - len(user_details['days'])
+    if len(user_details['days']) == 3:
+        for e in all_exercises:
+            if e['body_part'] == 'chest':
+                e['day'] = user_details['days'][0]
+            elif e['body_part'] == 'abs':
+                e['day'] = user_details['days']
+            elif e['body_part'] == 'legs':
+                e['day'] = user_details['days'][1]
+            elif e['body_part'] == 'shoulders':
+                e['day'] = user_details['days'][2]
+            elif e['body_part'] == 'arms':
+                e['day'] = user_details['days'][2]
+            elif e['body_part'] == 'back':
+                e['day'] = user_details['days'][0]
+            elif e['body_part'] == 'fullbody':
+                e['day'] = user_details['days'][1]
+    elif len(user_details['days']) == 4:
+        for e in all_exercises:
+            if e['body_part'] == 'chest':
+                e['day'] = user_details['days'][0] + '\t' + user_details['days'][2]
+            elif e['body_part'] == 'abs':
+                e['day'] = user_details['days']
+            elif e['body_part'] == 'legs':
+                e['day'] = user_details['days'][1] + '\t' + user_details['days'][3]
+            elif e['body_part'] == 'shoulders':
+                e['day'] = user_details['days'][1] + '\t' + user_details['days'][3]
+            elif e['body_part'] == 'arms':
+                e['day'] = user_details['days'][1] + '\t' + user_details['days'][2]
+            elif e['body_part'] == 'back':
+                e['day'] = user_details['days'][0] + '\t' + user_details['days'][2]
+
+    elif len(user_details['days']) >= 5 and user_details['ability'] != 'savage':
+        for e in all_exercises:
+            if e['body_part'] == 'chest':
+                e['day'] = user_details['days'][0]
+            elif e['body_part'] == 'abs':
+                e['day'] = user_details['days']
+            elif e['body_part'] == 'legs':
+                e['day'] = user_details['days'][1]
+            elif e['body_part'] == 'shoulders':
+                e['day'] = user_details['days'][2]
+            elif e['body_part'] == 'arms':
+                e['day'] = user_details['days'][3]
+            elif e['body_part'] == 'back':
+                e['day'] = user_details['days'][0]
+            elif e['body_part'] == 'fullbody' and len(user_details['days']) > 5:
+                e['day'] = user_details['days'][5]
+    else:
+        for e in all_exercises:
+            if e['body_part'] == 'chest':
+                e['day'] = user_details['days'][0] + '\t' + user_details['days'][4]
+            elif e['body_part'] == 'abs':
+                e['day'] = user_details['days']
+            elif e['body_part'] == 'legs':
+                e['day'] = user_details['days'][1]
+            elif e['body_part'] == 'shoulders':
+                e['day'] = user_details['days'][2] + '\t' + user_details['days'][3]
+            elif e['body_part'] == 'arms':
+                e['day'] = user_details['days'][3] + '\t' + user_details['days'][2]
+            elif e['body_part'] == 'back':
+                e['day'] = user_details['days'][0] + '\t' + user_details['days'][4]
+            elif e['body_part'] == 'fullbody':
+                e['day'] = user_details['days'][6]
     return jsonify(all_exercises)
 
 

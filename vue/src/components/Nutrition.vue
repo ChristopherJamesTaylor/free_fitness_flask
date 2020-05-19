@@ -95,7 +95,9 @@
                                 ref="form"
                                 lazy-validation
                         >
+                            <v-text-field label="Search" v-model="search"></v-text-field>
                             <v-data-table
+                                    :search="search"
                                     :headers="headers"
                                     :items="plan"
                                     class="elevation-1"
@@ -118,6 +120,7 @@
         name: 'Nutrition',
         components: {Footer, Menu},
         data: () => ({
+            search:'',
             e1: 1,
             steps: [
                 {
