@@ -19,6 +19,14 @@ class FitnessUtils:
         result = db.session.execute(sql)
         return self.row2dict(result)
 
+    def get_mixed_exercises(self, user_details):
+        sql = """ SELECT *
+                    FROM exercises
+                    WHERE ability = '%s'
+                            """ % (user_details['training'])
+        result = db.session.execute(sql)
+        return self.row2dict(result)
+
     def all_fitness_plans(self):
         sql = """ SELECT *
                   FROM FitnessPlan

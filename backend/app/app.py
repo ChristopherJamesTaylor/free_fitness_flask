@@ -95,8 +95,11 @@ def edit_profile():
 @app.route('/getExercises', methods=['GET', 'POST'])
 def get_exercises():
     user_details = request.get_json()
-
-    all_exercises = fitness_object.get_exercises(user_details)
+    all_exercises = None
+    if user_details['type'] == 'mixed':
+        all_exercises = fitness_object.get_mixed_exercises(user_details)
+    else:
+        all_exercises = fitness_object.get_exercises(user_details)
     if len(user_details['days']) == 3:
         for e in all_exercises:
             if e['body_part'] == 'chest':
@@ -128,7 +131,7 @@ def get_exercises():
             elif e['body_part'] == 'back':
                 e['day'] = user_details['days'][0] + '\t' + user_details['days'][2]
 
-    elif len(user_details['days']) >= 5 and user_details['ability'] != 'savage':
+    elif len(user_details['days']) == 5 and user_details['training'] != 'savage':
         for e in all_exercises:
             if e['body_part'] == 'chest':
                 e['day'] = user_details['days'][0]
@@ -144,7 +147,7 @@ def get_exercises():
                 e['day'] = user_details['days'][0]
             elif e['body_part'] == 'fullbody' and len(user_details['days']) > 5:
                 e['day'] = user_details['days'][5]
-    else:
+    elif user_details['training'] == 'savage' and len(user_details['days']) > 5:
         for e in all_exercises:
             if e['body_part'] == 'chest':
                 e['day'] = user_details['days'][0] + '\t' + user_details['days'][4]
