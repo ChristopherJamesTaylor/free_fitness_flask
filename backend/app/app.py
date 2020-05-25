@@ -6,16 +6,19 @@ from app.utils.Fitness import FitnessUtils
 from app.utils.Login import AdminUtil
 from app.models import db
 from app.utils.User import UserUtils
+from app.routes.fitness import simple_page
 import bcrypt
 
 admin_obj = AdminUtil()
 user_object = UserUtils()
 fitness_object = FitnessUtils()
+
 app = Flask(__name__,
             static_folder="./static",
             template_folder="./static/dist")
-
+app.register_blueprint(simple_page)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
+
 app.secret_key = 'super secret key'
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql+mysqlconnector://freefitnessflask:chris@db/FreeFitness"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -96,6 +99,7 @@ def edit_profile():
 def get_exercises():
     user_details = request.get_json()
     all_exercises = None
+
     if user_details['type'] == 'mixed':
         all_exercises = fitness_object.get_mixed_exercises(user_details)
     else:
@@ -344,18 +348,32 @@ def get_macros():
 @app.route('/savePlan', methods=['GET', 'POST'])
 def save_fitness_plan():
     user_details = request.get_json()
-    plan_insert_bool = fitness_object.save_fitness_plan(user_details)
-    if plan_insert_bool:
-        plan_id = fitness_object.get_fitness_plan_id(user_details['personID'])
-        for exercises in user_details['exercises']:
-            exercises['planId'] = plan_id[0]['id']
-            saved_plan = fitness_object.save_exercises_plan(exercises)
-        if saved_plan:
+    seperator = ', '
+    if isinstance(user_details['days'], list):
+        user_details['days'] = seperator.join(user_details['days'])
+    for e in user_details['exercises']:
+        if 'day' in e:
+            if isinstance(e['day'], list):
+                e['day'] = seperator.join(e['day'])
+                print(e['day'])
+        else:
+            e['day'] = ''
+    plan_exist = fitness_object.get_fitness_plan_id(user_details['personID'])
+    if not bool(plan_exist):
+        plan_insert_bool = fitness_object.save_fitness_plan(user_details)
+        if plan_insert_bool:
             plan_id = fitness_object.get_fitness_plan_id(user_details['personID'])
-            print(plan_id)
-            fitness_plan = fitness_object.get_fitness_plan(plan_id[0]['id'])
-            print(fitness_plan)
-            return jsonify(fitness_plan)
+            for exercises in user_details['exercises']:
+                exercises['planId'] = plan_id[0]['id']
+                saved_plan = fitness_object.save_exercises_plan(exercises)
+            if saved_plan:
+                plan_id = fitness_object.get_fitness_plan_id(user_details['personID'])
+                fitness_plan = fitness_object.get_fitness_plan(plan_id[0]['id'])
+                return jsonify(fitness_plan)
+    else:
+        plan_id = fitness_object.get_fitness_plan_id(user_details['personID'])
+        fitness_plan = fitness_object.get_fitness_plan(plan_id[0]['id'])
+        return jsonify(fitness_plan)
 
 
 @app.route('/editedPlan', methods=['GET', 'POST'])

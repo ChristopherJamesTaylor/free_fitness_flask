@@ -16,5 +16,8 @@ export const api = {
     },
     saveEditedPlan(data){
         return instance.post(`${api_url}/editedPlan`, data);
-    }
+    },
+    deleteFitnessPlan(data){
+        return instance.post(`${api_url}/deleteFitnessPlan`, data);
+    },
 };

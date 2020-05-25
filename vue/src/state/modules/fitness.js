@@ -6,6 +6,7 @@ export const state = {
     currentPlan:null,
     editedPlan:null,
     allFitnessPlans:null,
+    deletedPlan:null,
 };
 
 export const getters = {
@@ -41,6 +42,9 @@ export const mutations = {
     },
     SET_EDITED_PLAN(state, payload){
         state.editedPlan = payload;
+    },
+    SET_DELETED_PLAN(state, payload){
+        state.deletedPlan = payload;
     }
 };
 
@@ -84,6 +88,14 @@ export const actions = {
         if(response){
             const payload = response.data;
             commit("SET_ALL_FITNESS_PLANS", payload);
+            return payload;
+        }
+    },
+    async deleteFitnessPlan({ commit }, data){
+        const response = await api.deleteFitnessPlan(data);
+        if(response){
+            const payload = response.data;
+            commit("SET_DELETED_PLAN", payload);
             return payload;
         }
     },

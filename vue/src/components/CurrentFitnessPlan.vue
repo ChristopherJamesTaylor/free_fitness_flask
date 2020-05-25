@@ -5,6 +5,8 @@
             <v-toolbar>
                 <v-toolbar-title>Fitness Plan</v-toolbar-title>
                 <v-spacer></v-spacer>
+                <v-btn @click="generate" color="#64FFDA">Generate a new plan</v-btn>
+                <p>  </p>
                 <v-btn class="save-profile" @click="saveDetails" color="#64FFDA">Save Details</v-btn>
             </v-toolbar>
             <v-data-table
@@ -98,6 +100,23 @@
                         // eslint-disable-next-line no-console
                         console.log('success');
                         this.snackbar = true;
+
+                    } else {
+                        // eslint-disable-next-line no-console
+                        console.log("error");
+                    }
+                });
+            },
+            generate() {
+                let userDetails = {
+                    'id': sessionStorage.getItem('personID')
+                }
+                this.$store.dispatch('fitness/deleteFitnessPlan', userDetails).then((response) => {
+                    if (response) {
+                        // eslint-disable-next-line no-console
+                        console.log('success');
+                        this.snackbar = true;
+                        location.replace('/#/fitnessplan')
                     } else {
                         // eslint-disable-next-line no-console
                         console.log("error");
@@ -106,7 +125,7 @@
             }
         },
         computed: {
-            cache: false,
+            // cache: false,
             plan() {
                 return this.$store.getters['fitness/listCurrentPlan'];
             }

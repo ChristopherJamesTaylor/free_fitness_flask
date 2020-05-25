@@ -41,7 +41,6 @@ class FitnessUtils:
         return self.row2dict(result)
 
     def save_fitness_plan(self, user_details):
-        print(user_details['personID'])
         sql = """ 
             INSERT INTO FitnessPlan ( personID, type, trainingLevel, goal )
             VALUES ( %s, '%s', '%s', '%s' );
@@ -57,7 +56,7 @@ class FitnessUtils:
     def save_exercises_plan(self, exercises):
         sql = """ 
             insert into PlanExercises (planId, ability, sets, reps, type, exerciseName, bodypart, day)
-            values (%s, '%s', %s, '%s', '%s','%s', '%s','%s')
+            values (%s, '%s', %s, '%s', '%s','%s', '%s', '%s')
                             """ % (exercises['planId'], exercises['ability'],
                                    exercises['sets'], exercises['reps'],
                                    exercises['type'], exercises['name'], exercises['body_part'],
@@ -80,10 +79,25 @@ class FitnessUtils:
     def get_fitness_plan(self, plan_id):
         sql = """ SELECT *
                     FROM PlanExercises
-                    WHERE  planId = %s
+                    WHERE planId = %s
                             """ % plan_id
         result = db.session.execute(sql)
         return self.row2dict(result)
+
+    def delete_fitness_plan(self, plan_id):
+        sql = """ 
+                    DELETE FROM FitnessPlan WHERE id = %s
+                            """ % plan_id
+        db.session.execute(sql)
+        db.session.commit()
+
+    def delete_fitness_plan_exercises(self, plan_id):
+        sql = """       
+                    delete from PlanExercises
+                    where planId = %s
+                            """ % plan_id
+        db.session.execute(sql)
+        db.session.commit()
 
     def get_existing_plan(self, user_details):
         sql = """ select * from FitnessPlan
