@@ -91,19 +91,16 @@
 
 
                     <v-card v-else class="mb-12">
-                        <v-form
-                                ref="form"
-                                lazy-validation
+                        <v-btn class="ma-2" color="#64FFDA" @click="savePlan">Save Plan</v-btn>
+                        <v-spacer></v-spacer>
+                        <v-text-field label="Search" v-model="search" ></v-text-field>
+                        <v-data-table
+                                :search="search"
+                                :headers="headers"
+                                :items="plan"
+                                class="elevation-1"
                         >
-                            <v-text-field label="Search" v-model="search"></v-text-field>
-                            <v-data-table
-                                    :search="search"
-                                    :headers="headers"
-                                    :items="plan"
-                                    class="elevation-1"
-                            >
-                            </v-data-table>
-                        </v-form>
+                        </v-data-table>
                     </v-card>
                 </v-stepper-content>
             </v-stepper-items>
@@ -120,7 +117,7 @@
         name: 'Nutrition',
         components: {Footer, Menu},
         data: () => ({
-            search:'',
+            search: '',
             e1: 1,
             steps: [
                 {
@@ -166,6 +163,7 @@
                 }
             },
             generate() {
+
                 let data = {
                     "calories": this.calories,
                     "diet": this.diet,
@@ -179,6 +177,25 @@
                         // eslint-disable-next-line no-console
                         console.log("error");
                         alert("A plan couldn't be generate");
+                    }
+                })
+            },
+            savePlan() {
+                let data = {
+                    "calories": this.calories,
+                    "diet": this.diet,
+                    "allergies": this.allergies,
+                    "plan": this.plan,
+                    "personID": sessionStorage.getItem('personID')
+                };
+                this.$store.dispatch("nutrition/savePlan", data).then((response) => {
+                    if (response.data !== {}) {
+                        // eslint-disable-next-line no-console
+                        console.log("save plan");
+                    } else {
+                        // eslint-disable-next-line no-console
+                        console.log("error");
+                        alert("A plan couldn't be saved");
                     }
                 })
             },

@@ -1,7 +1,7 @@
 import requests
 from flask import *
 from flask import Blueprint
-from app.utils.User import UserUtils
+from webapp.utils.User import UserUtils
 
 user_object = UserUtils()
 

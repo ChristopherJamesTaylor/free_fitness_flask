@@ -45,7 +45,7 @@ export const actions = {
     async checkUser({ commit }, data){
         const response = await api.checkUser(data);
         if(response){
-            const payload = response;
+            const payload = response.data;
             commit("SET_USER", payload);
             return payload
         }

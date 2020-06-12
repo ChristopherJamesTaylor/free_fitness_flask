@@ -1,7 +1,8 @@
 import bcrypt
 from flask import *
 from flask import Blueprint
-from app.utils.Login import AdminUtil
+from webapp.utils.Login import AdminUtil
+from sqlalchemy.ext.declarative import DeclarativeMeta
 
 admin_obj = AdminUtil()
 
@@ -11,28 +12,22 @@ login = Blueprint('login', __name__,
 
 @login.route('/checkUser', methods=['GET', 'POST'])
 def check_user():
-    print('check user')
     user_data = request.get_json()
-    database_details = admin_obj.check_user(user_details=user_data)
-    print('the database is ', database_details)
-    if database_details != {}:
+    database_details = admin_obj.check_user(user_details=user_data['username'])
+    if database_details:
+        print(user_data['password'])
         password = user_data['password'].encode("utf-8")
         hashed = database_details['user_password'].encode("utf-8")
         password_check = admin_obj.check_password(password, hashed)
         if password_check:
-            return {'row': database_details,
-                    'status': True
-                    }
+            response = {'row': database_details, 'message': '', 'status': True}
+            return response
         else:
-            return {
-                'row': '',
-                'status': False
-            }
+            response = {'row': '', 'message': '', 'status': False}
+            return response
     else:
-        return {
-            'row': '',
-            'status': False
-        }
+        response = {'row': '', 'message': '', 'status': False}
+        return response
 
 
 @login.route('/logout', methods=['GET', 'POST'])

@@ -80,15 +80,11 @@
                     password: this.password
                 };
                 this.$store.dispatch("login/checkUser", data).then((response) => {
-                    if (response.data.status) {
-                        sessionStorage.setItem('user', response.data.row.username);
-                        sessionStorage.setItem('personID', response.data.row.id);
+                    if (response.status) {
+                        sessionStorage.setItem('user', response.row.username);
+                        sessionStorage.setItem('personID', response.row.id);
                         document.location.replace('/#/home');
                     } else {
-                        // eslint-disable-next-line no-console
-                        console.log("error");
-                        // eslint-disable-next-line no-console
-                        console.log(response);
                         this.snackbar = true;
                     }
                 })

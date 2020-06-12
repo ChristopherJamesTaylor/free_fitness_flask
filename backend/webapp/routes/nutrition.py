@@ -1,9 +1,12 @@
 import requests
 from flask import *
 from flask import Blueprint
+from webapp.utils.nutrition import NutritionUtils
 
 nutrition = Blueprint('nutrition', __name__,
                       template_folder="./static/dist")
+
+nutritionObject = NutritionUtils()
 
 
 @nutrition.route('/getMealPlan', methods=['GET', 'POST'])
@@ -23,6 +26,9 @@ def get_meal_plan():
     headers = {}
     response = requests.request("GET", url, headers=headers, data=payload, params=querystring)
     plan = response.json()
+    if plan is not {}:
+        print("plan exists")
+
     meals = {
         'breakfast': '',
         'lunch': '',
@@ -62,3 +68,30 @@ def make_meal_plan(response, meals):
             "cookInMinutes": []
         }
     return plan
+
+
+def get_recipe_plan(meals, meal_id):
+    url = "https://api.spoonacular.com/recipes/" + meal_id + "/information?apiKey=3a07469279f3438bb054203338126b62" \
+                                                             "&includeNutrition=false"
+    payload = {}
+    headers = {}
+
+    response = requests.request("GET", url, headers=headers, data=payload)
+
+    print(response.text.encode('utf8'))
+
+
+@nutrition.route('/saveNutritionPlan', methods=['GET', 'POST'])
+def save_plan():
+    data = request.get_json()
+    plan_exist = nutritionObject.does_plan_exist(data['personID'])
+    if plan_exist == {}:
+        nutritionObject.save_plan(data)
+        plan = nutritionObject.does_plan_exist(data['personID'])
+        response = {'data': plan, 'message': '', 'success': True}
+        return response
+    else:
+        response = {'data': {}, 'message': '', 'success': True}
+        return response
+
+

@@ -1,6 +1,6 @@
 from flask import *
 from flask import Blueprint
-from app.utils.Fitness import FitnessUtils
+from webapp.utils.Fitness import FitnessUtils
 
 fitness_object = FitnessUtils()
 fitness = Blueprint('simple_page', __name__,

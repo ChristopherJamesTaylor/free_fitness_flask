@@ -1,6 +1,6 @@
 from flask import Blueprint
-from app.models import db
-from app.utils.Login import AdminUtil
+from webapp.models import db
+from webapp.utils.Login import AdminUtil
 
 userUtils = Blueprint('userUtils', __name__)
 adminObject = AdminUtil()

@@ -1,9 +1,13 @@
+import json
+from operator import or_
 from sqlite3 import DatabaseError, InterfaceError
 
 import bcrypt
 from flask import Blueprint, jsonify
+from sqlalchemy.ext.declarative import DeclarativeMeta
 
-from app.models import db
+from webapp.models import db
+from webapp.models.site import Members
 
 adminUtils = Blueprint('adminUtils', __name__)
 
@@ -13,19 +17,18 @@ class AdminUtil:
         pass
 
     def check_user(self, user_details):
-        sql = """ select * from members
-                  where username = '%s' OR email = '%s'
-                            """ % (user_details['username'], user_details['username'])
-        result = db.session.execute(sql)
-        return self.row2dict(result)
+        result = db.session.query(Members).filter(or_(Members.username == user_details, Members.email == user_details)).one()
+        return self.row3dict(result)
 
-    def check_password(self, password, hashed):
-        print("Check password!", flush=True)
+
+    @staticmethod
+    def check_password(password, hashed):
         if bcrypt.checkpw(password, hashed):
-            print("Password match!", flush=True)
+            print("success")
             return True
         else:
-            print("Password didn't match", flush=True)
+            print('Fail')
+
             return False
 
     def if_user(self, user_details):
@@ -43,7 +46,9 @@ class AdminUtil:
         sql = """  
                                 INSERT INTO members(username, email, user_password, first_name, last_name, permissions) 
                                 VALUES ('%s', '%s', '%s', '%s', '%s', 'user');
-              """ % (user_details['username'], user_details['email'], user_details['password'], user_details['firstName'], user_details['lastName'])
+              """ % (
+            user_details['username'], user_details['email'], user_details['password'], user_details['firstName'],
+            user_details['lastName'])
         result = db.session.execute(sql)
         db.session.commit()
         if result:
@@ -58,4 +63,10 @@ class AdminUtil:
             for column, value in rowproxy.items():
                 # build up the dictionary
                 d = {**d, **{column: value}}
+        return d
+
+    def row3dict(self, row):
+        d = {}
+        for column in row.__table__.columns:
+            d[column.name] = str(getattr(row, column.name))
         return d

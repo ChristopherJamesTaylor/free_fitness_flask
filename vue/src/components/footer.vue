@@ -3,7 +3,7 @@
         <v-footer>
             <div>A Taylor's Tales Production</div>
             <v-spacer></v-spacer>
-            <div>Version 1.1.0</div>
+            <div>Version 2.0.0</div>
             <v-spacer></v-spacer>
             <div>&copy; {{ new Date().getFullYear() }}</div>
         </v-footer>
