@@ -1,56 +1,56 @@
 <template>
     <v-container fluid>
         <v-toolbar>
-        <v-toolbar-title class="site-header_logo-link" role="banner">
-            <a href="/#/home">Free Fitness</a>
-        </v-toolbar-title>
-        <v-spacer></v-spacer>
-        <div>
-            <v-img :src="image" heigh="80" width="80" contain/>
-        </div>
-        <v-spacer></v-spacer>
-        <div>
-            <a class="site-nav" href="/#/fitnessplan" @click="getFitnessPlan">Your Fitness Plan</a>
-        </div>
-        <v-spacer></v-spacer>
-        <div>
-            <a class="site-nav" href="/#/nutrition">Nutrition</a>
-        </div>
-        <v-spacer></v-spacer>
-        <div>
-            <a class="site-nav" href="/#/macros">Macros and TDEE</a>
-        </div>
-        <v-spacer></v-spacer>
-        <div>
-            <a class="site-nav" href="/#/gyms">Nearest Gym</a>
-        </div>
-        <v-spacer></v-spacer>
-        <div>
-            Welcome <br/> {{users}}
-        </div>
-        <v-spacer></v-spacer>
-        <div>
-            <v-menu offset-y>
-                <template v-slot:activator="{ on }">
-                    <v-btn
-                            color="#64FFDA"
-                            v-on="on"
-                    >
-                        Profile and Logout
-                    </v-btn>
-                </template>
-                <v-list>
-                    <v-list-item
-                            v-for="(item, index) in items"
-                            :key="index"
-                            @click="routing(item)"
-                    >
-                        <v-list-item-title>{{ item.title }}</v-list-item-title>
-                    </v-list-item>
-                </v-list>
-            </v-menu>
-        </div>
-    </v-toolbar>
+            <v-toolbar-title class="site-header_logo-link" role="banner">
+                <a href="/#/home">Free Fitness</a>
+            </v-toolbar-title>
+            <v-spacer></v-spacer>
+            <div>
+                <v-img :src="image" heigh="80" width="80" contain/>
+            </div>
+            <v-spacer></v-spacer>
+            <div>
+                <a class="site-nav" @click="getFitnessPlan">Your Fitness Plan</a>
+            </div>
+            <v-spacer></v-spacer>
+            <div>
+                <a class="site-nav" href="/#/nutrition">Nutrition</a>
+            </div>
+            <v-spacer></v-spacer>
+            <div>
+                <a class="site-nav" href="/#/macros">Macros and TDEE</a>
+            </div>
+            <v-spacer></v-spacer>
+            <div>
+                <a class="site-nav" href="/#/gyms">Nearest Gym</a>
+            </div>
+            <v-spacer></v-spacer>
+            <div>
+                Welcome <br/> {{users}}
+            </div>
+            <v-spacer></v-spacer>
+            <div>
+                <v-menu offset-y>
+                    <template v-slot:activator="{ on }">
+                        <v-btn
+                                color="#64FFDA"
+                                v-on="on"
+                        >
+                            Profile and Logout
+                        </v-btn>
+                    </template>
+                    <v-list>
+                        <v-list-item
+                                v-for="(item, index) in items"
+                                :key="index"
+                                @click="routing(item)"
+                        >
+                            <v-list-item-title>{{ item.title }}</v-list-item-title>
+                        </v-list-item>
+                    </v-list>
+                </v-menu>
+            </div>
+        </v-toolbar>
     </v-container>
 </template>
 
@@ -64,6 +64,14 @@
                 }
                 return sessionStorage.getItem('user')
             },
+            plan() {
+                return this.$store.getters['fitness/listAllFitnessPlans'];
+            },
+            currentPlan() {
+                let listOfPlans = []
+                listOfPlans = this.plan.filter(el => el.personID == sessionStorage.getItem('personID'));
+                return listOfPlans
+            }
         },
         data() {
             return {
@@ -102,16 +110,15 @@
                 })
             },
             getFitnessPlan() {
-                let data = {
-                    'personID': sessionStorage.getItem('personID')
-                };
-                this.$store.dispatch("fitness/getFitnessPlan", data).then((response) => {
-                    if (response) {
+                if (this.currentPlan.length > 0 && this.currentPlan[0]['exercises'] !== undefined) {
+                    if (this.currentPlan[0]['exercises'].length !== 0) {
                         document.location.replace('/#/currentfitnessplan');
                     } else {
                         document.location.replace('/#/fitnessplan');
                     }
-                })
+                } else {
+                    document.location.replace('/#/fitnessplan');
+                }
             },
         }
     }

@@ -1,72 +1,46 @@
-import json
 from operator import or_
-from sqlite3 import DatabaseError, InterfaceError
-
 import bcrypt
-from flask import Blueprint, jsonify
-from sqlalchemy.ext.declarative import DeclarativeMeta
-
+from flask import Blueprint
 from webapp.models import db
 from webapp.models.site import Members
+from webapp.utils.ORM import Utils
 
 adminUtils = Blueprint('adminUtils', __name__)
+ormUtils = Utils()
 
 
 class AdminUtil:
     def __init__(self):
         pass
 
-    def check_user(self, user_details):
-        result = db.session.query(Members).filter(or_(Members.username == user_details, Members.email == user_details)).one()
-        return self.row3dict(result)
-
+    @staticmethod
+    def check_user(user_details):
+        result = db.session.query(Members).filter(
+            or_(Members.username == user_details, Members.email == user_details)).all()
+        return ormUtils.result_to_dict(result)
 
     @staticmethod
     def check_password(password, hashed):
         if bcrypt.checkpw(password, hashed):
-            print("success")
             return True
         else:
-            print('Fail')
-
             return False
 
-    def if_user(self, user_details):
-        sql = """ select * from members 
-                  where username = '%s'
-                            """ % (user_details['username'])
-        result = db.session.execute(sql)
-        checked_user = self.row2dict(result)
-        if checked_user != {}:
+    @staticmethod
+    def if_user(user_details):
+        result = db.session.query(Members).filter(Members.username == user_details['username']).first()
+        checked_user = ormUtils.result_to_dict(result)
+        if checked_user is not None:
             return checked_user
         else:
             return False
 
-    def register_user(self, user_details):
-        sql = """  
-                                INSERT INTO members(username, email, user_password, first_name, last_name, permissions) 
-                                VALUES ('%s', '%s', '%s', '%s', '%s', 'user');
-              """ % (
-            user_details['username'], user_details['email'], user_details['password'], user_details['firstName'],
-            user_details['lastName'])
-        result = db.session.execute(sql)
+    @staticmethod
+    def register_user(user_details):
+        db.session.add(Members(username=user_details['username'], email=user_details['email'],
+                               user_password=user_details['password'], first_name=user_details['firstName'],
+                               last_name=user_details['lastName']))
         db.session.commit()
-        if result:
-            return True
-        else:
-            return False
-
-    def row2dict(self, result):
-        d, a = {}, []
-        for rowproxy in result:
-            # rowproxy.items() returns an array like [(key0, value0), (key1, value1)]
-            for column, value in rowproxy.items():
-                # build up the dictionary
-                d = {**d, **{column: value}}
-        return d
-
-    def row3dict(self, row):
-        d = {}
-        for column in row.__table__.columns:
-            d[column.name] = str(getattr(row, column.name))
-        return d
+        result = db.session.query(Members).filter(Members.username == user_details['username']).first()
+        response = ormUtils.result_to_dict(result)
+        return response

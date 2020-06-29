@@ -11,7 +11,7 @@
             </v-toolbar>
             <v-data-table
                     :headers="headers"
-                    :items="plan"
+                    :items="currentPlan[0]['exercises']"
             >
                 <template v-slot:item.exerciseName="{ item }">
                     <v-text-field
@@ -113,8 +113,6 @@
                 }
                 this.$store.dispatch('fitness/deleteFitnessPlan', userDetails).then((response) => {
                     if (response) {
-                        // eslint-disable-next-line no-console
-                        console.log('success');
                         this.snackbar = true;
                         location.replace('/#/fitnessplan')
                     } else {
@@ -125,9 +123,15 @@
             }
         },
         computed: {
-            // cache: false,
             plan() {
-                return this.$store.getters['fitness/listCurrentPlan'];
+                return this.$store.getters['fitness/listAllFitnessPlans'];
+            },
+            currentPlan() {
+                let listOfPlans = []
+                listOfPlans = this.plan.filter(el => el.personID == sessionStorage.getItem('personID'));
+                 // eslint-disable-next-line no-console
+                console.log(listOfPlans)
+                return listOfPlans
             }
         },
         data: () => ({

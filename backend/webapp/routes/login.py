@@ -15,9 +15,8 @@ def check_user():
     user_data = request.get_json()
     database_details = admin_obj.check_user(user_details=user_data['username'])
     if database_details:
-        print(user_data['password'])
         password = user_data['password'].encode("utf-8")
-        hashed = database_details['user_password'].encode("utf-8")
+        hashed = database_details[0]['user_password'].encode("utf-8")
         password_check = admin_obj.check_password(password, hashed)
         if password_check:
             response = {'row': database_details, 'message': '', 'status': True}
@@ -39,17 +38,14 @@ def logout():
 
 @login.route('/registerUser', methods=['GET', 'POST'])
 def register():
-    user_details = {'status': False}
     data = request.get_json()
     if_user = admin_obj.if_user(data)
     if if_user is False:
         hashed_password = encrypt_password(data)
         data['password'] = hashed_password
-        user_details['status'] = admin_obj.register_user(user_details=data)
-        if user_details['status']:
-            return user_details
-        else:
-            return user_details
+        new_user = admin_obj.register_user(user_details=data)
+        response = {'row': new_user, 'message': '', 'status': True}
+        return response
 
 
 def encrypt_password(data):

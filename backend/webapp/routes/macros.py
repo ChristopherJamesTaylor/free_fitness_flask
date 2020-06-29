@@ -9,7 +9,6 @@ macros = Blueprint('macros', __name__,
 @macros.route('/getMacros', methods=['GET', 'POST'])
 def get_macros():
     data = request.get_json()
-    print(data)
     tdee = 0
     macros = {
         'protein': 0,
@@ -21,36 +20,52 @@ def get_macros():
 
     if data['unit'] == 'metric':
         if data['sex'] == 'male':
-            bmr = 65 + (13.7 * float(data['weight'])) + (5 * float(data['height'])) - (6.8 * float(data['age']))
-            print(bmr)
+            # Mifflin St Jeor
+            bmr = (10 * float(data['weight'])) + (6.25 * float(data['height'])) - (5 * float(data['age'])) + 5
+            # Harris - Benedict(Revised)
+            # bmr = 65 + (13.7 * float(data['weight'])) + (5 * float(data['height'])) - (6.8 * float(data['age']))
         else:
-            print('Woman')
-            bmr = 655 + (13.7 * float(data['weight'])) + (1.8 * float(data['height'])) - (4.7 * float(data['age']))
-
+            # Mifflin St Jeor
+            bmr = (10 * float(data['weight'])) + (6.25 * float(data['height'])) - (5 * float(data['age'])) - 161
+            # Harris - Benedict(Revised)
+            # bmr = 655 + (13.7 * float(data['weight'])) + (1.8 * float(data['height'])) - (4.7 * float(data['age']))
     elif data['unit'] == 'imperial':
         if data['sex'] == 'male':
-            bmr = 66 + (6.23 * float(data['weight'])) + (12.7 * float(data['height'])) - (
-                    6.8 * float(data['age']))
+            print(data['age'])
+            bmr = ((10 * float(data['weight'])) / 0.15747) + ((6.25 * float(data['height'])) / 0.032808) - (
+                        5 * float(data['age'])) + 5
+            # Harris - Benedict(Revised)
+            # bmr = 66 + (6.23 * float(data['weight'])) + (12.7 * float(data['height'])) - (
+            #         6.8 * float(data['age']))
         else:
-            print('Woman')
-            bmr = 655.1 + (4.35 * float(data['weight'])) + (4.7 * float(data['height'])) - (
-                    4.7 * float(data['age']))
+            bmr = ((10 * float(data['weight'])) / 0.15747) + ((6.25 * float(data['height'])) / 0.032808) - (
+                        5 * float(data['age'])) - 161
+            # bmr = 655.1 + (4.35 * float(data['weight'])) + (4.7 * float(data['height'])) - (
+            #         4.7 * float(data['age']))
 
     # calculate TDEE
-    if data['activity'] == 'sedentary':
+    if data['activity'] == 'Sedentary':
         tdee = bmr * 1.2
         print('The TDEE is:', tdee)
     #     Office worker getting little or no exercise
-    elif data['activity'] == 'active':
+    elif data['activity'] == 'Slightly active':
+        tdee = bmr * 1.375
+        print('The TDEE is:', tdee)
+    #     Office worker getting little or no exercise
+    elif data['activity'] == 'Lightly Active':
+        tdee = bmr * 1.425
+    elif data['activity'] == 'Moderately Active':
         tdee = bmr * 1.55
     #     Construction worker or person running one hour daily
-    else:
+    elif data['activity'] == 'Very Active':
         tdee = bmr * 1.75
+    elif data['activity'] == 'Extremely Active':
+        tdee = bmr * 1.9
     #     	Agricultural worker (non mechanized) or person swimming two hours daily
+
     # calculate macros
     if data['goal'] == 'fatLoss':
         # 10% drop and increase in protein
-        print('fat loss')
         drop = tdee * 0.1
         tdee = tdee - drop
         macros = {

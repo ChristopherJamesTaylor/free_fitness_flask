@@ -81,8 +81,8 @@
                 };
                 this.$store.dispatch("login/checkUser", data).then((response) => {
                     if (response.status) {
-                        sessionStorage.setItem('user', response.row.username);
-                        sessionStorage.setItem('personID', response.row.id);
+                        sessionStorage.setItem('user', response.row[0].username);
+                        sessionStorage.setItem('personID', response.row[0].id);
                         document.location.replace('/#/home');
                     } else {
                         this.snackbar = true;

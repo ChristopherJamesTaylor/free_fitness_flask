@@ -1,36 +1,26 @@
 from flask import Blueprint
 from webapp.models import db
+from webapp.models.site import NutritionPlan
+from webapp.utils.ORM import Utils
 
 nutritionUtils = Blueprint('nutritionUtils', __name__)
+ormUtils = Utils()
 
 
 class NutritionUtils:
     def __init__(self):
         pass
 
-    def save_plan(self, plan_details):
-        sql = """ 
-                    insert into NutritionPlan(personID, diet, tdee, allergies)
-                    values(%s, '%s', '%s', '%s')
-                            """ % (plan_details['personID'], plan_details['diet'], plan_details['tdee'],
-                                   plan_details['allergies'])
-        db.session.execute(sql)
+    @staticmethod
+    def save_plan(plan_details):
+        db.session.add(NutritionPlan(personID=plan_details['personID'], dietType=plan_details['diet'],
+                                     totalDailyCalories=plan_details['calories'], mealDate=plan_details['mealDate'],
+                                     fasting=plan_details['fasting'], cheatday=plan_details['cheat'],
+                                     macros=plan_details['macros'], breakfast=plan_details['breakfast'], lunch=
+                                     plan_details['lunch'], dinner=plan_details['dinner']))
         db.session.commit()
 
-    def does_plan_exist(self, person_id):
-        sql = """ 
-                    select * from NutritionPlan
-                    where personID = %s
-                            """ % person_id
-        result = db.session.execute(sql)
-        return self.row2dict(result)
-
-    def row2dict(self, result):
-        d, a = {}, []
-        for rowproxy in result:
-            # rowproxy.items() returns an array like [(key0, value0), (key1, value1)]
-            for column, value in rowproxy.items():
-                # build up the dictionary
-                d = {**d, **{column: value}}
-            a.append(d)
-        return a
+    @staticmethod
+    def does_plan_exist(person_id):
+        result = db.session.query(NutritionPlan).filter(NutritionPlan.personID == person_id)
+        return ormUtils.result_to_dict(result)

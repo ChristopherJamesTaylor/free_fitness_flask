@@ -15,7 +15,6 @@ class Exercises(db.Model):
     type = Column(String(255))
     name = Column(String(255))
     body_part = Column(String(255))
-    day = Column(String(255))
 
 
 # example of one to to one
@@ -27,27 +26,23 @@ class FitnessPlan(db.Model):
     __tablename__ = 'FitnessPlan'
 
     id = Column(INTEGER(11), primary_key=True)
-    type = Column(String(255))
-    numberOfDays = Column(INTEGER(11))
-    intensityLevel = Column(String(255))
-    goal = Column(String(255))
-    split = Column(String(255))
-    daysOfTheWeek = Column(String(255))
-    excersises = Column(String(255))
     personID = Column(INTEGER(11))
+    type = Column(String(255))
+    trainingLevel = Column(String(255))
+    goal = Column(String(255))
 
-    free_plan_exercises = relationship("PlanExercises")
+    exercises = relationship('PlanExercises', primaryjoin='FitnessPlan.id == PlanExercises.planId', lazy='joined')
 
 
 class PlanExercises(db.Model):
     __tablename__ = 'PlanExercises'
 
     id = Column(INTEGER(11), primary_key=True)
-    planID = Column(INTEGER, ForeignKey('FitnessPlan.id'))
+    planId = Column(INTEGER(11), ForeignKey('FitnessPlan.id'))
     ability = Column(String(255))
-    sets = Column(INTEGER(11))
-    reps = Column(INTEGER(11))
-    type = Column(INTEGER(255))
+    sets = Column(INTEGER(255))
+    reps = Column(INTEGER(255))
+    type = Column(String(255))
     exerciseName = Column(String(255))
     bodyPart = Column(String(255))
     day = Column(String(255))
@@ -124,9 +119,10 @@ class NutritionPlan(db.Model):
     __tablename__ = 'Nutrition'
 
     id = Column(INTEGER(11), primary_key=True)
+    personID = Column(INTEGER(11))
     dietType = Column(String(255))
     totalDailyCalories = Column(INTEGER(255))
-    mealTimes = Column(DateTime)
+    mealDate = Column(DateTime)
     fasting = Column(String(255))
     cheatday = Column(String(255))
     macros = Column(String(255))

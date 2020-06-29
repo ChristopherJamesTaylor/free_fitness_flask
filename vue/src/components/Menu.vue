@@ -68,18 +68,27 @@
                 })
             },
             getFitnessPlan() {
-                let data = {
-                    'personID': sessionStorage.getItem('personID')
-                };
-                this.$store.dispatch("fitness/getFitnessPlan", data).then((response) => {
-                    if (response) {
-                        // eslint-disable-next-line no-console
-                        console.log(response);
-                        document.location.replace('/#/currentfitnessplan');
-                    } else {
-                        document.location.replace('/#/fitnessplan');
-                    }
-                })
+                // let data = {
+                //     'personID': sessionStorage.getItem('personID')
+                // };
+                // this.$store.dispatch("fitness/getFitnessPlan", data).then((response) => {
+                //     if (response) {
+                //         // eslint-disable-next-line no-console
+                //         console.log(response);
+                //         document.location.replace('/#/currentfitnessplan');
+                //     } else {
+                //         document.location.replace('/#/fitnessplan');
+                //     }
+                // })
+                if(this.currentPlan.exercises.length != 0){
+                    // eslint-disable-next-line no-console
+                    console.log(this.currentPlan.exercises);
+                    document.location.replace('/#/currentfitnessplan');
+                } else {
+                     // eslint-disable-next-line no-console
+                    console.log(this.currentPlan.exercises);
+                    document.location.replace('/#/fitnessplan');
+                }
             },
         }
     }

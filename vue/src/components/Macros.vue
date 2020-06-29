@@ -1,40 +1,63 @@
 <template>
     <div>
         <Menu></Menu>
-        <v-container fluid align-content="center">
-            <v-form ref="macrosForm" lazy-validation>
-                <h3>Age</h3>
-                <v-text-field outlined v-model="age" required :rules="[v => !!v || 'Item is required']"></v-text-field>
-
-                <h3>Sex</h3>
-                <v-radio-group class="content" justify="justify" v-model="sex" required :rules="[v => !!v || 'Item is required']">
-                    <v-radio label="Male" value="male"/>
-                    <v-radio label="Female" value="female"/>
-                </v-radio-group>
-
-                <h3>Weight and Height</h3>
-                <v-radio-group @click="setType" class="content" justify="justify" v-model="unit" required :rules="[v => !!v || 'Item is required']">
-                    <v-radio label="Imperial" value="imperial"/>
-                    <v-radio label="Metric" value="metric"/>
-                </v-radio-group>
-                <v-text-field outlined :placeholder="unitTypeHeight" v-model="height" required :rules="[v => !!v || 'Item is required']"></v-text-field>
-                <v-text-field outlined :placeholder="unitTypeWeight" v-model="weight" required :rules="[v => !!v || 'Item is required']"></v-text-field>
-
-                <h3>Goal</h3>
-                <v-radio-group class="center" v-model="goal" required :rules="[v => !!v || 'Item is required']">
-                    <v-radio label="Fat loss" value="fatLoss"/>
-                    <v-radio label="Maintenance" value="maintain"/>
-                    <v-radio label="Muscle gain" value="muscleGain"/>
-                </v-radio-group>
-
-                <h3>Activity Level</h3>
-                <v-radio-group v-model="activity" required :rules="[v => !!v || 'Item is required']">
-                    <v-radio label="Sedentary" value="sedentary"/>
-                    <v-radio label="Active" value="active"/>
-                    <v-radio label="Vigorously active" value="vActive"/>
-                </v-radio-group>
-
-                <v-btn class="center" rounded color="#64FFDA" @click="getMacros">Calculate</v-btn>
+        <v-container fluid>
+            <v-form ref="macrosForm" lazy-validation class="text-xs-center">
+                <v-layout row wrap>
+                    <v-flex xs3>
+                        <h3>Age</h3>
+                        <v-text-field outlined v-model="age" required
+                                      :rules="[v => !!v || 'Item is required']"></v-text-field>
+                    </v-flex>
+                    <v-flex xs3>
+                        <v-spacer></v-spacer>
+                    </v-flex>
+                    <v-flex xs3>
+                        <h3>Sex</h3>
+                        <v-radio-group justify="justify" v-model="sex" required
+                                       :rules="[v => !!v || 'Item is required']">
+                            <v-radio label="Male" value="male"/>
+                            <v-radio label="Female" value="female"/>
+                        </v-radio-group>
+                    </v-flex>
+                    <v-flex xs3>
+                        <h3>Weight and Height</h3>
+                        <v-radio-group justify="justify" v-model="unit" required
+                                       :rules="[v => !!v || 'Item is required']">
+                            <v-radio label="Imperial" value="imperial"/>
+                            <v-radio label="Metric" value="metric"/>
+                        </v-radio-group>
+                        <v-btn @click="setType">Confirm Unit</v-btn>
+                    </v-flex>
+                    <v-flex xs12>
+                        <h3>Weight</h3>
+                        <v-text-field outlined :placeholder="unitTypeWeight" v-model="weight" required
+                                      :rules="[v => !!v || 'Item is required']"></v-text-field>
+                        <h3>Height</h3>
+                        <v-text-field outlined :placeholder="unitTypeHeight" v-model="height" required
+                                      :rules="[v => !!v || 'Item is required']"></v-text-field>
+                    </v-flex>
+                    <v-flex xs6>
+                        <h3>Goal</h3>
+                        <v-radio-group class="center" v-model="goal" required :rules="[v => !!v || 'Item is required']">
+                            <v-radio label="Fat loss" value="fatLoss"/>
+                            <v-radio label="Maintenance" value="maintain"/>
+                            <v-radio label="Muscle gain" value="muscleGain"/>
+                        </v-radio-group>
+                    </v-flex>
+                    <v-flex xs6>
+                        <h3>Activity Level</h3>
+                        <v-radio-group v-model="activity" required :rules="[v => !!v || 'Item is required']">
+                            <v-radio label="Sedentary" value="Sedentary"/>
+                            <v-radio label="Slightly active" value="Slightly active"/>
+                            <v-radio label="Lightly Active" value="Lightly Active"/>
+                            <v-radio label="Moderately Active" value="Moderately Active"/>
+                            <v-radio label="Very Active" value="Very Active"/>
+                            <v-radio label="Extremely Active" value="Extremely Active"/>
+                        </v-radio-group>
+                        <v-btn class="center" rounded color="#64FFDA" @click="getMacros">Calculate</v-btn>
+                    </v-flex>
+                </v-layout>
             </v-form>
             <v-snackbar
                     v-model="snackbar"
@@ -85,15 +108,17 @@
             test() {
                 this.macrosDialog = true;
             },
-            setType(){
-                // eslint-disable-next-line no-console
-                console.log("units")
-                if(this.unit == 'imperial'){
-                    this.unitTypeHeight = 'Feet and inches';
-                    this.unitTypeWeight = 'Stone and Pounds';
+            setType() {
+                if (this.unit != null) {
+                    if (this.unit == "imperial") {
+                        this.unitTypeHeight = 'ft';
+                        this.unitTypeWeight = 'st';
+                    } else {
+                        this.unitTypeHeight = 'cm';
+                        this.unitTypeWeight = 'kg';
+                    }
                 } else {
-                    this.unitTypeHeight = 'cm';
-                    this.unitTypeWeight = 'kg';
+                    this.snackbar = true;
                 }
             },
             getMacros() {
@@ -143,8 +168,5 @@
 </script>
 
 <style scoped>
-    .content {
-        align-content: center;
-    }
 
 </style>

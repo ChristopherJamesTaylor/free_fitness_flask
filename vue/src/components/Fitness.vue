@@ -175,7 +175,7 @@
             },
             generate() {
                 let basicInformation = {
-                    'training': this.training,
+                    'ability': this.training,
                     'type': this.type,
                     'days': this.daysOfTheWeek,
                     'goals': this.goals,
@@ -184,7 +184,7 @@
                     this.snackbar2 = true;
                 } else {
                     if (this.training != null && this.type != null && this.daysOfTheWeek !== [] && this.goal != null) {
-                    this.$store.dispatch("fitness/getExercises", basicInformation).then((response) => {
+                    this.$store.dispatch("fitness/Exercises", basicInformation).then((response) => {
                         if (response) {
                             this.exercises = response;
                             this.e1 = 2;
@@ -202,7 +202,7 @@
                 if (this.exercises != null) {
                     let fullUserData = {
                         'personID': sessionStorage.getItem('personID'),
-                        'training': this.training,
+                        'ability': this.training,
                         'type': this.type,
                         'days': this.daysOfTheWeek,
                         'goals': this.goal,
@@ -210,8 +210,6 @@
                     };
                     this.$store.dispatch("fitness/savePlan", fullUserData).then((response) => {
                         if (response) {
-                            // eslint-disable-next-line no-console
-                            console.log('success');
                             document.location.replace('/#/currentfitnessplan')
                         } else {
                             // eslint-disable-next-line no-console

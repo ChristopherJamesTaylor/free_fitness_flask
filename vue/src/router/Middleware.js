@@ -1,7 +1,6 @@
-
-
+import store  from "../state/store";
 export function checkAccessMiddleware(to, from, next) {
-    // store.dispatch("fitness/allFitnessPlans");
+    store.dispatch("fitness/allFitnessPlans");
     // store.dispatch("user/allProfiles");
     // if(sessionStorage.getItem('user') !== null){
     //     let data = {'username': sessionStorage.getItem('user'),};

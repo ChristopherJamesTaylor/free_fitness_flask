@@ -1,45 +1,32 @@
 from flask import Blueprint
 from webapp.models import db
+from webapp.models.site import Members
 from webapp.utils.Login import AdminUtil
+from webapp.utils.ORM import Utils
 
 userUtils = Blueprint('userUtils', __name__)
 adminObject = AdminUtil()
+ormObject = Utils()
 
 
 class UserUtils:
     def __init__(self):
         pass
 
-    def get_user(self, user_details):
-        sql = """ select * from members
-                  where username = '%s'
-                            """ % user_details['username']
-        result = db.session.execute(sql)
-        return self.row2dict(result)
+    @staticmethod
+    def get_user(user_details):
+        result = db.session.query(Members).filter(Members.username == user_details['username']).all()
+        return ormObject.result_to_dict(result)
 
     @staticmethod
     def all_profiles():
-        sql = """ select * from members
-                                """
-        result = db.session.execute(sql)
-        return adminObject.row2dict(result)
+        result = db.session.query(Members).all()
+        return ormObject.result_to_dict(result)
 
     @staticmethod
     def edit_profile(user_details, person_id):
-        sql = """ UPDATE members
-                  SET username = '%s', email = '%s', first_name = '%s', last_name='%s'  
-                  WHERE id = %s
-                            """ % (user_details['username'], user_details['email'], user_details['first_name'],
-                                   user_details['last_name'], person_id)
-        db.session.execute(sql)
+        db.session.query(Members).filter(Members.id == person_id).update(
+            {Members.username: user_details['username'], Members.email: user_details['email'],
+             Members.first_name: user_details['first_name'],
+             Members.last_name: user_details['last_name']})
         db.session.commit()
-
-    def row2dict(self, result):
-        d, a = {}, []
-        for rowproxy in result:
-            # rowproxy.items() returns an array like [(key0, value0), (key1, value1)]
-            for column, value in rowproxy.items():
-                # build up the dictionary
-                d = {**d, **{column: value}}
-            a.append(d)
-        return a

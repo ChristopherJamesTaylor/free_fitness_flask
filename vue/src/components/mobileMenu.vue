@@ -37,6 +37,16 @@
 <script>
     export default {
         name: "mobileMenu",
+        computed: {
+            plan() {
+                return this.$store.getters['fitness/listAllFitnessPlans'];
+            },
+            currentPlan() {
+                let listOfPlans = []
+                listOfPlans = this.plan.filter(el => el.personID == sessionStorage.getItem('personID'));
+                return listOfPlans
+            }
+        },
         data() {
             return {
                 items: [
@@ -65,18 +75,7 @@
                 } else if (item.title == 'Profile') {
                     this.getUserDetails();
                 } else if (item.title == 'FitnessPlan') {
-                    let data = {
-                        'personID': sessionStorage.getItem('personID'),
-                    };
-                    this.$store.dispatch("fitness/getFitnessPlan", data).then((response) => {
-                        if (response) {
-                            // eslint-disable-next-line no-console
-                            console.log(response)
-                            document.location.replace('/#/currentfitnessplan');
-                        } else {
-                            document.location.replace('/#/fitnessplan');
-                        }
-                    })
+                    this.getFitnessPlan();
                 } else if (item.title == 'Nutrition Plan') {
                     document.location.replace('/#/nutrition')
                 } else if (item.title == 'Macros and TDEE') {
@@ -91,34 +90,25 @@
                 };
                 this.$store.dispatch("user/getUser", data).then((response) => {
                     if (response) {
-                        // eslint-disable-next-line no-console
-                        console.log("success");
-                        // eslint-disable-next-line no-console
-                        console.log(response);
                         document.location.replace('/#/profile');
                         return response
                     } else {
-                        // eslint-disable-next-line no-console
-                        console.log("error");
                         this.snackbar = true;
                         return 'hi'
                     }
                 })
             },
             getFitnessPlan() {
-                let data = {
-                    'personID': sessionStorage.getItem('personID')
-                };
-                this.$store.dispatch("fitness/getFitnessPlan", data).then((response) => {
-                    if (response) {
-                        // eslint-disable-next-line no-console
-                        console.log(response);
+                if (this.currentPlan.length > 0) {
+                    if (this.currentPlan[0]['exercises'].length !== 0) {
                         document.location.replace('/#/currentfitnessplan');
                     } else {
-                        document.location.replace('/#/fitnessplan');
+                        document.location.replace('/#/currentfitnessplan');
                     }
-                })
-            },
+                } else {
+                    document.location.replace('/#/fitnessplan');
+                }
+            }
         }
     }
 </script>
@@ -133,6 +123,7 @@
         display: block;
         font: 12px "lato";
     }
+
     li {
         display: inline-block;
         margin-bottom: 0;

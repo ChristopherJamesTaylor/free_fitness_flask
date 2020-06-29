@@ -56,8 +56,6 @@ export const actions = {
     },
 
     async registerUser({ commit }, data){
-        // eslint-disable-next-line no-console
-        console.log('your name is: ', data);
         const response = await api.registerUser(data);
         if(response){
             const payload = response;

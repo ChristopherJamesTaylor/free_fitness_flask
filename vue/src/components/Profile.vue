@@ -64,16 +64,6 @@
                             type="text"
                     ></v-text-field>
                 </template>
-                <template v-slot:item.permissions="{ item }">
-                    <v-text-field
-                            v-model="item.permissions"
-                            :items="item"
-                            :item-text="item.permissions"
-                            outlined
-                            disabled
-                            type="text"
-                    ></v-text-field>
-                </template>
             </v-data-table>
             <v-snackbar
                     v-model="snackbar"
@@ -128,7 +118,6 @@
                 {text: "First name", value: "first_name"},
                 {text: "Last name", value: "last_name"},
                 {text: "Email", value: "email", align: 'center'},
-                {text: "Permissions", value: "permissions",},
             ]
         }),
         computed: {

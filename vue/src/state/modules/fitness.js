@@ -49,11 +49,9 @@ export const mutations = {
 };
 
 export const actions = {
-    async getExercises({ commit }, data){
-        const response = await api.getExercises(data);
+    async Exercises({ commit }, data){
+        const response = await api.Exercises(data);
         if(response){
-            // eslint-disable-next-line no-console
-            console.log(response);
             const payload = response.data;
             commit("SET_EXERCISES", payload);
             return payload;
@@ -86,7 +84,7 @@ export const actions = {
     async allFitnessPlans({ commit }){
         const response = await api.allFitnessPlans();
         if(response){
-            const payload = response.data;
+            const payload = response.data.row;
             commit("SET_ALL_FITNESS_PLANS", payload);
             return payload;
         }
